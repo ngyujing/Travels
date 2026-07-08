@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SG → BKK · Girls' Trip · Aug 8–11, 2026</title>
+<style>
+  :root{
+    --night:#1B1330;
+    --night-2:#241A3F;
+    --night-3:#2E2150;
+    --gold:#E0A94C;
+    --jade:#4E9787;
+    --coral:#E2664A;
+    --cream:#F5EDE0;
+    --cream-dim:#BDB2D6;
+    --line:#41335F;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--night);color:var(--cream);
+    font-family:'Segoe UI',Arial,sans-serif;
+    line-height:1.55;
+  }
+  .wrap{max-width:1150px;margin:0 auto;padding:30px 18px 60px;}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;}
+
+  .hdr{border-bottom:3px double var(--line);padding-bottom:20px;margin-bottom:26px;
+       display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;}
+  .hdr h1{font-size:36px;letter-spacing:.5px;margin:0;font-weight:800;}
+  .hdr h1 span{color:var(--gold);}
+  .hdr .sub{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--cream-dim);letter-spacing:.6px;margin-top:6px;}
+  .odo{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--night-2);
+       border:1px solid var(--line);border-radius:4px;padding:10px 16px;text-align:right;}
+  .odo b{display:block;font-size:20px;color:var(--gold);letter-spacing:1px;}
+  .odo small{color:var(--cream-dim);font-size:10px;text-transform:uppercase;letter-spacing:1px;}
+
+  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
+  nav a{
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;
+    color:var(--cream-dim);text-decoration:none;border:1px solid var(--line);
+    padding:6px 12px;border-radius:3px;text-transform:uppercase;
+  }
+  nav a:hover{color:var(--gold);border-color:var(--gold);}
+
+  section{margin-bottom:44px;}
+  h2{
+    font-size:22px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;
+    border-left:5px solid var(--gold);padding-left:12px;margin:0 0 6px;
+  }
+  h2 .no{color:var(--coral);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;margin-right:8px;}
+  .sec-sub{color:var(--cream-dim);font-size:13px;margin:0 0 16px 17px;}
+  h3{font-size:16px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin:22px 0 8px;}
+
+  .alert{
+    background:var(--night-2);border:1px solid var(--coral);border-left:6px solid var(--coral);
+    border-radius:4px;padding:16px 18px;margin-bottom:26px;
+  }
+  .alert h4{margin:0 0 10px;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--coral);
+            font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .alert ul{margin:0;padding-left:20px;font-size:13.5px;color:var(--cream);}
+  .alert li{margin-bottom:8px;}
+  .alert li b{color:var(--gold);}
+  .conf{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;padding:1px 5px;border-radius:2px;
+        border:1px solid var(--line);color:var(--cream-dim);vertical-align:middle;}
+
+  .road{position:relative;padding:66px 6px 6px;overflow-x:auto;background:var(--night);}
+  .road-track{position:relative;min-width:1150px;height:300px;}
+  .centerline{
+    position:absolute;top:150px;left:0;right:0;height:4px;
+    background-image:repeating-linear-gradient(to right,var(--gold) 0 26px,transparent 26px 46px);opacity:.85;
+  }
+  .node{position:absolute;top:150px;width:210px;transform:translate(-50%,-50%);}
+  .pin{width:22px;height:22px;border-radius:50%;background:var(--cream);border:4px solid var(--night);
+       outline:2px solid var(--gold);margin:0 auto;position:relative;z-index:3;}
+  .pin.rest{outline-color:var(--jade);}
+  .km-tag{position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);
+          background:var(--night);padding:2px 6px;border:1px solid var(--line);border-radius:3px;white-space:nowrap;}
+  .card{position:absolute;left:50%;transform:translateX(-50%);width:200px;background:var(--night-2);
+        border:1px solid var(--line);border-radius:6px;padding:10px 10px 12px;text-align:center;}
+  .card.up{bottom:58px;} .card.down{top:58px;}
+  .card::after{content:"";position:absolute;left:50%;width:1px;background:var(--line);}
+  .card.up::after{bottom:-58px;height:58px;transform:translateX(-50%);}
+  .card.down::after{top:-58px;height:58px;transform:translateX(-50%);}
+  .shield{width:34px;height:34px;margin:0 auto 6px;background:var(--coral);
+          clip-path:polygon(50% 0%,100% 22%,100% 78%,50% 100%,0% 78%,0% 22%);
+          display:flex;align-items:center;justify-content:center;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:13px;color:var(--cream);}
+  .card.rest .shield{background:var(--jade);}
+  .city{font-size:16px;text-transform:uppercase;letter-spacing:.5px;font-weight:800;}
+  .nights{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--gold);letter-spacing:.5px;margin-top:2px;}
+  .card.rest .nights{color:var(--jade);}
+  .vibe{margin-top:6px;color:var(--cream-dim);font-size:11px;line-height:1.35;font-family:Arial,sans-serif;}
+  .legend{display:flex;gap:22px;margin-top:12px;flex-wrap:wrap;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;border:2px solid var(--night);}
+  .dot.travel{outline:2px solid var(--gold);} .dot.rest{outline:2px solid var(--jade);}
+
+  table{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:13.5px;}
+  th{background:var(--night-3);color:var(--gold);text-transform:uppercase;letter-spacing:1px;
+     font-size:11px;font-family:ui-monospace,Menlo,Consolas,monospace;
+     padding:10px 12px;text-align:left;border:1px solid var(--line);}
+  td{padding:10px 12px;border:1px solid var(--line);vertical-align:top;background:var(--night-2);}
+  tr.rest-row td{background:#25304A;}
+  tr.rest-row td:first-child{border-left:4px solid var(--jade);}
+  tr.ride-row td:first-child{border-left:4px solid var(--gold);}
+  td .tag{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);
+          display:block;margin-top:3px;}
+  td b{color:var(--gold);font-weight:700;}
+
+  .city-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:14px;}
+  .cg{background:var(--night-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .cg .band{height:6px;background:var(--gold);}
+  .cg.restc .band{background:var(--jade);}
+  .cg .inner{padding:16px 18px 18px;}
+  .cg h4{margin:0;font-size:19px;text-transform:uppercase;letter-spacing:.5px;}
+  .cg .meta{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;color:var(--cream-dim);
+            letter-spacing:.5px;margin:3px 0 12px;}
+  .cg dl{margin:0;font-size:13px;}
+  .cg dt{color:var(--gold);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;
+         text-transform:uppercase;letter-spacing:1px;margin-top:10px;}
+  .cg.restc dt{color:var(--jade);}
+  .cg dd{margin:3px 0 0;color:var(--cream);}
+  .cg dd small{color:var(--cream-dim);}
+
+  .note{background:var(--night-2);border-left:4px solid var(--jade);padding:12px 16px;
+        font-size:13px;color:var(--cream-dim);margin-top:14px;}
+  .note b{color:var(--cream);}
+  .budget-total td{background:var(--night-3);font-weight:700;}
+  footer{border-top:2px dashed var(--line);margin-top:30px;padding-top:18px;
+         font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);}
+  @media (max-width:640px){
+    .hdr h1{font-size:24px;}
+    td,th{padding:7px 8px;font-size:12px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hdr">
+    <div>
+      <h1>SG <span>&rarr;</span> BKK <span>&rarr;</span> SG</h1>
+      <div class="sub">3 ADULTS · AUG 8&ndash;11 2026 · CHINATOWN BASECAMP · 1 BEAUTY DAY, 1 RIVER DAY, 2 HALF-DAYS</div>
+    </div>
+    <div class="odo">
+      <b>3 NIGHTS</b>
+      <small>flights &amp; hotel already booked</small>
+    </div>
+  </div>
+
+  <nav>
+    <a href="#checklist">Pre-Departure</a>
+    <a href="#map">Trip Map</a>
+    <a href="#schedule">Day-by-Day</a>
+    <a href="#beauty">Beauty Day</a>
+    <a href="#culture">Culture Day</a>
+    <a href="#budget">Budget</a>
+    <a href="#practical">Practical Notes</a>
+  </nav>
+
+  <!-- ================= PRE-DEPARTURE ================= -->
+  <section id="checklist">
+    <div class="alert">
+      <h4>&#9888; Unresolved — book these before you land</h4>
+      <ul>
+        <li><b>Bella Beauty Vibes is booking-only, no walk-ins.</b> <span class="conf">CONFIRMED</span> DM their Instagram (@bella.beautyvibes) or LINE, and a deposit (~THB 2,000) is required to hold the slot. 325 reviews at 4.8★ means weekend slots for 3 people go fast — message them now for Sun Aug 9 afternoon, not the week before.</li>
+        <li><b>ColorbeMe is also appointment-based, private group sessions only.</b> <span class="conf">CONFIRMED</span> Book via their site (colorbeme.com), Klook, or IG/FB. Confirm they can run the "Personal Color Makeup Class" (hands-on, not just analysis) for all 3 of you back-to-back or simultaneously — reviews describe the base analysis as a brisk ~1hr session, so the makeup class is very likely a paid add-on you need to request explicitly.</li>
+        <li><b>The color-analysis-then-hair-transformation combo is two separate venues, not one.</b> <span class="conf">CERTAIN</span> No single Bangkok studio in this tier does personal color analysis AND an actual haircut/color in one sitting under one roof — ColorbeMe does analysis + makeup, Bella Beauty Vibes does the hair. Budget ~30–40 min taxi between them.</li>
+        <li><b>Temple dress code.</b> <span class="conf">CERTAIN</span> Wat Pho and Wat Arun require shoulders and knees covered — no exceptions, no rentals guaranteed on-site. Pack a light scarf/sarong each.</li>
+        <li><b>August is rainy season.</b> <span class="conf">LIKELY</span> Expect short, heavy afternoon downpours, not all-day rain. Pack a compact umbrella; ICONSIAM is your built-in rain fallback on the culture day.</li>
+        <li><b>Grab app.</b> Install and load it before landing — far more reliable than street taxis for the cross-town beauty-day transfer and airport run.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= TRIP MAP ================= -->
+  <section id="map">
+    <h2><span class="no">01</span>Trip Map</h2>
+    <p class="sec-sub">One basecamp, four days. Gold pins = out-and-active days, jade = the two-studio beauty day. Not a road trip — no long transit legs, just cross-town Grab rides.</p>
+    <div class="road">
+      <div class="road-track" id="track">
+        <div class="centerline"></div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="dot travel"></i> Sightseeing / arrival / departure</span>
+      <span><i class="dot rest"></i> Beauty day (two studios)</span>
+      <span>Longest cross-town hop: ColorbeMe &rarr; Bella Beauty Vibes, ~30–40min</span>
+    </div>
+
+    <h3 style="margin-top:30px;">Real Geography</h3>
+    <p class="sec-sub" style="margin-left:0;">Tap a day button to isolate that day's stops and zoom in — a Google Maps link for that leg appears below. Tap any pin for that venue's own Google Maps listing. Requires internet for tiles; the strip map above is your offline fallback.</p>
+    <div id="daybtns" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px;"></div>
+    <div id="realmap" style="height:520px;border:1px solid var(--line);border-radius:6px;"></div>
+    <div id="leglink" style="margin-top:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;"></div>
+  </section>
+
+  <!-- ================= SCHEDULE ================= -->
+  <section id="schedule">
+    <h2><span class="no">02</span>Day-by-Day Schedule</h2>
+    <p class="sec-sub">Only 2 of your 4 days are full days — Aug 8 is a half-day arrival, Aug 11 is a half-day departure. Plan accordingly.</p>
+    <table>
+      <tr><th style="width:60px">Day</th><th style="width:78px">Date</th><th>Activity</th><th style="width:130px">Timing</th><th>Strategic Notes</th></tr>
+      <tr class="ride-row"><td><b>1</b></td><td>Aug 8<br><span class="tag">SAT</span></td><td><b>Arrival</b><br><span class="tag">SIN 2:00pm → BKK 3:35pm · SQ8454</span></td><td>Land 3:35pm<br>Hotel ~5:30pm</td><td>Immigration + Grab to Chinatown, ~1–1.5hr. Check-in from 3pm — you'll roll in after. Evening: Yaowarat Road food-street walk, one block from ASAI. No big plans tonight; you're jetlagged and it's genuinely a half-day.</td></tr>
+      <tr class="rest-row"><td><b>2</b></td><td>Aug 9<br><span class="tag">SUN</span></td><td><b>Beauty Day</b><br><span class="tag">ColorbeMe (AM) → Bella Beauty Vibes (PM)</span></td><td>10am–~6pm</td><td>Full details in the section below. This is your one full "workshop" day — don't stack anything else on top of it.</td></tr>
+      <tr class="ride-row"><td><b>3</b></td><td>Aug 10<br><span class="tag">MON</span></td><td><b>Culture &amp; River Day</b><br><span class="tag">Wat Pho → Wat Arun → ICONSIAM</span></td><td>8am–evening</td><td>Full details below. Grand Palace is next to Wat Pho if you want to add it, but it'll push the day past ~6hrs of walking in heat + rain risk — optional, not scheduled.</td></tr>
+      <tr class="ride-row"><td><b>4</b></td><td>Aug 11<br><span class="tag">TUE</span></td><td><b>Departure</b><br><span class="tag">BKK 1:35pm → SIN 5:05pm · SQ721</span></td><td>Depart hotel ~10:30am</td><td>7:30am short Talat Noi photo walk (15min from hotel) → breakfast → checkout 10am → Suvarnabhumi by ~11:30am. Sunday-morning-quiet traffic doesn't apply on a Tuesday — don't cut this closer.</td></tr>
+    </table>
+  </section>
+
+  <!-- ================= BEAUTY DAY ================= -->
+  <section id="beauty">
+    <h2><span class="no">03</span>Beauty Day — Two Studios</h2>
+    <p class="sec-sub">Color analysis and hair transformation are different specialisms in Bangkok — you're booking both, at two addresses, with a taxi ride between them.</p>
+    <div class="city-grid">
+      <div class="cg restc">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>ColorbeMe — Color &amp; Makeup</h4>
+          <div class="meta">10:00AM · ASIA BUILDING, 12F, UNIT 12N · 4.8★ (25)</div>
+          <dl>
+            <dt>What</dt>
+            <dd>Personal color analysis (120-drape seasonal system) + makeup shade/technique consultation. Reviews describe the core analysis as a tight ~1hr session — request the full "Personal Color Makeup Class" explicitly when booking if you want the hands-on application workshop, not just the diagnosis.</dd>
+            <dt>Book</dt>
+            <dd>colorbeme.com, Klook listing, or IG/FB @colorbeme. Private group sessions — book all 3 of you together. <small>Phone: +66 82 580 1929</small></dd>
+            <dt>Good to know</dt>
+            <dd>Come with minimal makeup on for accurate analysis. Natural-light studio, easy access — it's ~2.3km from ASAI, roughly a 12–15min Grab.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="cg restc">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Bella Beauty Vibes — Hair</h4>
+          <div class="meta">~1:30PM · 39 BOULEVARD BUILDING, SUKHUMVIT 39 · 4.8★ (325)</div>
+          <dl>
+            <dt>What</dt>
+            <dd>Korean-technique salon: color evaluation, haircut/color/perm, and the well-reviewed 15–18 step Korean head spa. This is your actual "hair makeover" — bring your ColorbeMe palette result so the stylist can pick shades that match your season.</dd>
+            <dt>Book</dt>
+            <dd>Instagram/LINE DM only — no walk-ins, no phone booking. Deposit (~THB 2,000) required. <small>Phone: +66 91 945 5499</small></dd>
+            <dt>Good to know</dt>
+            <dd>~6.5km from ASAI, ~30–40min Grab depending on traffic — book ColorbeMe to finish by ~12:30pm to give yourself buffer. High price point per reviews, but consistently rated for the head spa and stylist attentiveness.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div class="note"><b>Sequencing note:</b> ColorbeMe → lunch near Ratchathewi (30min) → Grab to Sukhumvit 39 → Bella Beauty Vibes. Realistic finish time is early evening; keep dinner plans loose and nearby (Thonglor/Ekkamai has a strong food scene if you want to stay in the area rather than trek back to Chinatown hungry).</div>
+  </section>
+
+  <!-- ================= CULTURE DAY ================= -->
+  <section id="culture">
+    <h2><span class="no">04</span>Culture &amp; River Day</h2>
+    <p class="sec-sub">Riverside cluster — all three stops sit on or near the Chao Phraya, so transit is boat and short Grabs, not long hauls.</p>
+    <div class="city-grid">
+      <div class="cg">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Wat Pho</h4>
+          <div class="meta">8:00AM · RECLINING BUDDHA · 4.7★ (37.7k)</div>
+          <dl>
+            <dt>Do</dt>
+            <dd>Arrive at opening to beat both heat and tour groups. ~2hrs covers the reclining Buddha hall and the wider temple grounds. Entrance ~THB 300pp.</dd>
+            <dt>Dress</dt>
+            <dd>Shoulders and knees covered, strictly enforced.</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="cg">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Wat Arun</h4>
+          <div class="meta">10:30AM · RIVERSIDE PRANG · 4.7★ (44.7k)</div>
+          <dl>
+            <dt>Do</dt>
+            <dd>Cross-river ferry from the pier near Wat Pho (a few minutes, cheap). The porcelain-inlaid prang photographs well any time of day; sunset is the famous shot but you won't be back this way in the evening, so late morning is the practical call.</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="cg">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>ICONSIAM</h4>
+          <div class="meta">2:00PM · RIVERSIDE MALL · 4.7★ (58.5k)</div>
+          <dl>
+            <dt>Do</dt>
+            <dd>Indoor floating market food hall, luxury and local retail, and a covered rain fallback if the afternoon downpour hits on schedule. Reachable by river-crossing boat/shuttle from the Wat Arun side — no need to go back through traffic.</dd>
+            <dt>Eat</dt>
+            <dd>Sook Siam (the indoor floating market) covers Thai regional food in one air-conditioned hall — good group option if appetites diverge.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BUDGET ================= -->
+  <section id="budget">
+    <h2><span class="no">05</span>Budget Estimate</h2>
+    <p class="sec-sub">Flights + hotel already paid (SGD 1,708.47 total per your Agoda confirmation). Below is what's still open, per person unless noted. <span class="conf">GUESSING</span> on the beauty-day figures — both studios book custom/DM-only, so treat these as planning ranges, not quotes.</p>
+    <table>
+      <tr><th>Line</th><th style="width:220px">Basis</th><th style="width:130px">Est. (SGD/pax)</th></tr>
+      <tr><td>ColorbeMe — color analysis + makeup class</td><td>~THB 3,900–5,500 based on published/reported rates</td><td>~$150–210</td></tr>
+      <tr><td>Bella Beauty Vibes — haircut/color + head spa</td><td>Custom quote, deposit THB 2,000 upfront; "high price point" per reviews</td><td>~$150–320</td></tr>
+      <tr><td>Grab transfers — airport + beauty day + general</td><td>~4–6 rides across the trip, split 3 ways</td><td>~$25–40</td></tr>
+      <tr><td>Food — 4 days</td><td>Hawker to mid-range mix, Chinatown + Thonglor</td><td>~$60–90</td></tr>
+      <tr><td>Temple entries + ICONSIAM</td><td>Wat Pho ~THB 300, Wat Arun ~THB 200–300</td><td>~$20–25</td></tr>
+      <tr class="budget-total"><td>Total envelope (per person, beyond flights/hotel)</td><td></td><td><b>~$405–685</b></td></tr>
+    </table>
+  </section>
+
+  <!-- ================= PRACTICAL ================= -->
+  <section id="practical">
+    <h2><span class="no">06</span>Practical Notes</h2>
+    <table>
+      <tr><th style="width:190px">Topic</th><th>Detail</th></tr>
+      <tr><td>Weather</td><td><span class="conf">LIKELY</span> Northeast monsoon runoff aside, August is core rainy season in Bangkok: hot mornings, sharp afternoon downpours, clearing by evening. Pattern outdoor time (temples) before 1pm.</td></tr>
+      <tr><td>Getting around</td><td>Grab for cross-town (beauty day, airport). BTS/MRT for anything near a station. Chao Phraya Express boat or hotel-arranged longtail for the river day.</td></tr>
+      <tr><td>Temple dress code</td><td>Wat Pho and Wat Arun both require covered shoulders and knees. Bring your own scarf/sarong — don't rely on rental availability.</td></tr>
+      <tr><td>Money</td><td>Cash THB for temples, street food, and the Bella Beauty Vibes deposit if they don't take card via LINE. ATMs plentiful in both Chinatown and Sukhumvit.</td></tr>
+      <tr><td>SIM/data</td><td>Grab an eSIM or airport SIM on arrival — you'll need maps and Grab live both beauty-day and river-day.</td></tr>
+      <tr><td>Flight change/cancellation</td><td><span class="conf">CONFIRMED</span> per your Agoda booking: both SQ8454 (outbound) and SQ721 (return) are non-changeable, non-refundable adult tickets. The Bangkok hotel booking is also non-refundable — a no-show is charged 100% of the stay.</td></tr>
+    </table>
+  </section>
+
+  <footer>
+    SG &rarr; BKK &rarr; SG · GIRLS' TRIP PLAN · v1 · COMPILED JUL 2026 · BEAUTY-DAY PRICING &amp; SLOT AVAILABILITY ARE ESTIMATES — CONFIRM DIRECTLY WITH EACH STUDIO
+  </footer>
+</div>
+
+<script>
+const stops = [
+  {x:60,  city:"Singapore", night:"START", km:"", vibe:"Depart SIN 2pm, SQ8454", rest:false},
+  {x:320, city:"Chinatown", night:"ARRIVE", km:"Land 3:35pm", vibe:"ASAI Bangkok Chinatown · Yaowarat food walk", rest:false},
+  {x:580, city:"Beauty Day", night:"DAY 2", km:"", vibe:"ColorbeMe → Bella Beauty Vibes", rest:true},
+  {x:840, city:"River Day", night:"DAY 3", km:"", vibe:"Wat Pho → Wat Arun → ICONSIAM", rest:false},
+  {x:1100, city:"Home", night:"DEPART", km:"1:35pm SQ721", vibe:"Talat Noi walk → airport", rest:false},
+];
+const track = document.getElementById('track');
+track.style.width = (stops[stops.length-1].x + 80) + "px";
+stops.forEach((s, i) => {
+  const node = document.createElement('div');
+  node.className = 'node';
+  node.style.left = s.x + 'px';
+  const pin = document.createElement('div');
+  pin.className = 'pin' + (s.rest ? ' rest' : '');
+  node.appendChild(pin);
+  if(s.km){
+    const km = document.createElement('div');
+    km.className = 'km-tag';
+    km.textContent = s.km;
+    node.appendChild(km);
+  }
+  const card = document.createElement('div');
+  const isUp = i % 2 === 0;
+  card.className = 'card ' + (isUp ? 'up' : 'down') + (s.rest ? ' rest' : '');
+  card.innerHTML = `
+    <div class="shield">${i+1}</div>
+    <div class="city">${s.city}</div>
+    <div class="nights">${s.night}</div>
+    <div class="vibe">${s.vibe}</div>
+  `;
+  node.appendChild(card);
+  track.appendChild(node);
+});
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function(){
+  if (typeof L === 'undefined') {
+    document.getElementById('realmap').innerHTML =
+      '<div style="padding:30px;color:#BDB2D6;font-family:monospace;font-size:12px;">Real map needs an internet connection — tiles could not load. Use the strip map above.</div>';
+    return;
+  }
+  const map = L.map('realmap', {scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  const pts = [
+    [1, "ASAI Bangkok Chinatown", 13.7417, 100.5117, "Basecamp · all 3 nights", "ChIJZ6FKAsaZ4jAR6ce7Af248KM", 1],
+    [2, "Yaowarat Road", 13.7409, 100.5087, "Day 1 evening food walk", "ChIJrdfOcJOZ4jAR1Grh5w74V1g", 1],
+    [3, "ColorbeMe", 13.7522, 100.5314, "Day 2 AM · color + makeup", "ChIJwzbxYbmf4jAR3Pr6Gr8dGUo", 2],
+    [4, "Bella Beauty Vibes", 13.7376, 100.5698, "Day 2 PM · hair + head spa", "ChIJxUS3pZ8erocR8ouV-3zk794", 2],
+    [5, "Wat Pho", 13.7464, 100.4928, "Day 3 8am · Reclining Buddha", "ChIJgcxFcQWZ4jARLsIR9Qia9H0", 3],
+    [6, "Wat Arun", 13.7439, 100.4884, "Day 3 10:30am · riverside prang", "ChIJaSv_6gaZ4jARnbiUVn6Z_YY", 3],
+    [7, "ICONSIAM", 13.7262, 100.5106, "Day 3 2pm · riverside mall", "ChIJFRjwgc2Z4jAR9JIadoa9YBY", 3],
+    [8, "Talat Noi", 13.7347, 100.5134, "Day 4 7:30am · photo walk", "ChIJzeH7rdiY4jAR8IriXbIAAQQ", 4]
+  ];
+
+  const GOLD='#E0A94C', JADE='#4E9787';
+  const ll = i => pts[i].slice(2,4);
+  const legs = [
+    {label:"Day 1 · Arrival",        path:[ll(0),ll(1)],               dayNum:1, color:GOLD},
+    {label:"Day 2 · Beauty Day",     path:[ll(0),ll(2),ll(3)],         dayNum:2, color:JADE},
+    {label:"Day 3 · Culture & River",path:[ll(0),ll(4),ll(5),ll(6)],   dayNum:3, color:GOLD},
+    {label:"Day 4 · Departure",      path:[ll(0),ll(7)],               dayNum:4, color:GOLD}
+  ];
+
+  legs.forEach(g => {
+    g.line = L.polyline(g.path, {color:g.color, weight:4, opacity:0.9}).addTo(map);
+    g.dir = 'https://www.google.com/maps/dir/?api=1&origin=' + g.path[0].join(',')
+          + '&destination=' + g.path[g.path.length-1].join(',') + '&travelmode=driving';
+  });
+
+  pts.forEach(p => {
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="width:26px;height:26px;border-radius:50%;background:${p[6]===2?'#4E9787':'#E2664A'};
+             border:2px solid #F5EDE0;color:#F5EDE0;font:700 12px/22px monospace;text-align:center;">${p[0]}</div>`,
+      iconSize: [26,26], iconAnchor:[13,13]
+    });
+    const gm = p[5]
+      ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p[1]) + '&query_place_id=' + p[5]
+      : 'https://www.google.com/maps/search/?api=1&query=' + p[2] + ',' + p[3];
+    L.marker(p.slice(2,4), {icon}).addTo(map)
+      .bindPopup(`<b>${p[0]}. ${p[1]}</b><br><span style="font-size:11px;">${p[4]}</span><br>
+        <a href="${gm}" target="_blank" style="font-size:11px;font-weight:700;">Open in Google Maps &nearr;</a>`);
+  });
+
+  const btnBox = document.getElementById('daybtns');
+  const legLink = document.getElementById('leglink');
+  const btnStyle = 'font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;cursor:pointer;padding:6px 12px;border-radius:3px;border:1px solid #41335F;background:#241A3F;color:#BDB2D6;';
+  const activeStyle = 'border-color:#E0A94C;color:#E0A94C;';
+
+  function makeBtn(text){ const b=document.createElement('button'); b.textContent=text; b.setAttribute('style',btnStyle); return b; }
+
+  function showAll(){
+    legs.forEach(g => g.line.setStyle({opacity:0.9, weight:4}));
+    map.fitBounds(L.latLngBounds(pts.map(p=>p.slice(2,4))).pad(0.12));
+    legLink.innerHTML = '';
+    setActive(allBtn);
+  }
+  function showLeg(g, btn){
+    legs.forEach(x => x.line.setStyle({opacity: x===g?1:0.18, weight: x===g?6:3}));
+    map.fitBounds(L.latLngBounds(g.path).pad(0.25));
+    legLink.innerHTML = '<a href="'+g.dir+'" target="_blank" style="color:#E0A94C;font-weight:700;text-decoration:none;">&#9658; Open '+g.label+' in Google Maps &nearr;</a>';
+    setActive(btn);
+  }
+  let btns=[];
+  function setActive(active){ btns.forEach(b=>b.setAttribute('style',btnStyle)); active.setAttribute('style',btnStyle+activeStyle); }
+
+  const allBtn = makeBtn('ALL DAYS');
+  allBtn.onclick = showAll; btnBox.appendChild(allBtn); btns.push(allBtn);
+  legs.forEach(g => {
+    const b = makeBtn(g.label.toUpperCase());
+    b.onclick = () => showLeg(g, b);
+    btnBox.appendChild(b); btns.push(b);
+  });
+
+  showAll();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SG → Muar → SG · Motorcycle Tour Plan · Nov 7 – Nov 10</title>
+<style>
+  :root{
+    --asphalt:#1C2321;
+    --asphalt-2:#262F2C;
+    --asphalt-3:#2F3A36;
+    --amber:#E8963C;
+    --jade:#5C8A76;
+    --brick:#B0532E;
+    --cream:#F2EDE4;
+    --cream-dim:#B9B4A9;
+    --line:#3A443F;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--asphalt);color:var(--cream);
+    font-family:'Arial Narrow','Helvetica Neue Condensed',Arial,sans-serif;
+    line-height:1.5;
+  }
+  .wrap{max-width:1150px;margin:0 auto;padding:30px 18px 60px;}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;}
+
+  /* ============ HEADER ============ */
+  .hdr{border-bottom:3px double var(--line);padding-bottom:20px;margin-bottom:26px;
+       display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;}
+  .hdr h1{font-size:38px;letter-spacing:1px;text-transform:uppercase;margin:0;font-weight:800;}
+  .hdr h1 span{color:var(--amber);}
+  .hdr .sub{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--cream-dim);letter-spacing:.6px;margin-top:6px;}
+  .odo{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--asphalt-2);
+       border:1px solid var(--line);border-radius:4px;padding:10px 16px;text-align:right;}
+  .odo b{display:block;font-size:24px;color:var(--amber);letter-spacing:2px;}
+  .odo small{color:var(--cream-dim);font-size:10px;text-transform:uppercase;letter-spacing:1px;}
+
+  /* ============ NAV ============ */
+  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
+  nav a{
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;
+    color:var(--cream-dim);text-decoration:none;border:1px solid var(--line);
+    padding:6px 12px;border-radius:3px;text-transform:uppercase;
+  }
+  nav a:hover{color:var(--amber);border-color:var(--amber);}
+
+  /* ============ SECTIONS ============ */
+  section{margin-bottom:44px;}
+  h2{
+    font-size:22px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;
+    border-left:5px solid var(--amber);padding-left:12px;margin:0 0 6px;
+  }
+  h2 .no{color:var(--brick);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;margin-right:8px;}
+  .sec-sub{color:var(--cream-dim);font-size:13px;margin:0 0 16px 17px;}
+  h3{font-size:16px;text-transform:uppercase;letter-spacing:1px;color:var(--amber);margin:22px 0 8px;}
+
+  /* ============ ALERT / CHECKLIST ============ */
+  .alert{
+    background:var(--asphalt-2);border:1px solid var(--brick);border-left:6px solid var(--brick);
+    border-radius:4px;padding:16px 18px;margin-bottom:26px;
+  }
+  .alert h4{margin:0 0 10px;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--brick);
+            font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .alert ul{margin:0;padding-left:20px;font-size:13.5px;color:var(--cream);}
+  .alert li{margin-bottom:8px;}
+  .alert li b{color:var(--amber);}
+  .conf{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;padding:1px 5px;border-radius:2px;
+        border:1px solid var(--line);color:var(--cream-dim);vertical-align:middle;}
+
+  /* ============ ROAD MAP ============ */
+  .road{position:relative;padding:66px 6px 6px;overflow-x:auto;background:var(--asphalt);}
+  .road-track{position:relative;min-width:900px;height:330px;}
+  .centerline{
+    position:absolute;top:165px;left:0;right:0;height:4px;
+    background-image:repeating-linear-gradient(to right,var(--amber) 0 26px,transparent 26px 46px);opacity:.85;
+  }
+  .centerline::before,.centerline::after{content:"";position:absolute;left:0;right:0;height:1px;background:var(--line);}
+  .centerline::before{top:-14px;} .centerline::after{top:14px;}
+  .node{position:absolute;top:165px;width:190px;transform:translate(-50%,-50%);}
+  .pin{width:22px;height:22px;border-radius:50%;background:var(--cream);border:4px solid var(--asphalt);
+       outline:2px solid var(--amber);margin:0 auto;position:relative;z-index:3;}
+  .pin.rest{outline-color:var(--jade);}
+  .km-tag{position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);
+          background:var(--asphalt);padding:2px 6px;border:1px solid var(--line);border-radius:3px;white-space:nowrap;}
+  .card{position:absolute;left:50%;transform:translateX(-50%);width:186px;background:var(--asphalt-2);
+        border:1px solid var(--line);border-radius:6px;padding:10px 10px 12px;text-align:center;}
+  .card.up{bottom:58px;} .card.down{top:58px;}
+  .card::after{content:"";position:absolute;left:50%;width:1px;background:var(--line);}
+  .card.up::after{bottom:-58px;height:58px;transform:translateX(-50%);}
+  .card.down::after{top:-58px;height:58px;transform:translateX(-50%);}
+  .shield{width:34px;height:34px;margin:0 auto 6px;background:var(--brick);
+          clip-path:polygon(50% 0%,100% 22%,100% 78%,50% 100%,0% 78%,0% 22%);
+          display:flex;align-items:center;justify-content:center;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:13px;color:var(--cream);}
+  .card.rest .shield{background:var(--jade);}
+  .city{font-size:17px;text-transform:uppercase;letter-spacing:.5px;font-weight:800;}
+  .nights{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--amber);letter-spacing:.5px;margin-top:2px;}
+  .card.rest .nights{color:var(--jade);}
+  .vibe{margin-top:6px;color:var(--cream-dim);font-size:11px;line-height:1.35;font-family:Arial,sans-serif;}
+  .legend{display:flex;gap:22px;margin-top:12px;flex-wrap:wrap;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;border:2px solid var(--asphalt);}
+  .dot.travel{outline:2px solid var(--amber);} .dot.rest{outline:2px solid var(--jade);}
+
+  /* ============ TABLES ============ */
+  table{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:13.5px;}
+  th{background:var(--asphalt-3);color:var(--amber);text-transform:uppercase;letter-spacing:1px;
+     font-size:11px;font-family:ui-monospace,Menlo,Consolas,monospace;
+     padding:10px 12px;text-align:left;border:1px solid var(--line);}
+  td{padding:10px 12px;border:1px solid var(--line);vertical-align:top;background:var(--asphalt-2);}
+  tr.rest-row td{background:#26332D;}
+  tr.rest-row td:first-child{border-left:4px solid var(--jade);}
+  tr.ride-row td:first-child{border-left:4px solid var(--amber);}
+  td .tag{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);
+          display:block;margin-top:3px;}
+  td b{color:var(--amber);font-weight:700;}
+
+  /* ============ CITY CARDS ============ */
+  .city-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:14px;}
+  .cg{background:var(--asphalt-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .cg .band{height:6px;background:var(--amber);}
+  .cg.restc .band{background:var(--jade);}
+  .cg .inner{padding:16px 18px 18px;}
+  .cg h4{margin:0;font-size:19px;text-transform:uppercase;letter-spacing:.5px;}
+  .cg .meta{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;color:var(--cream-dim);
+            letter-spacing:.5px;margin:3px 0 12px;}
+  .cg dl{margin:0;font-size:13px;}
+  .cg dt{color:var(--amber);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;
+         text-transform:uppercase;letter-spacing:1px;margin-top:10px;}
+  .cg.restc dt{color:var(--jade);}
+  .cg dd{margin:3px 0 0;color:var(--cream);}
+  .cg dd small{color:var(--cream-dim);}
+
+  /* ============ MISC ============ */
+  .note{background:var(--asphalt-2);border-left:4px solid var(--jade);padding:12px 16px;
+        font-size:13px;color:var(--cream-dim);margin-top:14px;}
+  .note b{color:var(--cream);}
+  .budget-total td{background:var(--asphalt-3);font-weight:700;}
+  footer{border-top:2px dashed var(--line);margin-top:30px;padding-top:18px;
+         font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);}
+  @media (max-width:640px){
+    .hdr h1{font-size:26px;}
+    td,th{padding:7px 8px;font-size:12px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ================= HEADER ================= -->
+  <div class="hdr">
+    <div>
+      <h1>SG <span>&rarr;</span> Muar <span>&rarr;</span> SG</h1>
+      <div class="sub">HONDA CB350 · SOLO TOUR · NOV 7 &ndash; NOV 10, 2026 · SINGLE-BASE · WEST/SOUTH JOHOR COAST</div>
+    </div>
+    <div class="odo">
+      <b>~540 KM</b>
+      <small>total distance · est.</small>
+    </div>
+  </div>
+
+  <nav>
+    <a href="#checklist">Pre-Departure</a>
+    <a href="#map">Route Map</a>
+    <a href="#schedule">Day-by-Day</a>
+    <a href="#cities">City Guide</a>
+    <a href="#bike">Bike &amp; Maintenance</a>
+    <a href="#budget">Budget</a>
+    <a href="#practical">Practical Notes</a>
+  </nav>
+
+  <!-- ================= PRE-DEPARTURE ================= -->
+  <section id="checklist">
+    <div class="alert">
+      <h4>&#9888; Unresolved — your action items, not assumptions</h4>
+      <ul>
+        <li><b>Overnight parking at Muo Boutique Hotel.</b> <span class="conf">FLAGGED RISK</span> Reviews explicitly note no on-site parking — street parking only. That's a real problem for a bike over 3 nights. Call ahead, or consider <b>Muo Resort</b> (kampung-style, edge of town, more likely to have proper grounds) or <b>1917 by MUO</b> as backups — confirm motorcycle parking before booking any of the three.</li>
+        <li><b>VEP.</b> <span class="conf">RIDER-VERIFIED JUL 2026, same bike/rider as your Dec trip</span> Not required for SG-registered motorcycles per the JPJ portal. Re-check the portal the week before this trip too — a Dec confirmation doesn't guarantee a Nov one if anything changed in between.</li>
+        <li><b>Pre-trip service slot.</b> Book by ~Oct 28. Shorter lead time than your Dec trip since there's no year-end rush, but don't leave it to the week of.</li>
+        <li><b>Insurance rider.</b> Confirm coverage extends to Johor / West Malaysia generally, not just a specific state.</li>
+        <li><b>Touch 'n Go card,</b> topped up. Motorcycles are toll-exempt on most Malaysian highways <span class="conf">LIKELY</span>, but useful for parking and incidentals.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= ROUTE MAP ================= -->
+  <section id="map">
+    <h2><span class="no">01</span>Route Map</h2>
+    <p class="sec-sub">Muar out-and-back. Amber pins = travel days, jade = rest/loop. Single base — no second hotel, no backtracking beyond the Day 3 day-loop.</p>
+    <div class="road">
+      <div class="road-track" id="track">
+        <div class="centerline"></div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="dot travel"></i> Travel day</span>
+      <span><i class="dot rest"></i> Rest / day-loop</span>
+      <span>Longest leg: ~270km each way</span>
+    </div>
+
+    <h3 style="margin-top:30px;">Real Geography — Direction of Travel</h3>
+    <p class="sec-sub" style="margin-left:0;">Actual map, actual coordinates. Tap a day button to isolate that leg and zoom to it — a turn-by-turn Google Maps link appears below the map. Tap any pin for the stop's own Google Maps link. Solid amber = outbound (Nov 7), dashed jade = the Parit Jawa day-loop and the return (Nov 9–10). Requires internet for tiles; the strip map above is your offline fallback.</p>
+    <div id="daybtns" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px;"></div>
+    <div id="realmap" style="height:520px;border:1px solid var(--line);border-radius:6px;"></div>
+    <div id="leglink" style="margin-top:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;"></div>
+    <div class="legend" style="margin-top:10px;">
+      <span><span style="display:inline-block;width:26px;height:0;border-top:3px solid var(--amber);"></span> Outbound Nov 7</span>
+      <span><span style="display:inline-block;width:26px;height:0;border-top:3px dashed var(--jade);"></span> Loop / return Nov 9&ndash;10</span>
+      <span>Numbered pins = order of arrival</span>
+    </div>
+  </section>
+
+  <!-- ================= SCHEDULE ================= -->
+  <section id="schedule">
+    <h2><span class="no">02</span>Day-by-Day Schedule</h2>
+    <p class="sec-sub">2 riding days out of 4, plus one short day-loop. No day exceeds ~270km / ~4.5hr saddle time.</p>
+    <table>
+      <tr><th style="width:52px">Day</th><th style="width:78px">Date</th><th>Leg / Activity</th><th style="width:120px">Distance</th><th>Strategic Notes</th></tr>
+      <tr class="ride-row"><td><b>1</b></td><td>Nov 7<br><span class="tag">SAT</span></td><td><b>Ride:</b> Singapore &rarr; Muar<br><span class="tag">Depart 7:00am · Tuas 2nd Link · AH2/E2 &rarr; Yong Peng &rarr; Rte 24</span></td><td>~270km<br>~4&ndash;4.5hr incl. border</td><td>Saturday outbound draws weekend leisure traffic on top of normal flow — the early start matters more than usual. Check in, then evening at Tanjung Emas for sunset over the Straits.</td></tr>
+      <tr class="rest-row"><td><b>2</b></td><td>Nov 8<br><span class="tag">SUN</span></td><td><b>Rest day — Muar heritage</b><br><span class="tag">Cultural Walk (AM) · river cruise/old town (midday) · Tanjung Emas (eve)</span></td><td>—</td><td>Mural alley before the heat builds. Bike stays parked — everything in Pekan Muar is walkable. Otak-otak and mee bandung hunting is the other half of the day.</td></tr>
+      <tr class="rest-row"><td><b>3</b></td><td>Nov 9<br><span class="tag">MON</span></td><td><b>Day-loop:</b> Muar &rarr; Parit Jawa &rarr; Muar<br><span class="tag">Same hotel, no re-packing</span></td><td>~40km round trip</td><td>Short, deliberately. Depart late morning, lunch on grilled stingray/asam pedas riverside, back by early afternoon well ahead of the daily storm window. Not padded with a second stop — short and low-friction is the point of this day, not a gap to fill.</td></tr>
+      <tr class="ride-row"><td><b>4</b></td><td>Nov 10<br><span class="tag">TUE</span></td><td><b>Ride:</b> Muar &rarr; Singapore<br><span class="tag">Rte 24 &rarr; Yong Peng &rarr; E2/AH2 south</span></td><td>~270km<br>~4&ndash;4.5hr + border</td><td>Depart 8am. No known Tuesday-specific congestion spike — normal 45&ndash;90min border buffer only. Home by early-mid afternoon.</td></tr>
+    </table>
+  </section>
+
+  <!-- ================= CITY GUIDE ================= -->
+  <section id="cities">
+    <h2><span class="no">03</span>City Guide — Stay · Eat · Do</h2>
+    <p class="sec-sub">Budget band unconfirmed for Muar's boutique tier — verify rates directly; Muar sees far less rate inflation than Melaka since it's not a peak tourist destination.</p>
+    <div class="city-grid">
+
+      <div class="cg restc">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Muar (Bandar Maharani)</h4>
+          <div class="meta">NIGHTS 1–3 · NOV 7–9 · SINGLE BASE</div>
+          <dl>
+            <dt>Stay — rate band unconfirmed</dt>
+            <dd><b>Muo Boutique Hotel</b> — riverside, rooftop hangout spot, 4.6★ (1,349 reviews). <span class="conf">FLAGGED</span> reviews note no on-site parking, street parking only — confirm motorcycle arrangement before booking. <small>Backup 1: 1917 by MUO Boutique Hotels, Pekan Muar — walkable, 5.0★ but only 25 reviews. Backup 2: Muo Resort — kampung-style, edge of town, more likely to have real grounds/parking; less central.</small></dd>
+            <dt>Eat</dt>
+            <dd>Otak-otak, mee bandung, satay — Tanjung food court area near the Bei/Muo cluster. Parit Jawa (Day 3) covers riverside seafood and asam pedas separately.</dd>
+            <dt>Do</dt>
+            <dd>Muar Cultural Walk (mural back-alleys, go early), Tanjung Emas riverside promenade + park (sunset, river cruise — not available Wednesdays, irrelevant to this trip's dates), old-town shophouses. Everything clusters within a short walk of the river.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="cg restc">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Parit Jawa — Day Loop</h4>
+          <div class="meta">DAY 3 · NOV 9 · ~20KM SOUTH OF MUAR</div>
+          <dl>
+            <dt>Eat</dt>
+            <dd>Parit Jawa Roast Fish — grilled sambal stingray, otak-otak, cendol (repeatedly called out in reviews as excellent). Alternative: Asam Pedas Parit Jawa, closer to the jetty, more variable reviews.</dd>
+            <dt>Do</dt>
+            <dd>Fishing village atmosphere, boats docked on the river, short riverside walk. This is the whole point of the day — a change of scenery without a change of bed.</dd>
+          </dl>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= BIKE ================= -->
+  <section id="bike">
+    <h2><span class="no">04</span>Honda CB350 — Maintenance Plan</h2>
+    <p class="sec-sub">Total distance (~540km) is well inside a single service interval and doesn't justify a mid-trip authorised-dealer stop the way the longer Dec/Jan trip does — pre-trip, self-check, post-trip is proportionate here.</p>
+    <table>
+      <tr><th style="width:150px">When</th><th style="width:220px">Where</th><th>Work</th></tr>
+      <tr><td><b>Pre-trip</b><br><span class="tag">book by ~Oct 28</span></td><td>Your CB350's authorised dealer, Singapore</td><td>Chain tension/lube, tire tread &amp; pressure, brake pad visual, fluid levels, lights/signals/horn check. Lighter check than a full service if you're within interval — confirm with your dealer given the Dec trip's post-trip service will already have covered a full service recently.</td></tr>
+      <tr><td><b>Day 3</b><br><span class="tag">Nov 9, self-check before Parit Jawa loop</span></td><td>Hotel / roadside, Muar</td><td>Quick visual: tire pressure, chain, lights. 10 minutes.</td></tr>
+      <tr><td><b>Day 4</b><br><span class="tag">Nov 10 AM, self-check before the ride home</span></td><td>Hotel / roadside, Muar</td><td>Tire pressures cold, chain lube if needed, brake lever feel. Non-negotiable before a 270km run.</td></tr>
+      <tr><td><b>Post-trip</b><br><span class="tag">within 1 week of return</span></td><td>Same SG authorised dealer</td><td>Chain/sprocket check, brake pad visual, tire wear check, general fastener check. Log in the service booklet.</td></tr>
+    </table>
+    <h3>Carry Kit</h3>
+    <table>
+      <tr><th>Item</th><th>Why</th></tr>
+      <tr><td>Chain lube (small can)</td><td>One application mid-trip is enough at this distance — carry it anyway.</td></tr>
+      <tr><td>Tubeless puncture plug kit + mini compressor/CO2</td><td>CB350 runs tubeless — roadside fix in 15 minutes instead of a tow.</td></tr>
+      <tr><td>Tire pressure gauge</td><td>Check cold, every riding morning.</td></tr>
+      <tr><td>Basic tool roll, cable ties, duct tape</td><td>The 90% of roadside problems.</td></tr>
+      <tr><td>Rain suit — packed, not optional</td><td>[Certain] Nov is Melaka/Johor's wettest month by rainfall total, even though the west coast escapes the worst of the NE monsoon. Short, intense afternoon storms are the pattern.</td></tr>
+    </table>
+    <div class="note"><b>Fuel rule:</b> <span class="conf">LIKELY</span> foreign-registered vehicles are barred from subsidized RON95 in Malaysia — pump <b>RON97</b> only. Tank range easily covers each ~270km leg on one fill.</div>
+  </section>
+
+  <!-- ================= BUDGET ================= -->
+  <section id="budget">
+    <h2><span class="no">05</span>Budget Estimate</h2>
+    <p class="sec-sub">Order-of-magnitude planning figures in SGD, solo rider. Muar's rates are less studied than Melaka's — treat the accommodation line as a rougher estimate until you get a direct quote.</p>
+    <table>
+      <tr><th>Line</th><th style="width:170px">Basis</th><th style="width:120px">Est. (SGD)</th></tr>
+      <tr><td>Accommodation — 3 nights</td><td>Muo Boutique Hotel or equivalent, rate unconfirmed <span class="conf">GUESSING</span></td><td>~$135&ndash;180</td></tr>
+      <tr><td>Fuel — RON97</td><td>~540km &divide; ~35km/L &asymp; 15L &times; ~RM3.4</td><td>~$16</td></tr>
+      <tr><td>Tolls</td><td>Motorcycles largely toll-exempt on MY highways</td><td>~$0&ndash;10</td></tr>
+      <tr><td>Food — 4 days</td><td>Hawker-centric, ~RM70&ndash;100/day</td><td>~$85&ndash;115</td></tr>
+      <tr><td>Activities / entries</td><td>Mostly free (walks, riverside) · river cruise ~RM30&ndash;35 if taken</td><td>~$10&ndash;15</td></tr>
+      <tr><td>Pre + post trip service checks (SG)</td><td>Lighter than a full service given proximity to your Dec trip's post-trip service</td><td>~$60&ndash;120</td></tr>
+      <tr><td>Buffer — punctures, rain delays, misc</td><td>10%</td><td>~$40</td></tr>
+      <tr class="budget-total"><td>Total envelope</td><td></td><td><b>~$350&ndash;480</b></td></tr>
+    </table>
+  </section>
+
+  <!-- ================= PRACTICAL ================= -->
+  <section id="practical">
+    <h2><span class="no">06</span>Practical Notes</h2>
+    <table>
+      <tr><th style="width:190px">Topic</th><th>Detail</th></tr>
+      <tr><td>Crossing — outbound Nov 7</td><td><b>Tuas Second Link</b>, depart 7am. Saturday outbound draws weekend leisure traffic — motorcycle lanes move faster than car queues but budget 45&ndash;90 min.</td></tr>
+      <tr><td>Crossing — inbound Nov 10</td><td>Tuas again. Tuesday — no known congestion spike, but keep the same 45&ndash;90 min buffer as a default.</td></tr>
+      <tr><td>Documents on the bike</td><td>Passport (6+ months validity), SG driving licence w/ Class 2A/2, vehicle log card / registration, insurance certificate showing West Malaysia cover. Photocopies in a separate bag.</td></tr>
+      <tr><td>VEP</td><td><span class="conf">RESOLVED — RIDER-VERIFIED JUL 2026</span> Not required for SG-registered motorcycles. Re-check the JPJ portal the week before this trip.</td></tr>
+      <tr><td>Money</td><td>Touch 'n Go card topped up. Cash RM for hawkers — many don't take cards.</td></tr>
+      <tr><td>Riding weather</td><td>[Certain] November is the single wettest month of the year for Melaka/Johor by rainfall total (~280mm+), driven by inter-monsoon convective storms, not the NE monsoon that hammers the east coast. Rain arrives as short, intense afternoon bursts. Ride mornings, be off the road by early-mid afternoon — the schedule above is built this way.</td></tr>
+      <tr><td>Emergency</td><td>Malaysia emergency: <b>999</b>. Honda Malaysia careline: 1-800-88-3993. PLUS highway assistance: 1-800-88-0000.</td></tr>
+    </table>
+  </section>
+
+  <footer>
+    SG &rarr; MUAR &rarr; SG · CB350 TOUR PLAN · v1 · COMPILED JUL 2026 · RATES &amp; RULES ARE ESTIMATES — VERIFY THE FLAGGED ITEMS BEFORE DEPARTURE
+  </footer>
+</div>
+
+<script>
+const stops = [
+  {x:60,  city:"Singapore", night:"START", km:"", vibe:"Depart 7am, Tuas 2nd Link", rest:false},
+  {x:360, city:"Muar", night:"3 NIGHTS", km:"~270km / 4-4.5hr", vibe:"Muo Boutique Hotel — confirm parking", rest:true},
+  {x:660, city:"Singapore", night:"END", km:"~270km / 4-4.5hr", vibe:"Home, post-trip service", rest:false},
+];
+const track = document.getElementById('track');
+track.style.width = (stops[stops.length-1].x + 80) + "px";
+stops.forEach((s, i) => {
+  const node = document.createElement('div');
+  node.className = 'node';
+  node.style.left = s.x + 'px';
+  const pin = document.createElement('div');
+  pin.className = 'pin' + (s.rest ? ' rest' : '');
+  node.appendChild(pin);
+  if(s.km){
+    const km = document.createElement('div');
+    km.className = 'km-tag';
+    km.textContent = s.km;
+    node.appendChild(km);
+  }
+  const card = document.createElement('div');
+  const isUp = i % 2 === 0;
+  card.className = 'card ' + (isUp ? 'up' : 'down') + (s.rest ? ' rest' : '');
+  card.innerHTML = `
+    <div class="shield">${i===0?'SG':i===stops.length-1?'SG':i}</div>
+    <div class="city">${s.city}</div>
+    <div class="nights">${s.night}</div>
+    <div class="vibe">${s.vibe}</div>
+  `;
+  node.appendChild(card);
+  track.appendChild(node);
+});
+</script>
+
+<!-- ============ REAL MAP (Leaflet + OSM) ============ -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function(){
+  if (typeof L === 'undefined') {
+    document.getElementById('realmap').innerHTML =
+      '<div style="padding:30px;color:#B9B4A9;font-family:monospace;font-size:12px;">Real map needs an internet connection — tiles could not load. Use the strip map above.</div>';
+    return;
+  }
+  const map = L.map('realmap', {scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  // [order, name, lat, lng, detail, google place_id or null]
+  const pts = [
+    [1, "Tuas Second Link — depart 7am Nov 7", 1.3479, 103.6362, "Border crossing, both directions", null],
+    [2, "Muar — Muo Boutique Hotel", 2.0462543, 102.5643035, "Nights 1-3 · Nov 7-9 · base · confirm bike parking", "ChIJa_feUgW50TERvZzQI8tpDfI"],
+    [3, "Tanjung Emas Muar", 2.0475785, 102.5554697, "Riverside promenade, sunset spot", "ChIJ0XvnNBi50TERV9loDvDcDdo"],
+    [4, "Muar Cultural Walk", 2.0485528, 102.57, "Mural back-alleys", "ChIJWybmKAS50TER8GoadG1O-sc"],
+    [5, "Parit Jawa — day loop", 1.9533011, 102.6371792, "Day 3 · ~20km each way · grilled stingray, riverside village", "ChIJ4wJgS5260TER4a0BZVBZAj4"],
+    [6, "Tuas Second Link — home Nov 10", 1.3479, 103.6362, "Standard 45-90min buffer", null]
+  ];
+
+  // Highway-spine waypoint so the line follows the real corridor, not a straight chord
+  const yongPeng=[2.01,103.06];
+  const ll = i => pts[i].slice(2,4);
+
+  const AMBER='#E8963C', JADE='#5C8A76';
+  const legs = [
+    {label:"Day 1 · SG→Muar",           path:[ll(0),yongPeng,ll(1)], from:0,to:1, color:AMBER, dash:null},
+    {label:"Day 3 · Muar→Parit Jawa",   path:[ll(1),ll(4)],          from:1,to:4, color:JADE,  dash:'6 6'},
+    {label:"Day 4 · Muar→SG",           path:[ll(1),yongPeng,ll(5)], from:1,to:5, color:JADE,  dash:'10 8'}
+  ];
+
+  legs.forEach(g => {
+    g.line = L.polyline(g.path, {color:g.color, weight:4, opacity:0.9, dashArray:g.dash}).addTo(map);
+    g.dir = 'https://www.google.com/maps/dir/?api=1&origin=' + ll(g.from).join(',')
+          + '&destination=' + ll(g.to).join(',') + '&travelmode=driving';
+  });
+
+  pts.forEach(p => {
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="width:26px;height:26px;border-radius:50%;background:${p[0]===2?'#5C8A76':'#B0532E'};
+             border:2px solid #F2EDE4;color:#F2EDE4;font:700 12px/22px monospace;text-align:center;">${p[0]}</div>`,
+      iconSize: [26,26], iconAnchor:[13,13]
+    });
+    const gm = p[5]
+      ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p[1]) + '&query_place_id=' + p[5]
+      : 'https://www.google.com/maps/search/?api=1&query=' + p[2] + ',' + p[3];
+    L.marker(p.slice(2,4), {icon}).addTo(map)
+      .bindPopup(`<b>${p[0]}. ${p[1]}</b><br><span style="font-size:11px;">${p[4]}</span><br>
+        <a href="${gm}" target="_blank" style="font-size:11px;font-weight:700;">Open in Google Maps &nearr;</a>`);
+  });
+
+  // ---- Day toggle buttons ----
+  const btnBox = document.getElementById('daybtns');
+  const legLink = document.getElementById('leglink');
+  const btnStyle = 'font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;cursor:pointer;padding:6px 12px;border-radius:3px;border:1px solid #3A443F;background:#262F2C;color:#B9B4A9;';
+  const activeStyle = 'border-color:#E8963C;color:#E8963C;';
+
+  function makeBtn(text){ const b=document.createElement('button'); b.textContent=text; b.setAttribute('style',btnStyle); return b; }
+
+  function showAll(){
+    legs.forEach(g => g.line.setStyle({opacity:0.9, weight:4}));
+    map.fitBounds(L.latLngBounds(pts.map(p=>p.slice(2,4))).pad(0.12));
+    legLink.innerHTML = '';
+    setActive(allBtn);
+  }
+  function showLeg(g, btn){
+    legs.forEach(x => x.line.setStyle({opacity: x===g?1:0.18, weight: x===g?6:3}));
+    map.fitBounds(L.latLngBounds(g.path).pad(0.25));
+    legLink.innerHTML = '<a href="'+g.dir+'" target="_blank" style="color:#E8963C;font-weight:700;text-decoration:none;">&#9658; Open '+g.label+' in Google Maps for turn-by-turn &nearr;</a>';
+    setActive(btn);
+  }
+  let btns=[];
+  function setActive(active){ btns.forEach(b=>b.setAttribute('style',btnStyle)); active.setAttribute('style',btnStyle+activeStyle); }
+
+  const allBtn = makeBtn('ALL DAYS');
+  allBtn.onclick = showAll; btnBox.appendChild(allBtn); btns.push(allBtn);
+  legs.forEach(g => {
+    const b = makeBtn(g.label.toUpperCase());
+    b.onclick = () => showLeg(g, b);
+    btnBox.appendChild(b); btns.push(b);
+  });
+
+  showAll();
+})();
+</script>
+</body>
+</html>

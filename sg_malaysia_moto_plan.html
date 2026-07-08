@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SG → Ipoh → SG · Motorcycle Tour Plan · Dec 24 – Jan 2</title>
+<style>
+  :root{
+    --asphalt:#1C2321;
+    --asphalt-2:#262F2C;
+    --asphalt-3:#2F3A36;
+    --amber:#E8963C;
+    --jade:#5C8A76;
+    --brick:#B0532E;
+    --cream:#F2EDE4;
+    --cream-dim:#B9B4A9;
+    --line:#3A443F;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--asphalt);color:var(--cream);
+    font-family:'Arial Narrow','Helvetica Neue Condensed',Arial,sans-serif;
+    line-height:1.5;
+  }
+  .wrap{max-width:1150px;margin:0 auto;padding:30px 18px 60px;}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;}
+
+  /* ============ HEADER ============ */
+  .hdr{border-bottom:3px double var(--line);padding-bottom:20px;margin-bottom:26px;
+       display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;}
+  .hdr h1{font-size:38px;letter-spacing:1px;text-transform:uppercase;margin:0;font-weight:800;}
+  .hdr h1 span{color:var(--amber);}
+  .hdr .sub{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--cream-dim);letter-spacing:.6px;margin-top:6px;}
+  .odo{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--asphalt-2);
+       border:1px solid var(--line);border-radius:4px;padding:10px 16px;text-align:right;}
+  .odo b{display:block;font-size:24px;color:var(--amber);letter-spacing:2px;}
+  .odo small{color:var(--cream-dim);font-size:10px;text-transform:uppercase;letter-spacing:1px;}
+
+  /* ============ NAV ============ */
+  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
+  nav a{
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;
+    color:var(--cream-dim);text-decoration:none;border:1px solid var(--line);
+    padding:6px 12px;border-radius:3px;text-transform:uppercase;
+  }
+  nav a:hover{color:var(--amber);border-color:var(--amber);}
+
+  /* ============ SECTIONS ============ */
+  section{margin-bottom:44px;}
+  h2{
+    font-size:22px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;
+    border-left:5px solid var(--amber);padding-left:12px;margin:0 0 6px;
+  }
+  h2 .no{color:var(--brick);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;margin-right:8px;}
+  .sec-sub{color:var(--cream-dim);font-size:13px;margin:0 0 16px 17px;}
+  h3{font-size:16px;text-transform:uppercase;letter-spacing:1px;color:var(--amber);margin:22px 0 8px;}
+
+  /* ============ ALERT / CHECKLIST ============ */
+  .alert{
+    background:var(--asphalt-2);border:1px solid var(--brick);border-left:6px solid var(--brick);
+    border-radius:4px;padding:16px 18px;margin-bottom:26px;
+  }
+  .alert h4{margin:0 0 10px;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--brick);
+            font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .alert ul{margin:0;padding-left:20px;font-size:13.5px;color:var(--cream);}
+  .alert li{margin-bottom:8px;}
+  .alert li b{color:var(--amber);}
+  .conf{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;padding:1px 5px;border-radius:2px;
+        border:1px solid var(--line);color:var(--cream-dim);vertical-align:middle;}
+
+  /* ============ ROAD MAP ============ */
+  .road{position:relative;padding:66px 6px 6px;overflow-x:auto;background:var(--asphalt);}
+  .road-track{position:relative;min-width:1500px;height:330px;}
+  .centerline{
+    position:absolute;top:165px;left:0;right:0;height:4px;
+    background-image:repeating-linear-gradient(to right,var(--amber) 0 26px,transparent 26px 46px);opacity:.85;
+  }
+  .centerline::before,.centerline::after{content:"";position:absolute;left:0;right:0;height:1px;background:var(--line);}
+  .centerline::before{top:-14px;} .centerline::after{top:14px;}
+  .node{position:absolute;top:165px;width:172px;transform:translate(-50%,-50%);}
+  .pin{width:22px;height:22px;border-radius:50%;background:var(--cream);border:4px solid var(--asphalt);
+       outline:2px solid var(--amber);margin:0 auto;position:relative;z-index:3;}
+  .pin.rest{outline-color:var(--jade);}
+  .km-tag{position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);
+          background:var(--asphalt);padding:2px 6px;border:1px solid var(--line);border-radius:3px;white-space:nowrap;}
+  .card{position:absolute;left:50%;transform:translateX(-50%);width:170px;background:var(--asphalt-2);
+        border:1px solid var(--line);border-radius:6px;padding:10px 10px 12px;text-align:center;}
+  .card.up{bottom:58px;} .card.down{top:58px;}
+  .card::after{content:"";position:absolute;left:50%;width:1px;background:var(--line);}
+  .card.up::after{bottom:-58px;height:58px;transform:translateX(-50%);}
+  .card.down::after{top:-58px;height:58px;transform:translateX(-50%);}
+  .shield{width:34px;height:34px;margin:0 auto 6px;background:var(--brick);
+          clip-path:polygon(50% 0%,100% 22%,100% 78%,50% 100%,0% 78%,0% 22%);
+          display:flex;align-items:center;justify-content:center;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:13px;color:var(--cream);}
+  .card.rest .shield{background:var(--jade);}
+  .city{font-size:17px;text-transform:uppercase;letter-spacing:.5px;font-weight:800;}
+  .nights{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--amber);letter-spacing:.5px;margin-top:2px;}
+  .card.rest .nights{color:var(--jade);}
+  .vibe{margin-top:6px;color:var(--cream-dim);font-size:11px;line-height:1.35;font-family:Arial,sans-serif;}
+  .legend{display:flex;gap:22px;margin-top:12px;flex-wrap:wrap;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;border:2px solid var(--asphalt);}
+  .dot.travel{outline:2px solid var(--amber);} .dot.rest{outline:2px solid var(--jade);}
+
+  /* ============ TABLES ============ */
+  table{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:13.5px;}
+  th{background:var(--asphalt-3);color:var(--amber);text-transform:uppercase;letter-spacing:1px;
+     font-size:11px;font-family:ui-monospace,Menlo,Consolas,monospace;
+     padding:10px 12px;text-align:left;border:1px solid var(--line);}
+  td{padding:10px 12px;border:1px solid var(--line);vertical-align:top;background:var(--asphalt-2);}
+  tr.rest-row td{background:#26332D;}
+  tr.rest-row td:first-child{border-left:4px solid var(--jade);}
+  tr.ride-row td:first-child{border-left:4px solid var(--amber);}
+  td .tag{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);
+          display:block;margin-top:3px;}
+  td b{color:var(--amber);font-weight:700;}
+
+  /* ============ CITY CARDS ============ */
+  .city-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:14px;}
+  .cg{background:var(--asphalt-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .cg .band{height:6px;background:var(--amber);}
+  .cg.restc .band{background:var(--jade);}
+  .cg .inner{padding:16px 18px 18px;}
+  .cg h4{margin:0;font-size:19px;text-transform:uppercase;letter-spacing:.5px;}
+  .cg .meta{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;color:var(--cream-dim);
+            letter-spacing:.5px;margin:3px 0 12px;}
+  .cg dl{margin:0;font-size:13px;}
+  .cg dt{color:var(--amber);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;
+         text-transform:uppercase;letter-spacing:1px;margin-top:10px;}
+  .cg.restc dt{color:var(--jade);}
+  .cg dd{margin:3px 0 0;color:var(--cream);}
+  .cg dd small{color:var(--cream-dim);}
+
+  /* ============ MISC ============ */
+  .note{background:var(--asphalt-2);border-left:4px solid var(--jade);padding:12px 16px;
+        font-size:13px;color:var(--cream-dim);margin-top:14px;}
+  .note b{color:var(--cream);}
+  .budget-total td{background:var(--asphalt-3);font-weight:700;}
+  footer{border-top:2px dashed var(--line);margin-top:30px;padding-top:18px;
+         font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);}
+  @media (max-width:640px){
+    .hdr h1{font-size:26px;}
+    td,th{padding:7px 8px;font-size:12px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ================= HEADER ================= -->
+  <div class="hdr">
+    <div>
+      <h1>SG <span>&rarr;</span> Ipoh <span>&rarr;</span> SG</h1>
+      <div class="sub">HONDA CB350 · SOLO TOUR · DEC 24 2026 &ndash; JAN 02 2027 · WEST COAST SPINE · NO LEG OVER ~300KM</div>
+    </div>
+    <div class="odo">
+      <b>~1,190 KM</b>
+      <small>total distance · est.</small>
+    </div>
+  </div>
+
+  <nav>
+    <a href="#checklist">Pre-Departure</a>
+    <a href="#map">Route Map</a>
+    <a href="#schedule">Day-by-Day</a>
+    <a href="#cities">City Guides</a>
+    <a href="#bike">Bike &amp; Maintenance</a>
+    <a href="#budget">Budget</a>
+    <a href="#practical">Border &amp; Practical</a>
+  </nav>
+
+  <!-- ================= PRE-DEPARTURE ================= -->
+  <section id="checklist">
+    <div class="alert">
+      <h4>&#9888; Unresolved — your action items, not assumptions</h4>
+      <ul>
+        <li><b>VEP — RESOLVED.</b> <span class="conf">RIDER-VERIFIED JUL 2026</span> Confirmed not required for SG-registered motorcycles. Keep a screenshot/printout of the JPJ page stating the exemption — rules have shifted before, and paper beats memory at a checkpoint. Re-glance at the portal in the week before departure.</li>
+        <li><b>Secure bike parking at heritage stays.</b> <span class="conf">LIKELY RISK</span> Call Jonker Boutique (Melaka) and Sarang Paloh (Ipoh) directly. Shophouse conversions at this budget tier don't guarantee it. Jonker Boutique advertises free private parking — confirm it covers motorcycles overnight.</li>
+        <li><b>Pre-trip service slot.</b> Book by ~Dec 15. Year-end holiday rush fills SG workshops; a Dec 20 walk-in is a gamble.</li>
+        <li><b>Insurance rider.</b> Confirm your policy explicitly covers riding in West Malaysia. Standard SG motorcycle policies usually do — "usually" is not "yours does."</li>
+        <li><b>Touch 'n Go card,</b> topped up. Motorcycles are toll-exempt on most Malaysian highways <span class="conf">LIKELY</span>, but you'll want it for parking and incidentals.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= ROUTE MAP ================= -->
+  <section id="map">
+    <h2><span class="no">01</span>Route Map</h2>
+    <p class="sec-sub">Ipoh turnaround. Amber pins = travel days, jade = rest. Out-and-back on the west-coast spine — the monsoon east coast is deliberately excluded.</p>
+    <div class="road">
+      <div class="road-track" id="track">
+        <div class="centerline"></div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="dot travel"></i> Travel day</span>
+      <span><i class="dot rest"></i> Rest / no riding</span>
+      <span>Longest leg: Seremban &rarr; SG, ~300km</span>
+    </div>
+
+    <h3 style="margin-top:30px;">Real Geography — Direction of Travel</h3>
+    <p class="sec-sub" style="margin-left:0;">Actual map, actual coordinates. Tap a day button to isolate that leg and zoom to it — a turn-by-turn Google Maps link for that leg appears below the map. Tap any pin for the stop's own Google Maps link. Solid amber = northbound (Dec 24&ndash;29), dashed jade = southbound return (Jan 1&ndash;2); the lines overlap on the E1/E2 spine because the route genuinely reuses it. Requires internet for tiles; the strip map above is your offline fallback.</p>
+    <div id="daybtns" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px;"></div>
+    <div id="realmap" style="height:520px;border:1px solid var(--line);border-radius:6px;"></div>
+    <div id="leglink" style="margin-top:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;"></div>
+    <div class="legend" style="margin-top:10px;">
+      <span><span style="display:inline-block;width:26px;height:0;border-top:3px solid var(--amber);"></span> Northbound Dec 24&ndash;29</span>
+      <span><span style="display:inline-block;width:26px;height:0;border-top:3px dashed var(--jade);"></span> Southbound Jan 1&ndash;2</span>
+      <span>Numbered pins = order of arrival</span>
+    </div>
+  </section>
+
+  <!-- ================= SCHEDULE ================= -->
+  <section id="schedule">
+    <h2><span class="no">02</span>Day-by-Day Schedule</h2>
+    <p class="sec-sub">4 riding days out of 10. NYE is stationary. No day exceeds ~300km / ~4.5hr saddle time.</p>
+    <table>
+      <tr><th style="width:52px">Day</th><th style="width:78px">Date</th><th>Leg / Activity</th><th style="width:120px">Distance</th><th>Strategic Notes</th></tr>
+      <tr class="ride-row"><td><b>1</b></td><td>Dec 24<br><span class="tag">THU</span></td><td><b>Ride:</b> Singapore &rarr; Melaka<br><span class="tag">Depart 7:00am · Tuas 2nd Link · AH2/E2 north</span></td><td>~250km<br>~4hr incl. border</td><td>Beat Christmas-eve checkpoint crowds. Fuel RON97 after crossing. Evening: Jonker food walk (note: night market runs Fri–Sun, Dec 24 is Thu — regular food street, not market).</td></tr>
+      <tr class="ride-row"><td><b>2</b></td><td>Dec 25<br><span class="tag">FRI</span></td><td><b>Ride:</b> Melaka &rarr; Kuala Lumpur<br><span class="tag">Late-morning depart, no rush</span></td><td>~150km<br>~2.5hr</td><td>Shortest riding day of the trip. Check in Bukit Bintang, evening at Jalan Alor hawkers.</td></tr>
+      <tr class="rest-row"><td><b>3</b></td><td>Dec 26<br><span class="tag">SAT</span></td><td><b>Rest day — KL</b><br><span class="tag">Batu Caves (AM) · KLCC (PM) · Petaling St (eve)</span></td><td>—</td><td>Batu Caves early to dodge weekend crowds; 272 steps, go before heat builds. Bike stays parked or does the one short Batu Caves hop only.</td></tr>
+      <tr class="ride-row"><td><b>4</b></td><td>Dec 27<br><span class="tag">SUN</span></td><td><b>Ride:</b> KL &rarr; Cameron Highlands<br><span class="tag">E1 north to Tapah, then Rte 59 climb</span></td><td>~200km<br>~4hr</td><td>Depart 8am sharp. The Tapah climb is hairpin-dense and mist rolls in after ~2pm in Dec — arrive before it. Slower traffic (lorries) on the climb; patience over overtakes.</td></tr>
+      <tr class="rest-row"><td><b>5</b></td><td>Dec 28<br><span class="tag">MON</span></td><td><b>Rest day — Cameron Highlands</b><br><span class="tag">BOH Sungai Palas (AM) · Mossy Forest · steamboat dinner</span></td><td>—</td><td>Some hiking trails close in the Nov–Feb wet season — confirm locally, don't force it. Pack a warm layer: 15–20°C up here.</td></tr>
+      <tr class="ride-row"><td><b>6</b></td><td>Dec 29<br><span class="tag">TUE</span></td><td><b>Ride:</b> Cameron Highlands &rarr; Ipoh<br><span class="tag">Rte 59 &rarr; Simpang Pulai descent (Rte 185)</span></td><td>~90km<br>~2.5hr</td><td>Short, scenic, downhill — engine-brake, don't ride the brakes. Drop bike at the Boon Siew Honda authorised motorcycle dealer same afternoon for the mid-trip check (see maintenance section — verify exact outlet before departure).</td></tr>
+      <tr class="rest-row"><td><b>7</b></td><td>Dec 30<br><span class="tag">WED</span></td><td><b>Rest day — Ipoh</b><br><span class="tag">Old Town heritage walk · Concubine Lane · cave temples</span></td><td>—</td><td>Kek Lok Tong &amp; Perak Tong are short hops south/north of town. White coffee at Sin Yoon Loong, beansprout chicken at Lou Wong for dinner.</td></tr>
+      <tr class="rest-row"><td><b>8</b></td><td>Dec 31<br><span class="tag">THU</span></td><td><b>Rest day — Ipoh · NYE</b><br><span class="tag">Kellie's Castle (optional AM) · pre-ride bike check (PM) · NYE in town</span></td><td>—</td><td>Final tire/chain/fluids check before the two-day run home. NYE stays low-key and stationary — you ride on Jan 1, so cap the night sensibly.</td></tr>
+      <tr class="ride-row"><td><b>9</b></td><td>Jan 1<br><span class="tag">FRI</span></td><td><b>Ride:</b> Ipoh &rarr; Seremban<br><span class="tag">E1 south, bypass KL via E6 ELITE or stay E1 through</span></td><td>~265km<br>~4hr</td><td>Transit-only day. New Year's Day traffic is lighter in the morning — depart 9am, arrive mid-afternoon. Early dinner, early sleep.</td></tr>
+      <tr class="ride-row"><td><b>10</b></td><td>Jan 2<br><span class="tag">SAT</span></td><td><b>Ride:</b> Seremban &rarr; Singapore<br><span class="tag">E2 south · Tuas 2nd Link</span></td><td>~300km<br>~4hr + border</td><td>Longest leg, ridden fresh. Depart 8am — Jan 2 return-wave congestion at the border is real; buffer 1–2hr at the crossing. Home by mid-late afternoon.</td></tr>
+    </table>
+  </section>
+
+  <!-- ================= CITY GUIDES ================= -->
+  <section id="cities">
+    <h2><span class="no">03</span>City Guides — Stay · Eat · Do</h2>
+    <p class="sec-sub">All accoms retiered to the $50–80/night band. Rates are estimates — holiday-period pricing may push toward the top of range; book early.</p>
+    <div class="city-grid">
+
+      <div class="cg">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Melaka</h4>
+          <div class="meta">NIGHT 1 · DEC 24 · CHECKPOINT 1</div>
+          <dl>
+            <dt>Stay — ~$50–65/nt</dt>
+            <dd><b>Jonker Boutique Hotel</b> — restored triple-shophouse directly on Jonker Street, advertises free private parking (confirm motorcycle access). <small>Backup: Swiss Hotel Heritage Boutique, similar band, parking at rear.</small></dd>
+            <dt>Eat</dt>
+            <dd>Chicken rice balls (Hoe Kee / Chung Wah), Nyonya laksa, cendol at Jonker 88, satay celup if you're game.</dd>
+            <dt>Do</dt>
+            <dd>Evening only: Dutch Square &amp; Christ Church at golden hour, St Paul's Hill sunset, riverside walk. One night = one tight loop, all walkable from the hotel.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="cg restc">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Kuala Lumpur</h4>
+          <div class="meta">NIGHTS 2–3 · DEC 25–26 · REST STOP</div>
+          <dl>
+            <dt>Stay — ~$60–75/nt</dt>
+            <dd><b>Bintang Collectionz</b> — restored 95-year-old pre-colonial facade on Jalan Bukit Bintang, Peranakan-tiled rooms, Golden Triangle basecamp.</dd>
+            <dt>Eat</dt>
+            <dd>Jalan Alor hawker strip (2 min walk), Hokkien mee at night stalls, banana leaf rice in Brickfields if you venture.</dd>
+            <dt>Do</dt>
+            <dd>Day 3: Batu Caves early AM (short ride or Grab), KLCC park + Petronas view PM, Petaling Street market evening. Clustered: caves are the only leg outside the Bukit Bintang–KLCC pocket.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="cg restc">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Cameron Highlands</h4>
+          <div class="meta">NIGHTS 4–5 · DEC 27–28 · REST STOP</div>
+          <dl>
+            <dt>Stay — ~$55–70/nt</dt>
+            <dd><b>Silvan Garden</b>, Tanah Rata — garden-set boutique with rooftop lounge; homely, modern rooms, walkable to town eateries. <small>(Lakehouse dropped: ~2× your budget ceiling.)</small></dd>
+            <dt>Eat</dt>
+            <dd>Steamboat dinner (a Camerons ritual in the cool air), scones + BOH tea at Sungai Palas visitor centre, morning roadside nasi lemak stalls.</dd>
+            <dt>Do</dt>
+            <dd>BOH Sungai Palas plantation + factory tour (free/cheap), Mossy Forest boardwalk, strawberry &amp; honey farms if you want them. Trail closures possible in wet season — ask at check-in.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="cg restc">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Ipoh — Turnaround</h4>
+          <div class="meta">NIGHTS 6–8 · DEC 29–31 · REST + SERVICE + NYE</div>
+          <dl>
+            <dt>Stay — ~$56/nt</dt>
+            <dd><b>Sarang Paloh Heritage Stay</b> — restored 1920s former OCBC bank building on Jalan Sultan Iskandar, on the heritage trail. Parking exists but is quirky (one-way tunnel access) — confirm motorcycle arrangement when booking.</dd>
+            <dt>Eat</dt>
+            <dd>Lou Wong beansprout chicken, Sin Yoon Loong white coffee, Thean Chun kopitiam (egg custard), Aun Kheng Lim salted chicken to pack for the ride.</dd>
+            <dt>Do</dt>
+            <dd>Old Town heritage walk + Concubine Lane, Kek Lok Tong &amp; Perak Tong cave temples, Kellie's Castle (~30min south, optional Day 8 AM). NYE: low-key in town — you ride the next morning.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="cg">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Seremban</h4>
+          <div class="meta">NIGHT 9 · JAN 1 · RECOVERY ONLY</div>
+          <dl>
+            <dt>Stay — ~$35–45/nt</dt>
+            <dd><b>Palm Seremban Hotel</b> — central 3-star, deliberately below budget ceiling. This is a bed, a shower, and secure parking, not a destination.</dd>
+            <dt>Eat</dt>
+            <dd>Seremban siew pau (baked pork buns — the town's one famous export), beef noodles at the food centre. Early dinner.</dd>
+            <dt>Do</dt>
+            <dd>Nothing planned. That's the point. Lights out early; the last 300km gets ridden fresh.</dd>
+          </dl>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= BIKE ================= -->
+  <section id="bike">
+    <h2><span class="no">04</span>Honda CB350 — Maintenance Plan</h2>
+    <p class="sec-sub">Warranty stays intact only if servicing is done at Boon Siew Honda authorised dealers (Malaysia) / your authorised dealer (SG). Ban Hoe Seng in Ipoh is authorised — that's why it's the mid-trip stop, not a random workshop.</p>
+    <table>
+      <tr><th style="width:150px">When</th><th style="width:220px">Where</th><th>Work</th></tr>
+      <tr><td><b>Pre-trip</b><br><span class="tag">book by Dec 15, service by Dec 20</span></td><td>Your CB350's authorised dealer, Singapore<br><span class="tag">Confirm the branch handles Big Wing models — not all Honda outlets do</span></td><td>Full service: engine oil + filter, chain &amp; sprocket wear check + lube + tension, brake pads/discs/fluid, tire tread depth (min 2mm for this trip, ideally more) &amp; pressure, coolant n/a (air-cooled) — valve clearance if due, battery load test, all lights/signals/horn. State the trip: 1,200km in 10 days incl. mountain hairpins.</td></tr>
+      <tr><td><b>Day 6 arrival</b><br><span class="tag">Dec 29 PM, Ipoh</span></td><td><b>Boon Siew Honda authorised motorcycle dealer, Ipoh</b><br><span class="tag">CORRECTION: Ban Hoe Seng (previously listed) is a Honda CAR 3S centre — wrong network for a CB350. Malaysia's motorcycle network is Boon Siew Honda; an authorised dealer sits in the Pusat Perniagaan Pulai area. Confirm the exact outlet + big-bike capability via the boonsiewhonda.com.my dealer locator or careline 1-800-88-3993 before departure.</span></td><td>Mid-trip check at ~690km in: chain tension/lube, oil level, tire pressure &amp; visual tread, brake pad visual, bolt-torque after the Camerons hairpins. Dec 29 is a Tuesday. Call ahead; year-end queues, and not every dealer handles BigWing-class bikes.</td></tr>
+      <tr><td><b>Day 8</b><br><span class="tag">Dec 31 PM, self-check</span></td><td>Hotel / roadside, Ipoh</td><td>Your own pre-run check before the 2-day ride home: tire pressures cold, chain lube, brake lever feel, lights. 15 minutes, non-negotiable.</td></tr>
+      <tr><td><b>Post-trip</b><br><span class="tag">within 1 week of return</span></td><td>Same SG authorised dealer</td><td>Full service: oil + filter, chain/sprocket wear assessment (1,200km of highway + hills), brake pad measurement, tire wear evaluation, general fastener check. Log it in the service booklet for warranty continuity.</td></tr>
+    </table>
+    <h3>Carry Kit</h3>
+    <table>
+      <tr><th>Item</th><th>Why</th></tr>
+      <tr><td>Chain lube (small can)</td><td>Lube every ~400km on tour — that's every second riding day minimum, more after rain.</td></tr>
+      <tr><td>Tubeless puncture plug kit + mini compressor/CO2</td><td>CB350 runs tubeless — plug kits make roadside fixes a 15-min job instead of a tow.</td></tr>
+      <tr><td>Tire pressure gauge</td><td>Check cold, every riding morning.</td></tr>
+      <tr><td>Basic tool roll (hex keys, spanners for levers/mirrors), cable ties, duct tape</td><td>The 90% of roadside problems.</td></tr>
+      <tr><td>Spare fuses + bulb (if not full-LED per your variant)</td><td>Cheap insurance.</td></tr>
+      <tr><td>Rain suit — packed, not optional</td><td>Dec/Jan is wet season country-wide, not just the east coast. Afternoon downpours on the west coast are routine.</td></tr>
+      <tr><td>Warm mid-layer + waterproof gloves</td><td>Camerons runs 15–20°C and wet; the descent is cold at speed.</td></tr>
+    </table>
+    <div class="note"><b>Fuel rule:</b> <span class="conf">LIKELY</span> foreign-registered vehicles are barred from subsidized RON95 in Malaysia — pump <b>RON97</b> only. The CB350 is happy on either; your wallet takes a small hit, a RON95 fine takes a bigger one. Tank range ~350km+ means each leg is doable on one fill, but top up at half-tank in the highlands — stations thin out on Rte 59.</div>
+  </section>
+
+  <!-- ================= BUDGET ================= -->
+  <section id="budget">
+    <h2><span class="no">05</span>Budget Estimate</h2>
+    <p class="sec-sub">Order-of-magnitude planning figures in SGD, solo rider. Holiday-period pricing may inflate accoms 10–20% — book now, not in December.</p>
+    <table>
+      <tr><th>Line</th><th style="width:170px">Basis</th><th style="width:120px">Est. (SGD)</th></tr>
+      <tr><td>Accommodation — 9 nights</td><td>Melaka $58 ·  KL 2×$68 · CH 2×$62 · Ipoh 2×$56 · Seremban $40</td><td>~$470</td></tr>
+      <tr><td>Fuel — RON97</td><td>~1,190km ÷ ~35km/L ≈ 34L × ~RM3.4</td><td>~$35</td></tr>
+      <tr><td>Tolls</td><td>Motorcycles largely toll-exempt on MY highways</td><td>~$0–10</td></tr>
+      <tr><td>Food — 10 days</td><td>Hawker-centric, ~RM80–120/day</td><td>~$250–370</td></tr>
+      <tr><td>Activities / entries</td><td>BOH free · Mossy Forest small fee · Batu Caves free · cave temples donation · Kellie's Castle ~RM10</td><td>~$20–40</td></tr>
+      <tr><td>Mid-trip bike service (Ipoh)</td><td>Check + lube + consumables</td><td>~$30–60</td></tr>
+      <tr><td>Pre + post trip services (SG)</td><td>Two full services</td><td>~$200–350</td></tr>
+      <tr><td>Buffer — punctures, rain delays, misc</td><td>10%</td><td>~$100</td></tr>
+      <tr class="budget-total"><td>Total envelope</td><td></td><td><b>~$1,100–1,450</b></td></tr>
+    </table>
+  </section>
+
+  <!-- ================= PRACTICAL ================= -->
+  <section id="practical">
+    <h2><span class="no">06</span>Border &amp; Practical Notes</h2>
+    <table>
+      <tr><th style="width:190px">Topic</th><th>Detail</th></tr>
+      <tr><td>Crossing — outbound Dec 24</td><td><b>Tuas Second Link</b>, depart 7am. Christmas-eve outbound wave builds by mid-morning. Motorcycle lanes move faster than car queues but still budget 45–90 min.</td></tr>
+      <tr><td>Crossing — inbound Jan 2</td><td>Tuas again. Jan 2 is the return-wave peak — budget 1–2hr. Arriving at the link by ~1pm keeps you ahead of the evening crush.</td></tr>
+      <tr><td>Documents on the bike</td><td>Passport (6+ months validity), SG driving licence w/ Class 2A/2, vehicle log card / registration, insurance certificate showing West Malaysia cover. Photocopies in a separate bag.</td></tr>
+      <tr><td>VEP</td><td><span class="conf">RESOLVED — RIDER-VERIFIED JUL 2026</span> Not required for SG-registered motorcycles. Carry a screenshot of the JPJ exemption page and re-check the portal the week before departure — the regime has changed before and cars face RM2,000 fines, so a checkpoint officer seeing paper ends the conversation fast.</td></tr>
+      <tr><td>Money</td><td>Touch 'n Go card topped up (parking, incidentals). Cash RM for hawkers — many don't take cards. ATMs everywhere in the cities on this route.</td></tr>
+      <tr><td>Riding weather</td><td>Northeast Monsoon season. West coast = afternoon thunderstorms, not all-day rain. Pattern your days: ride mornings, arrive by 2–3pm, storms hit late afternoon. The schedule above is already built this way.</td></tr>
+      <tr><td>Emergency</td><td>Malaysia emergency: <b>999</b>. Honda Malaysia careline: 1-800-88-3993. PLUS highway assistance: 1-800-88-0000.</td></tr>
+    </table>
+  </section>
+
+  <footer>
+    SG &rarr; IPOH &rarr; SG · CB350 TOUR PLAN · v3 (BUDGET-TIERED) · COMPILED JUL 2026 · RATES &amp; RULES ARE ESTIMATES — VERIFY THE FLAGGED ITEMS BEFORE DEPARTURE
+  </footer>
+</div>
+
+<script>
+const stops = [
+  {x:60,  city:"Singapore", night:"START", km:"", vibe:"Depart 7am, Tuas 2nd Link", rest:false},
+  {x:280, city:"Melaka", night:"1 NIGHT", km:"~250km / 4hr", vibe:"Jonker Boutique Hotel — $50-65/nt", rest:false},
+  {x:520, city:"Kuala Lumpur", night:"2 NIGHTS", km:"~150km / 2.5hr", vibe:"Bintang Collectionz — ~$60-75/nt", rest:true},
+  {x:780, city:"Cameron Highlands", night:"2 NIGHTS", km:"~200km / 4hr", vibe:"Silvan Garden boutique — ~$55-70/nt", rest:true},
+  {x:1020, city:"Ipoh", night:"2 NIGHTS", km:"~90km / 2.5hr", vibe:"Sarang Paloh + Boon Siew Honda service", rest:true},
+  {x:1260, city:"Seremban", night:"1 NIGHT", km:"~265km / 4hr", vibe:"Palm Seremban Hotel — ~$35-45/nt", rest:false},
+  {x:1460, city:"Singapore", night:"END", km:"~300km / 4hr", vibe:"Home, post-trip service", rest:false},
+];
+const track = document.getElementById('track');
+track.style.width = (stops[stops.length-1].x + 80) + "px";
+stops.forEach((s, i) => {
+  const node = document.createElement('div');
+  node.className = 'node';
+  node.style.left = s.x + 'px';
+  const pin = document.createElement('div');
+  pin.className = 'pin' + (s.rest ? ' rest' : '');
+  node.appendChild(pin);
+  if(s.km){
+    const km = document.createElement('div');
+    km.className = 'km-tag';
+    km.textContent = s.km;
+    node.appendChild(km);
+  }
+  const card = document.createElement('div');
+  const isUp = i % 2 === 0;
+  card.className = 'card ' + (isUp ? 'up' : 'down') + (s.rest ? ' rest' : '');
+  card.innerHTML = `
+    <div class="shield">${i===0?'SG':i===stops.length-1?'SG':i}</div>
+    <div class="city">${s.city}</div>
+    <div class="nights">${s.night}</div>
+    <div class="vibe">${s.vibe}</div>
+  `;
+  node.appendChild(card);
+  track.appendChild(node);
+});
+</script>
+
+<!-- ============ REAL MAP (Leaflet + OSM) ============ -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function(){
+  if (typeof L === 'undefined') {
+    document.getElementById('realmap').innerHTML =
+      '<div style="padding:30px;color:#B9B4A9;font-family:monospace;font-size:12px;">Real map needs an internet connection — tiles could not load. Use the strip map above.</div>';
+    return;
+  }
+  const map = L.map('realmap', {scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  // [order, name, lat, lng, detail, google place_id or null]
+  const pts = [
+    [1, "Tuas Second Link — depart 7am Dec 24", 1.3479, 103.6362, "Border crossing, both directions", null],
+    [2, "Melaka — Jonker Boutique Hotel", 2.198072, 102.245411, "Night 1 · Dec 24 · gated carpark, confirm bike access", "ChIJzz-Abtvx0TERKFEh8s30ji4"],
+    [3, "Kuala Lumpur — Bintang Collectionz", 3.1456593, 101.7096316, "Nights 2–3 · Dec 25–26 · rest day 26th", "ChIJ6fhl70w3zDERFR5sfXc8FnQ"],
+    [4, "Tanah Rata — Silvan Garden", 4.4655568, 101.3727726, "Nights 4–5 · Dec 27–28 · hairpin climb via Tapah", "ChIJzxsGCQBXyjERXnLPF8hNLkM"],
+    [5, "Ipoh — Sarang Paloh Heritage Stay", 4.5950741, 101.0773649, "Nights 6–8 · Dec 29–31 · TURNAROUND · bike check + NYE", "ChIJ_22zBHzsyjERSzsG3AJZYOQ"],
+    [6, "Seremban — Palm Seremban Hotel", 2.7196735, 101.9232834, "Night 9 · Jan 1 · recovery stop", "ChIJGyT3LH3dzTERhj3HfLS-aDg"],
+    [7, "Tuas Second Link — home Jan 2", 1.3479, 103.6362, "Buffer 1–2hr for return-wave congestion", null]
+  ];
+
+  // Highway-spine waypoints so lines follow the west coast corridor, not straight chords
+  const tapah=[4.198,101.261], simpangPulai=[4.556,101.130], sgBesi=[3.05,101.70], ayerKeroh=[2.27,102.28], yongPeng=[2.01,103.06];
+  const ll = i => pts[i].slice(2,4);
+
+  const AMBER='#E8963C', JADE='#5C8A76';
+  const legs = [
+    {label:"Day 1 · SG→Melaka",       path:[ll(0),yongPeng,ayerKeroh,ll(1)], from:0,to:1, color:AMBER, dash:null},
+    {label:"Day 2 · Melaka→KL",       path:[ll(1),ll(2)],                    from:1,to:2, color:AMBER, dash:null},
+    {label:"Day 4 · KL→Camerons",     path:[ll(2),tapah,ll(3)],              from:2,to:3, color:AMBER, dash:null},
+    {label:"Day 6 · Camerons→Ipoh",   path:[ll(3),simpangPulai,ll(4)],       from:3,to:4, color:AMBER, dash:null},
+    {label:"Day 9 · Ipoh→Seremban",   path:[ll(4),simpangPulai,tapah,sgBesi,ll(5)], from:4,to:5, color:JADE, dash:'10 8'},
+    {label:"Day 10 · Seremban→SG",    path:[ll(5),yongPeng,ll(6)],           from:5,to:6, color:JADE, dash:'10 8'}
+  ];
+
+  legs.forEach(g => {
+    g.line = L.polyline(g.path, {color:g.color, weight:4, opacity:0.9, dashArray:g.dash}).addTo(map);
+    g.dir = 'https://www.google.com/maps/dir/?api=1&origin=' + ll(g.from===0?0:g.from).join(',')
+          + '&destination=' + ll(g.to).join(',') + '&travelmode=driving';
+  });
+
+  pts.forEach(p => {
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="width:26px;height:26px;border-radius:50%;background:${p[0]===5?'#5C8A76':'#B0532E'};
+             border:2px solid #F2EDE4;color:#F2EDE4;font:700 12px/22px monospace;text-align:center;">${p[0]}</div>`,
+      iconSize: [26,26], iconAnchor:[13,13]
+    });
+    const gm = p[5]
+      ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p[1]) + '&query_place_id=' + p[5]
+      : 'https://www.google.com/maps/search/?api=1&query=' + p[2] + ',' + p[3];
+    L.marker(p.slice(2,4), {icon}).addTo(map)
+      .bindPopup(`<b>${p[0]}. ${p[1]}</b><br><span style="font-size:11px;">${p[4]}</span><br>
+        <a href="${gm}" target="_blank" style="font-size:11px;font-weight:700;">Open in Google Maps &nearr;</a>`);
+  });
+
+  // ---- Day toggle buttons ----
+  const btnBox = document.getElementById('daybtns');
+  const legLink = document.getElementById('leglink');
+  const btnStyle = 'font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;cursor:pointer;padding:6px 12px;border-radius:3px;border:1px solid #3A443F;background:#262F2C;color:#B9B4A9;';
+  const activeStyle = 'border-color:#E8963C;color:#E8963C;';
+
+  function makeBtn(text){ const b=document.createElement('button'); b.textContent=text; b.setAttribute('style',btnStyle); return b; }
+
+  function showAll(){
+    legs.forEach(g => g.line.setStyle({opacity:0.9, weight:4}));
+    map.fitBounds(L.latLngBounds(pts.map(p=>p.slice(2,4))).pad(0.12));
+    legLink.innerHTML = '';
+    setActive(allBtn);
+  }
+  function showLeg(g, btn){
+    legs.forEach(x => x.line.setStyle({opacity: x===g?1:0.18, weight: x===g?6:3}));
+    map.fitBounds(L.latLngBounds(g.path).pad(0.25));
+    legLink.innerHTML = '<a href="'+g.dir+'" target="_blank" style="color:#E8963C;font-weight:700;text-decoration:none;">&#9658; Open '+g.label+' in Google Maps for turn-by-turn &nearr;</a>';
+    setActive(btn);
+  }
+  let btns=[];
+  function setActive(active){ btns.forEach(b=>b.setAttribute('style',btnStyle)); active.setAttribute('style',btnStyle+activeStyle); }
+
+  const allBtn = makeBtn('ALL DAYS');
+  allBtn.onclick = showAll; btnBox.appendChild(allBtn); btns.push(allBtn);
+  legs.forEach(g => {
+    const b = makeBtn(g.label.toUpperCase());
+    b.onclick = () => showLeg(g, b);
+    btnBox.appendChild(b); btns.push(b);
+  });
+
+  showAll();
+})();
+</script>
+</body>
+</html>
