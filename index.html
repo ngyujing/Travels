@@ -6,114 +6,245 @@
 <title>My Travels · Trip Plans</title>
 <style>
   :root{
-    --night:#1B1330;
-    --night-2:#241A3F;
-    --night-3:#2E2150;
-    --gold:#E0A94C;
-    --jade:#4E9787;
-    --coral:#E2664A;
-    --cream:#F5EDE0;
-    --cream-dim:#BDB2D6;
-    --line:#41335F;
+    --black:#05080F;
+    --navy:#0B1626;
+    --navy-2:#102036;
+    --navy-3:#162944;
+    --teal:#2DD4BF;
+    --teal-dim:#14B8A6;
+    --teal-deep:#0E7490;
+    --ink:#EAF2F5;
+    --ink-dim:#8FA6B8;
+    --line:#1C324E;
   }
-  *{box-sizing:border-box;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
   body{
-    margin:0;background:var(--night);color:var(--cream);
-    font-family:'Segoe UI',Arial,sans-serif;
-    line-height:1.55;min-height:100vh;
+    background:var(--black);
+    background-image:
+      radial-gradient(1100px 500px at 85% -10%, rgba(14,116,144,.22), transparent 60%),
+      radial-gradient(900px 600px at -10% 110%, rgba(11,22,38,.9), transparent 65%);
+    color:var(--ink);
+    font-family:'Segoe UI',system-ui,Arial,sans-serif;
+    line-height:1.6;min-height:100vh;
   }
-  .wrap{max-width:900px;margin:0 auto;padding:48px 18px 60px;}
   .mono{font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .wrap{max-width:960px;margin:0 auto;padding:64px 20px 72px;}
 
-  .hdr{border-bottom:3px double var(--line);padding-bottom:22px;margin-bottom:36px;}
-  .hdr h1{font-size:40px;letter-spacing:.5px;margin:0;font-weight:800;}
-  .hdr h1 span{color:var(--gold);}
-  .hdr .sub{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
-            color:var(--cream-dim);letter-spacing:.6px;margin-top:8px;text-transform:uppercase;}
+  /* ── header ─────────────────────────────── */
+  .hdr{margin-bottom:14px;}
+  .kicker{
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:11px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--teal);margin-bottom:14px;display:flex;align-items:center;gap:12px;
+  }
+  .kicker::before{content:"";width:34px;height:1px;background:var(--teal);opacity:.7;}
+  .hdr h1{
+    font-size:clamp(34px,6vw,52px);font-weight:800;letter-spacing:-.5px;line-height:1.1;
+  }
+  .hdr h1 em{
+    font-style:normal;
+    background:linear-gradient(90deg,var(--teal) 0%,#67E8F9 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hdr p{color:var(--ink-dim);font-size:15px;margin-top:12px;max-width:520px;}
 
-  .cards{display:grid;gap:20px;}
+  /* ── stats strip ────────────────────────── */
+  .stats{
+    display:flex;flex-wrap:wrap;gap:0;margin:34px 0 44px;
+    border:1px solid var(--line);border-radius:12px;
+    background:linear-gradient(180deg,var(--navy) 0%,rgba(11,22,38,.55) 100%);
+    overflow:hidden;
+  }
+  .stat{flex:1 1 120px;padding:18px 22px;position:relative;}
+  .stat + .stat::before{
+    content:"";position:absolute;left:0;top:20%;bottom:20%;width:1px;background:var(--line);
+  }
+  .stat b{
+    display:block;font-size:24px;font-weight:800;color:var(--ink);
+    font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:1px;
+  }
+  .stat b span{color:var(--teal);}
+  .stat small{
+    font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-dim);
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+  }
+
+  /* ── section label ──────────────────────── */
+  .sec{
+    display:flex;align-items:center;gap:14px;margin-bottom:20px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-dim);
+  }
+  .sec::after{
+    content:"";flex:1;height:2px;
+    background-image:repeating-linear-gradient(to right,var(--line) 0 18px,transparent 18px 32px);
+  }
+
+  /* ── trip cards ─────────────────────────── */
+  .cards{display:grid;gap:18px;}
   .card{
-    display:block;text-decoration:none;color:var(--cream);
-    background:var(--night-2);border:1px solid var(--line);border-radius:6px;
-    padding:22px 24px;position:relative;overflow:hidden;
-    transition:border-color .15s ease, transform .15s ease;
+    display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;
+    text-decoration:none;color:var(--ink);
+    background:linear-gradient(135deg,var(--navy-2) 0%,var(--navy) 70%);
+    border:1px solid var(--line);border-radius:14px;
+    padding:24px 26px;position:relative;overflow:hidden;
+    transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
   }
-  .card:hover{border-color:var(--gold);transform:translateY(-2px);}
-  .card::before{
-    content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--gold);
+  .card::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(420px 140px at 100% 0%, rgba(45,212,191,.10), transparent 70%);
+    opacity:0;transition:opacity .2s ease;
   }
-  .card.moto::before{background:var(--jade);}
-  .card .tag{
-    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:1px;
-    text-transform:uppercase;color:var(--night);background:var(--gold);
-    padding:2px 8px;border-radius:2px;display:inline-block;margin-bottom:10px;
+  .card:hover{
+    border-color:var(--teal-deep);transform:translateY(-3px);
+    box-shadow:0 14px 34px -14px rgba(45,212,191,.28), 0 8px 24px -12px rgba(0,0,0,.7);
   }
-  .card.moto .tag{background:var(--jade);color:var(--cream);}
-  .card h2{margin:0 0 6px;font-size:22px;font-weight:800;letter-spacing:.5px;}
-  .card h2 .arrow{color:var(--gold);}
-  .card .dates{
-    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
-    color:var(--cream-dim);letter-spacing:.6px;margin-bottom:8px;
-  }
-  .card p{margin:0;font-size:13.5px;color:var(--cream-dim);}
-  .card .go{
-    position:absolute;right:22px;top:50%;transform:translateY(-50%);
-    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:18px;color:var(--gold);
-    opacity:0;transition:opacity .15s ease;
-  }
-  .card:hover .go{opacity:1;}
+  .card:hover::after{opacity:1;}
 
-  .centerline{
-    height:4px;margin:36px 0 0;
-    background-image:repeating-linear-gradient(to right,var(--gold) 0 26px,transparent 26px 46px);
+  .badge{
+    width:56px;height:56px;border-radius:12px;display:grid;place-items:center;
+    font-size:24px;flex-shrink:0;
+    background:var(--navy-3);border:1px solid var(--line);
+    box-shadow:inset 0 0 18px rgba(45,212,191,.08);
+  }
+  .card:hover .badge{border-color:var(--teal-deep);}
+
+  .card .body{min-width:0;}
+  .tag{
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--teal);margin-bottom:6px;display:block;
+  }
+  .card h2{font-size:21px;font-weight:800;letter-spacing:-.2px;margin-bottom:4px;}
+  .card h2 .arrow{color:var(--teal);font-weight:600;}
+  .route{
+    display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
+    color:var(--ink-dim);letter-spacing:.5px;
+  }
+  .route .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;}
+  .route .dash{
+    width:26px;height:1px;flex-shrink:0;
+    background-image:repeating-linear-gradient(to right,var(--ink-dim) 0 4px,transparent 4px 8px);
     opacity:.6;
   }
-  footer{
-    margin-top:18px;font-family:ui-monospace,Menlo,Consolas,monospace;
-    font-size:11px;color:var(--cream-dim);letter-spacing:.6px;text-transform:uppercase;
+  .card p{font-size:13.5px;color:var(--ink-dim);}
+
+  .meta{text-align:right;flex-shrink:0;}
+  .dates{
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+    color:var(--ink);letter-spacing:.5px;white-space:nowrap;
+    background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.25);
+    padding:5px 12px;border-radius:99px;display:inline-block;margin-bottom:10px;
   }
-  @media(max-width:560px){
-    .hdr h1{font-size:30px;}
-    .card{padding:18px;}
-    .card .go{display:none;}
+  .open{
+    display:block;font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);
+    opacity:.5;transition:opacity .2s ease;
+  }
+  .open::after{content:" →";}
+  .card:hover .open{opacity:1;}
+
+  /* ── footer ─────────────────────────────── */
+  .roadline{
+    height:3px;margin:52px 0 20px;border-radius:2px;
+    background-image:repeating-linear-gradient(to right,var(--teal-deep) 0 24px,transparent 24px 42px);
+    opacity:.5;
+  }
+  footer{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-dim);
+  }
+  footer b{color:var(--teal);font-weight:600;}
+
+  @media(max-width:640px){
+    .wrap{padding:44px 16px 56px;}
+    .card{grid-template-columns:1fr;gap:14px;padding:20px;}
+    .badge{width:46px;height:46px;font-size:20px;}
+    .meta{text-align:left;}
+    .open{display:none;}
+    .stat{padding:14px 16px;}
   }
 </style>
 </head>
 <body>
 <div class="wrap">
+
   <header class="hdr">
-    <h1>My <span>Travels</span></h1>
-    <div class="sub">Trip plans · pick a journey</div>
+    <div class="kicker">Trip Planner · Ride Log</div>
+    <h1>My <em>Travels</em></h1>
+    <p>Every journey, mapped and ready. Pick a plan below to see the full route, stops and itinerary.</p>
   </header>
 
-  <div class="cards">
-    <a class="card" href="sg_bkk_trip_plan.html">
-      <span class="tag">✈ Flight · Girls' Trip</span>
-      <h2>SG <span class="arrow">→</span> BKK</h2>
-      <div class="dates">Aug 8 – 11, 2026 · Bangkok, Thailand</div>
-      <p>Girls' trip to Bangkok — flights, stays, food and shopping itinerary.</p>
-      <span class="go">→</span>
-    </a>
-
-    <a class="card moto" href="sg_muar_moto_plan.html">
-      <span class="tag">🏍 Motorcycle Tour</span>
-      <h2>SG <span class="arrow">→</span> Muar <span class="arrow">→</span> SG</h2>
-      <div class="dates">Nov 7 – 10 · Johor, Malaysia</div>
-      <p>Short motorcycle tour up to Muar and back — route, fuel and rest stops.</p>
-      <span class="go">→</span>
-    </a>
-
-    <a class="card moto" href="sg_malaysia_moto_plan.html">
-      <span class="tag">🏍 Motorcycle Tour</span>
-      <h2>SG <span class="arrow">→</span> Ipoh <span class="arrow">→</span> SG</h2>
-      <div class="dates">Dec 24 – Jan 2 · Malaysia year-end ride</div>
-      <p>Year-end motorcycle tour to Ipoh and back — the long ride north.</p>
-      <span class="go">→</span>
-    </a>
+  <div class="stats">
+    <div class="stat"><b>3</b><small>Journeys</small></div>
+    <div class="stat"><b>2<span>×</span>🏍</b><small>Moto Tours</small></div>
+    <div class="stat"><b>1<span>×</span>✈</b><small>Flight Trip</small></div>
+    <div class="stat"><b>SG <span>·</span> MY <span>·</span> TH</b><small>Countries</small></div>
   </div>
 
-  <div class="centerline"></div>
-  <footer>3 journeys planned · ride safe, travel far</footer>
+  <div class="sec">Upcoming journeys</div>
+
+  <div class="cards">
+
+    <a class="card" href="sg_bkk_trip_plan.html">
+      <div class="badge">✈️</div>
+      <div class="body">
+        <span class="tag">Flight · Girls' Trip</span>
+        <h2>Singapore <span class="arrow">→</span> Bangkok</h2>
+        <div class="route">
+          <span class="dot"></span> SIN <span class="dash"></span> BKK
+        </div>
+        <p>Girls' trip to Bangkok — flights, stays, food and shopping itinerary.</p>
+      </div>
+      <div class="meta">
+        <span class="dates">Aug 8 – 11 · 2026</span>
+        <span class="open">Open plan</span>
+      </div>
+    </a>
+
+    <a class="card" href="sg_muar_moto_plan.html">
+      <div class="badge">🏍️</div>
+      <div class="body">
+        <span class="tag">Motorcycle Tour · Short Haul</span>
+        <h2>Singapore <span class="arrow">→</span> Muar <span class="arrow">→</span> Singapore</h2>
+        <div class="route">
+          <span class="dot"></span> SG <span class="dash"></span> Muar <span class="dash"></span> SG
+        </div>
+        <p>Short motorcycle tour up to Muar and back — route, fuel and rest stops.</p>
+      </div>
+      <div class="meta">
+        <span class="dates">Nov 7 – 10</span>
+        <span class="open">Open plan</span>
+      </div>
+    </a>
+
+    <a class="card" href="sg_malaysia_moto_plan.html">
+      <div class="badge">🏍️</div>
+      <div class="body">
+        <span class="tag">Motorcycle Tour · Year-End Ride</span>
+        <h2>Singapore <span class="arrow">→</span> Ipoh <span class="arrow">→</span> Singapore</h2>
+        <div class="route">
+          <span class="dot"></span> SG <span class="dash"></span> KL <span class="dash"></span> Ipoh <span class="dash"></span> SG
+        </div>
+        <p>Year-end motorcycle tour to Ipoh and back — the long ride north.</p>
+      </div>
+      <div class="meta">
+        <span class="dates">Dec 24 – Jan 2</span>
+        <span class="open">Open plan</span>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="roadline"></div>
+  <footer>
+    <span><b>3</b> journeys planned</span>
+    <span>Ride safe · Travel far</span>
+  </footer>
+
 </div>
 </body>
 </html>
