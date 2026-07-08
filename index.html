@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Travels · Trip Plans</title>
+<style>
+  :root{
+    --night:#1B1330;
+    --night-2:#241A3F;
+    --night-3:#2E2150;
+    --gold:#E0A94C;
+    --jade:#4E9787;
+    --coral:#E2664A;
+    --cream:#F5EDE0;
+    --cream-dim:#BDB2D6;
+    --line:#41335F;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:var(--night);color:var(--cream);
+    font-family:'Segoe UI',Arial,sans-serif;
+    line-height:1.55;min-height:100vh;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:48px 18px 60px;}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;}
+
+  .hdr{border-bottom:3px double var(--line);padding-bottom:22px;margin-bottom:36px;}
+  .hdr h1{font-size:40px;letter-spacing:.5px;margin:0;font-weight:800;}
+  .hdr h1 span{color:var(--gold);}
+  .hdr .sub{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+            color:var(--cream-dim);letter-spacing:.6px;margin-top:8px;text-transform:uppercase;}
+
+  .cards{display:grid;gap:20px;}
+  .card{
+    display:block;text-decoration:none;color:var(--cream);
+    background:var(--night-2);border:1px solid var(--line);border-radius:6px;
+    padding:22px 24px;position:relative;overflow:hidden;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .card:hover{border-color:var(--gold);transform:translateY(-2px);}
+  .card::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--gold);
+  }
+  .card.moto::before{background:var(--jade);}
+  .card .tag{
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:1px;
+    text-transform:uppercase;color:var(--night);background:var(--gold);
+    padding:2px 8px;border-radius:2px;display:inline-block;margin-bottom:10px;
+  }
+  .card.moto .tag{background:var(--jade);color:var(--cream);}
+  .card h2{margin:0 0 6px;font-size:22px;font-weight:800;letter-spacing:.5px;}
+  .card h2 .arrow{color:var(--gold);}
+  .card .dates{
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+    color:var(--cream-dim);letter-spacing:.6px;margin-bottom:8px;
+  }
+  .card p{margin:0;font-size:13.5px;color:var(--cream-dim);}
+  .card .go{
+    position:absolute;right:22px;top:50%;transform:translateY(-50%);
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:18px;color:var(--gold);
+    opacity:0;transition:opacity .15s ease;
+  }
+  .card:hover .go{opacity:1;}
+
+  .centerline{
+    height:4px;margin:36px 0 0;
+    background-image:repeating-linear-gradient(to right,var(--gold) 0 26px,transparent 26px 46px);
+    opacity:.6;
+  }
+  footer{
+    margin-top:18px;font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:11px;color:var(--cream-dim);letter-spacing:.6px;text-transform:uppercase;
+  }
+  @media(max-width:560px){
+    .hdr h1{font-size:30px;}
+    .card{padding:18px;}
+    .card .go{display:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hdr">
+    <h1>My <span>Travels</span></h1>
+    <div class="sub">Trip plans · pick a journey</div>
+  </header>
+
+  <div class="cards">
+    <a class="card" href="sg_bkk_trip_plan.html">
+      <span class="tag">✈ Flight · Girls' Trip</span>
+      <h2>SG <span class="arrow">→</span> BKK</h2>
+      <div class="dates">Aug 8 – 11, 2026 · Bangkok, Thailand</div>
+      <p>Girls' trip to Bangkok — flights, stays, food and shopping itinerary.</p>
+      <span class="go">→</span>
+    </a>
+
+    <a class="card moto" href="sg_muar_moto_plan.html">
+      <span class="tag">🏍 Motorcycle Tour</span>
+      <h2>SG <span class="arrow">→</span> Muar <span class="arrow">→</span> SG</h2>
+      <div class="dates">Nov 7 – 10 · Johor, Malaysia</div>
+      <p>Short motorcycle tour up to Muar and back — route, fuel and rest stops.</p>
+      <span class="go">→</span>
+    </a>
+
+    <a class="card moto" href="sg_malaysia_moto_plan.html">
+      <span class="tag">🏍 Motorcycle Tour</span>
+      <h2>SG <span class="arrow">→</span> Ipoh <span class="arrow">→</span> SG</h2>
+      <div class="dates">Dec 24 – Jan 2 · Malaysia year-end ride</div>
+      <p>Year-end motorcycle tour to Ipoh and back — the long ride north.</p>
+      <span class="go">→</span>
+    </a>
+  </div>
+
+  <div class="centerline"></div>
+  <footer>3 journeys planned · ride safe, travel far</footer>
+</div>
+</body>
+</html>
