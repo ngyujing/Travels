@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Travels · Trip Plans</title>
+<style>
+  :root{
+    --bg:#05080F;
+    --surface:#0B1626;
+    --surface-2:#102036;
+    --surface-3:#162944;
+    --teal:#2DD4BF;
+    --teal-strong:#14B8A6;
+    --teal-deep:#0E7490;
+    --teal-soft:rgba(45,212,191,.08);
+    --teal-border:rgba(45,212,191,.25);
+    --ink:#EAF2F5;
+    --ink-dim:#8FA6B8;
+    --line:#1C324E;
+    --glow-a:rgba(14,116,144,.22);
+    --glow-b:rgba(11,22,38,.9);
+    --card-shadow:0 14px 34px -14px rgba(45,212,191,.28), 0 8px 24px -12px rgba(0,0,0,.7);
+  }
+  [data-theme="light"]{
+    --bg:#EEF4F7;
+    --surface:#FFFFFF;
+    --surface-2:#FFFFFF;
+    --surface-3:#E3EDF3;
+    --teal:#0D9488;
+    --teal-strong:#0F766E;
+    --teal-deep:#0E7490;
+    --teal-soft:rgba(13,148,136,.08);
+    --teal-border:rgba(13,148,136,.30);
+    --ink:#0B1626;
+    --ink-dim:#4A6076;
+    --line:#C7D8E2;
+    --glow-a:rgba(13,148,136,.14);
+    --glow-b:rgba(11,22,38,.06);
+    --card-shadow:0 14px 30px -14px rgba(13,148,136,.30), 0 8px 22px -14px rgba(11,22,38,.25);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    background-image:
+      radial-gradient(1100px 500px at 85% -10%, var(--glow-a), transparent 60%),
+      radial-gradient(900px 600px at -10% 110%, var(--glow-b), transparent 65%);
+    color:var(--ink);
+    font-family:'Segoe UI',system-ui,Arial,sans-serif;
+    line-height:1.6;min-height:100vh;
+    transition:background-color .25s ease, color .25s ease;
+  }
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .wrap{max-width:960px;margin:0 auto;padding:64px 20px 72px;}
+
+  /* ── header ─────────────────────────────── */
+  .hdr{margin-bottom:14px;position:relative;}
+  .kicker{
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:11px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--teal);margin-bottom:14px;display:flex;align-items:center;gap:12px;
+  }
+  .kicker::before{content:"";width:34px;height:1px;background:var(--teal);opacity:.7;}
+  .hdr h1{
+    font-size:clamp(34px,6vw,52px);font-weight:800;letter-spacing:-.5px;line-height:1.1;
+  }
+  .hdr h1 em{
+    font-style:normal;
+    background:linear-gradient(90deg,var(--teal) 0%,var(--teal-deep) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  [data-theme="light"] .hdr h1 em{
+    background:linear-gradient(90deg,var(--teal-strong) 0%,var(--teal-deep) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hdr p{color:var(--ink-dim);font-size:15px;margin-top:12px;max-width:520px;}
+
+  /* ── theme toggle ───────────────────────── */
+  .theme-btn{
+    position:absolute;top:0;right:0;
+    display:flex;align-items:center;gap:8px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--ink-dim);
+    background:var(--surface);border:1px solid var(--line);border-radius:99px;
+    padding:8px 14px;cursor:pointer;
+    transition:border-color .2s ease, color .2s ease, box-shadow .2s ease;
+  }
+  .theme-btn:hover{border-color:var(--teal-deep);color:var(--teal);}
+  .theme-btn .ico{font-size:14px;line-height:1;}
+  .theme-btn .lbl-light,.theme-btn .lbl-dark{display:none;}
+  [data-theme="dark"] .theme-btn .lbl-light{display:inline;}
+  [data-theme="light"] .theme-btn .lbl-dark{display:inline;}
+
+  /* ── stats strip ────────────────────────── */
+  .stats{
+    display:flex;flex-wrap:wrap;gap:0;margin:34px 0 44px;
+    border:1px solid var(--line);border-radius:12px;
+    background:var(--surface);
+    overflow:hidden;
+  }
+  .stat{flex:1 1 120px;padding:18px 22px;position:relative;}
+  .stat + .stat::before{
+    content:"";position:absolute;left:0;top:20%;bottom:20%;width:1px;background:var(--line);
+  }
+  .stat b{
+    display:block;font-size:24px;font-weight:800;color:var(--ink);
+    font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:1px;
+  }
+  .stat b span{color:var(--teal);}
+  .stat small{
+    font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-dim);
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+  }
+
+  /* ── section label ──────────────────────── */
+  .sec{
+    display:flex;align-items:center;gap:14px;margin-bottom:20px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-dim);
+  }
+  .sec::after{
+    content:"";flex:1;height:2px;
+    background-image:repeating-linear-gradient(to right,var(--line) 0 18px,transparent 18px 32px);
+  }
+
+  /* ── trip cards ─────────────────────────── */
+  .cards{display:grid;gap:18px;}
+  .card{
+    display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;
+    text-decoration:none;color:var(--ink);
+    background:linear-gradient(135deg,var(--surface-2) 0%,var(--surface) 70%);
+    border:1px solid var(--line);border-radius:14px;
+    padding:24px 26px;position:relative;overflow:hidden;
+    transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .card::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(420px 140px at 100% 0%, var(--teal-soft), transparent 70%);
+    opacity:0;transition:opacity .2s ease;
+  }
+  .card:hover{
+    border-color:var(--teal-deep);transform:translateY(-3px);
+    box-shadow:var(--card-shadow);
+  }
+  .card:hover::after{opacity:1;}
+
+  .badge{
+    width:56px;height:56px;border-radius:12px;display:grid;place-items:center;
+    font-size:24px;flex-shrink:0;
+    background:var(--surface-3);border:1px solid var(--line);
+    box-shadow:inset 0 0 18px var(--teal-soft);
+  }
+  .card:hover .badge{border-color:var(--teal-deep);}
+
+  .card .body{min-width:0;}
+  .tag{
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--teal);margin-bottom:6px;display:block;
+  }
+  .card h2{font-size:21px;font-weight:800;letter-spacing:-.2px;margin-bottom:4px;}
+  .card h2 .arrow{color:var(--teal);font-weight:600;}
+  .route{
+    display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
+    color:var(--ink-dim);letter-spacing:.5px;
+  }
+  .route .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;}
+  .route .dash{
+    width:26px;height:1px;flex-shrink:0;
+    background-image:repeating-linear-gradient(to right,var(--ink-dim) 0 4px,transparent 4px 8px);
+    opacity:.6;
+  }
+  .card p{font-size:13.5px;color:var(--ink-dim);}
+
+  .meta{text-align:right;flex-shrink:0;}
+  .dates{
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
+    color:var(--ink);letter-spacing:.5px;white-space:nowrap;
+    background:var(--teal-soft);border:1px solid var(--teal-border);
+    padding:5px 12px;border-radius:99px;display:inline-block;margin-bottom:10px;
+  }
+  .open{
+    display:block;font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);
+    opacity:.5;transition:opacity .2s ease;
+  }
+  .open::after{content:" →";}
+  .card:hover .open{opacity:1;}
+
+  /* ── footer ─────────────────────────────── */
+  .roadline{
+    height:3px;margin:52px 0 20px;border-radius:2px;
+    background-image:repeating-linear-gradient(to right,var(--teal-deep) 0 24px,transparent 24px 42px);
+    opacity:.5;
+  }
+  footer{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-dim);
+  }
+  footer b{color:var(--teal);font-weight:600;}
+
+  @media(max-width:640px){
+    .wrap{padding:44px 16px 56px;}
+    .theme-btn{position:static;margin-bottom:22px;}
+    .card{grid-template-columns:1fr;gap:14px;padding:20px;}
+    .badge{width:46px;height:46px;font-size:20px;}
+    .meta{text-align:left;}
+    .open{display:none;}
+    .stat{padding:14px 16px;}
+  }
+</style>
+<script>
+  (function(){
+    var saved = localStorage.getItem('travels-theme');
+    var theme = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hdr">
+    <button class="theme-btn" id="themeToggle" aria-label="Toggle light or dark theme">
+      <span class="ico lbl-light">☀️</span><span class="lbl-light">Light</span>
+      <span class="ico lbl-dark">🌙</span><span class="lbl-dark">Dark</span>
+    </button>
+    <div class="kicker">Trip Planner · Ride Log</div>
+    <h1>My <em>Travels</em></h1>
+    <p>Every journey, mapped and ready. Pick a plan below to see the full route, stops and itinerary.</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>3</b><small>Journeys</small></div>
+    <div class="stat"><b>2<span>×</span>🏍</b><small>Moto Tours</small></div>
+    <div class="stat"><b>1<span>×</span>✈</b><small>Flight Trip</small></div>
+    <div class="stat"><b>SG <span>·</span> MY <span>·</span> TH</b><small>Countries</small></div>
+  </div>
+
+  <div class="sec">Upcoming journeys</div>
+
+  <div class="cards">
+
+    <a class="card" href="sg_bkk_trip_plan.html">
+      <div class="badge">✈️</div>
+      <div class="body">
+        <span class="tag">Flight · Girls' Trip</span>
+        <h2>Singapore <span class="arrow">→</span> Bangkok</h2>
+        <div class="route">
+          <span class="dot"></span> SIN <span class="dash"></span> BKK
+        </div>
+        <p>Girls' trip to Bangkok — flights, stays, food and shopping itinerary.</p>
+      </div>
+      <div class="meta">
+        <span class="dates">Aug 8 – 11 · 2026</span>
+        <span class="open">Open plan</span>
+      </div>
+    </a>
+
+    <a class="card" href="sg_muar_moto_plan.html">
+      <div class="badge">🏍️</div>
+      <div class="body">
+        <span class="tag">Motorcycle Tour · Short Haul</span>
+        <h2>Singapore <span class="arrow">→</span> Muar <span class="arrow">→</span> Singapore</h2>
+        <div class="route">
+          <span class="dot"></span> SG <span class="dash"></span> Muar <span class="dash"></span> SG
+        </div>
+        <p>Short motorcycle tour up to Muar and back — route, fuel and rest stops.</p>
+      </div>
+      <div class="meta">
+        <span class="dates">Nov 7 – 10</span>
+        <span class="open">Open plan</span>
+      </div>
+    </a>
+
+    <a class="card" href="sg_malaysia_moto_plan.html">
+      <div class="badge">🏍️</div>
+      <div class="body">
+        <span class="tag">Motorcycle Tour · Year-End Ride</span>
+        <h2>Singapore <span class="arrow">→</span> Ipoh <span class="arrow">→</span> Singapore</h2>
+        <div class="route">
+          <span class="dot"></span> SG <span class="dash"></span> KL <span class="dash"></span> Ipoh <span class="dash"></span> SG
+        </div>
+        <p>Year-end motorcycle tour to Ipoh and back — the long ride north.</p>
+      </div>
+      <div class="meta">
+        <span class="dates">Dec 24 – Jan 2</span>
+        <span class="open">Open plan</span>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="roadline"></div>
+  <footer>
+    <span><b>3</b> journeys planned</span>
+    <span>Ride safe · Travel far</span>
+  </footer>
+
+</div>
+<script>
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var root = document.documentElement;
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('travels-theme', next);
+  });
+</script>
+</body>
+</html>
