@@ -190,6 +190,20 @@
   .open::after{content:" →";}
   .card:hover .open{opacity:1;}
 
+  /* ── past trips ─────────────────────────── */
+  .sec.past-sec{margin-top:52px;}
+  .cards.past-cards{display:none;}
+  .card.past{filter:grayscale(.6);opacity:.78;}
+  .card.past:hover{filter:grayscale(.2);opacity:1;border-color:var(--line);box-shadow:none;transform:none;}
+  .card.past:hover .badge{border-color:var(--line);}
+  .card.past::after{display:none;}
+  .card.past .tag{color:var(--ink-dim);}
+  .card.past h2 .arrow{color:var(--ink-dim);}
+  .card.past .route .dot{background:var(--ink-dim);}
+  .card.past .dates{background:transparent;border-color:var(--line);color:var(--ink-dim);}
+  .card.past .open{color:var(--ink-dim);opacity:.7;}
+  .card.past .open::after{content:" ✓";}
+
   /* ── footer ─────────────────────────────── */
   .roadline{
     height:3px;margin:52px 0 20px;border-radius:2px;
@@ -243,9 +257,9 @@
 
   <div class="sec">Upcoming journeys</div>
 
-  <div class="cards">
+  <div class="cards" id="upcomingCards">
 
-    <a class="card" href="sg_bkk_trip_plan.html">
+    <a class="card" href="sg_bkk_trip_plan.html" data-end="2026-08-11">
       <div class="badge">✈️</div>
       <div class="body">
         <span class="tag">Flight · Girls' Trip</span>
@@ -261,7 +275,7 @@
       </div>
     </a>
 
-    <a class="card" href="sg_muar_moto_plan.html">
+    <a class="card" href="sg_muar_moto_plan.html" data-end="2026-11-10">
       <div class="badge">🏍️</div>
       <div class="body">
         <span class="tag">Motorcycle Tour · Short Haul</span>
@@ -277,7 +291,7 @@
       </div>
     </a>
 
-    <a class="card" href="sg_malaysia_moto_plan.html">
+    <a class="card" href="sg_malaysia_moto_plan.html" data-end="2027-01-02">
       <div class="badge">🏍️</div>
       <div class="body">
         <span class="tag">Motorcycle Tour · Year-End Ride</span>
@@ -293,7 +307,7 @@
       </div>
     </a>
 
-    <a class="card" href="sg_okinawa_trip_plan.html">
+    <a class="card" href="sg_okinawa_trip_plan.html" data-end="2027-03-14">
       <div class="badge">🤿</div>
       <div class="body">
         <span class="tag">Dive Trip · Naha Basecamp</span>
@@ -309,7 +323,7 @@
       </div>
     </a>
 
-    <a class="card" href="sg_kota_tinggi_motocamp_plan.html">
+    <a class="card" href="sg_kota_tinggi_motocamp_plan.html" data-end="2027-05-23">
       <div class="badge">🏕️</div>
       <div class="body">
         <span class="tag">Motocamping · Honda CB350</span>
@@ -327,9 +341,12 @@
 
   </div>
 
+  <div class="sec past-sec" id="pastSec" style="display:none;">Past trips</div>
+  <div class="cards past-cards" id="pastCards"></div>
+
   <div class="roadline"></div>
   <footer>
-    <span><b>5</b> journeys planned</span>
+    <span id="footerCount"><b>5</b> journeys planned</span>
     <span>Ride safe · Travel far</span>
   </footer>
 
@@ -341,6 +358,35 @@
     root.setAttribute('data-theme', next);
     localStorage.setItem('travels-theme', next);
   });
+
+  (function(){
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var upcoming = document.getElementById('upcomingCards');
+    var past = document.getElementById('pastCards');
+    var pastSec = document.getElementById('pastSec');
+    var footerCount = document.getElementById('footerCount');
+    var cards = Array.prototype.slice.call(upcoming.querySelectorAll('.card[data-end]'));
+    var movedCount = 0;
+
+    cards.forEach(function(card){
+      var end = new Date(card.getAttribute('data-end') + 'T23:59:59');
+      if(end < today){
+        card.classList.add('past');
+        var openTag = card.querySelector('.open');
+        if(openTag) openTag.textContent = 'Completed';
+        past.appendChild(card);
+        movedCount++;
+      }
+    });
+
+    if(movedCount > 0){
+      pastSec.style.display = '';
+      past.style.display = 'grid';
+      var upcomingCount = cards.length - movedCount;
+      footerCount.innerHTML = '<b>' + upcomingCount + '</b> upcoming &middot; <b>' + movedCount + '</b> completed';
+    }
+  })();
 </script>
 </body>
 </html>
