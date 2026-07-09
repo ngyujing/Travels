@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SG → Okinawa → SG · Dive Trip · Mar 5–14, 2027</title>
+<style>
+  :root{
+    --deep:#0B2230;
+    --deep-2:#123244;
+    --deep-3:#184257;
+    --coral:#E8734A;
+    --reef:#3FA796;
+    --sand:#F2E9D8;
+    --foam:#EAF6F4;
+    --dim:#9FC1C4;
+    --line:#1F4A5C;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--deep);color:var(--foam);
+    font-family:'Segoe UI',Arial,sans-serif;
+    line-height:1.55;
+  }
+  .wrap{max-width:1150px;margin:0 auto;padding:30px 18px 60px;}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;}
+
+  .hdr{border-bottom:3px double var(--line);padding-bottom:20px;margin-bottom:26px;
+       display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;}
+  .hdr h1{font-size:36px;letter-spacing:.5px;margin:0;font-weight:800;}
+  .hdr h1 span{color:var(--coral);}
+  .hdr .sub{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--dim);letter-spacing:.6px;margin-top:6px;}
+  .odo{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--deep-2);
+       border:1px solid var(--line);border-radius:4px;padding:10px 16px;text-align:right;}
+  .odo b{display:block;font-size:20px;color:var(--reef);letter-spacing:1px;}
+  .odo small{color:var(--dim);font-size:10px;text-transform:uppercase;letter-spacing:1px;}
+
+  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
+  nav a{
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;
+    color:var(--dim);text-decoration:none;border:1px solid var(--line);
+    padding:6px 12px;border-radius:3px;text-transform:uppercase;
+  }
+  nav a:hover{color:var(--coral);border-color:var(--coral);}
+
+  section{margin-bottom:44px;}
+  h2{
+    font-size:22px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;
+    border-left:5px solid var(--coral);padding-left:12px;margin:0 0 6px;
+  }
+  h2 .no{color:var(--reef);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;margin-right:8px;}
+  .sec-sub{color:var(--dim);font-size:13px;margin:0 0 16px 17px;}
+  h3{font-size:16px;text-transform:uppercase;letter-spacing:1px;color:var(--coral);margin:22px 0 8px;}
+
+  .alert{
+    background:var(--deep-2);border:1px solid var(--coral);border-left:6px solid var(--coral);
+    border-radius:4px;padding:16px 18px;margin-bottom:26px;
+  }
+  .alert h4{margin:0 0 10px;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--coral);
+            font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .alert ul{margin:0;padding-left:20px;font-size:13.5px;color:var(--foam);}
+  .alert li{margin-bottom:8px;}
+  .alert li b{color:var(--reef);}
+  .conf{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;padding:1px 5px;border-radius:2px;
+        border:1px solid var(--line);color:var(--dim);vertical-align:middle;}
+
+  .road{position:relative;padding:66px 6px 6px;overflow-x:auto;background:var(--deep);}
+  .road-track{position:relative;min-width:1300px;height:300px;}
+  .centerline{
+    position:absolute;top:150px;left:0;right:0;height:4px;
+    background-image:repeating-linear-gradient(to right,var(--reef) 0 26px,transparent 26px 46px);opacity:.85;
+  }
+  .node{position:absolute;top:150px;width:180px;transform:translate(-50%,-50%);}
+  .pin{width:22px;height:22px;border-radius:50%;background:var(--foam);border:4px solid var(--deep);
+       outline:2px solid var(--coral);margin:0 auto;position:relative;z-index:3;}
+  .pin.rest{outline-color:var(--reef);}
+  .km-tag{position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--dim);
+          background:var(--deep);padding:2px 6px;border:1px solid var(--line);border-radius:3px;white-space:nowrap;}
+  .card{position:absolute;left:50%;transform:translateX(-50%);width:176px;background:var(--deep-2);
+        border:1px solid var(--line);border-radius:6px;padding:10px 10px 12px;text-align:center;}
+  .card.up{bottom:58px;} .card.down{top:58px;}
+  .card::after{content:"";position:absolute;left:50%;width:1px;background:var(--line);}
+  .card.up::after{bottom:-58px;height:58px;transform:translateX(-50%);}
+  .card.down::after{top:-58px;height:58px;transform:translateX(-50%);}
+  .shield{width:34px;height:34px;margin:0 auto 6px;background:var(--coral);
+          clip-path:polygon(50% 0%,100% 22%,100% 78%,50% 100%,0% 78%,0% 22%);
+          display:flex;align-items:center;justify-content:center;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:13px;color:var(--foam);}
+  .card.rest .shield{background:var(--reef);}
+  .city{font-size:16px;text-transform:uppercase;letter-spacing:.5px;font-weight:800;}
+  .nights{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--coral);letter-spacing:.5px;margin-top:2px;}
+  .card.rest .nights{color:var(--reef);}
+  .vibe{margin-top:6px;color:var(--dim);font-size:11px;line-height:1.35;font-family:Arial,sans-serif;}
+  .legend{display:flex;gap:22px;margin-top:12px;flex-wrap:wrap;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--dim);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;border:2px solid var(--deep);}
+  .dot.out{outline:2px solid var(--coral);} .dot.dive{outline:2px solid var(--reef);}
+
+  table{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:13.5px;}
+  th{background:var(--deep-3);color:var(--coral);text-transform:uppercase;letter-spacing:1px;
+     font-size:11px;font-family:ui-monospace,Menlo,Consolas,monospace;
+     padding:10px 12px;text-align:left;border:1px solid var(--line);}
+  td{padding:10px 12px;border:1px solid var(--line);vertical-align:top;background:var(--deep-2);}
+  tr.dive-row td{background:#123B3A;}
+  tr.dive-row td:first-child{border-left:4px solid var(--reef);}
+  tr.city-row td:first-child{border-left:4px solid var(--coral);}
+  td .tag{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--dim);
+          display:block;margin-top:3px;}
+  td b{color:var(--coral);font-weight:700;}
+
+  .city-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:14px;}
+  .cg{background:var(--deep-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .cg .band{height:6px;background:var(--coral);}
+  .cg.divec .band{background:var(--reef);}
+  .cg .inner{padding:16px 18px 18px;}
+  .cg h4{margin:0;font-size:19px;text-transform:uppercase;letter-spacing:.5px;}
+  .cg .meta{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;color:var(--dim);
+            letter-spacing:.5px;margin:3px 0 12px;}
+  .cg dl{margin:0;font-size:13px;}
+  .cg dt{color:var(--coral);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;
+         text-transform:uppercase;letter-spacing:1px;margin-top:10px;}
+  .cg.divec dt{color:var(--reef);}
+  .cg dd{margin:3px 0 0;color:var(--foam);}
+  .cg dd small{color:var(--dim);}
+
+  .note{background:var(--deep-2);border-left:4px solid var(--reef);padding:12px 16px;
+        font-size:13px;color:var(--dim);margin-top:14px;}
+  .note b{color:var(--foam);}
+  .budget-total td{background:var(--deep-3);font-weight:700;}
+  footer{border-top:2px dashed var(--line);margin-top:30px;padding-top:18px;
+         font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--dim);}
+  @media (max-width:640px){
+    .hdr h1{font-size:24px;}
+    td,th{padding:7px 8px;font-size:12px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hdr">
+    <div>
+      <h1>SG <span>&rarr;</span> Okinawa <span>&rarr;</span> SG</h1>
+      <div class="sub">SOLO/SMALL GROUP · MAR 5&ndash;14 2027 · NAHA BASECAMP · 2 DIVE DAYS · KERAMA ISLANDS</div>
+    </div>
+    <div class="odo">
+      <b>8 NIGHTS</b>
+      <small>Naha, single base</small>
+    </div>
+  </div>
+
+  <nav>
+    <a href="#checklist">Pre-Departure</a>
+    <a href="#map">Trip Map</a>
+    <a href="#schedule">Day-by-Day</a>
+    <a href="#dive">Dive Days</a>
+    <a href="#cities">Stay &amp; Eat</a>
+    <a href="#budget">Budget</a>
+    <a href="#practical">Practical Notes</a>
+  </nav>
+
+  <!-- ================= PRE-DEPARTURE ================= -->
+  <section id="checklist">
+    <div class="alert">
+      <h4>&#9888; Unresolved — lock these before you build the rest around them</h4>
+      <ul>
+        <li><b>The "Friday night" flight is calendar-tagged Saturday.</b> <span class="conf">CONFIRMED PATTERN, JUL 2026 DATA</span> Scoot's only nonstop SIN&ndash;OKA service (TR834/TR835) currently runs Sun/Tue/Wed/Sat, departing SIN at ~02:38am. Booking "Saturday 6 March" means boarding the night of Friday 5 March. There is no Friday-dated departure on this route — don't let a booking site's date label confuse you at checkout.</li>
+        <li><b>March 2027 fares don't exist yet.</b> <span class="conf">CERTAIN</span> This route launched Dec 2025; schedules/fares typically release 9&ndash;11 months out. Set a fare alert now (Google Flights / Skyscanner), but expect to book the actual ticket around Apr&ndash;Jun 2026.</li>
+        <li><b>Both Kerama dive days need booking ahead, in writing which sites you want.</b> <span class="conf">LIKELY</span> Full-day 2&ndash;3 dive trips run daily in season but fill on weekends; with two separate dive days this trip, book both when you land your flight dates, and request different Kerama sites for Day 2 so it's not a repeat.</li>
+        <li><b>5mm wetsuit, not your warm-water 3mm.</b> <span class="conf">CERTAIN</span> Kerama water in March runs ~19&ndash;22&deg;C. Rent from the dive operator or bring your own if you have one — this is not the trip to tough it out in a shorty.</li>
+        <li><b>No dive-day buffer if weather cancels both.</b> <span class="conf">FLAGGED, ACCEPTED RISK</span> Two dive days are booked back-to-back with only Friday (Day 7) as flex. If Thursday's dive is blown out, Friday absorbs it — but if Monday's is also cancelled, this trip has no second dive day at all. That's the trade-off of choosing two fixed dive days over one dive day plus a buffer.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= TRIP MAP ================= -->
+  <section id="map">
+    <h2><span class="no">01</span>Trip Map</h2>
+    <p class="sec-sub">Naha basecamp, no backtracking to a second hotel. Coral pins = land activity days, teal = dive days. North Okinawa (Churaumi/Kouri/Manzamo) is the one long day-trip; everything else clusters around Naha.</p>
+    <div class="road">
+      <div class="road-track" id="track">
+        <div class="centerline"></div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="dot out"></i> Naha / land day</span>
+      <span><i class="dot dive"></i> Kerama dive day</span>
+      <span>Longest day-trip: North Okinawa, ~1.5&ndash;2hr each way</span>
+    </div>
+
+    <h3 style="margin-top:30px;">Real Geography</h3>
+    <p class="sec-sub" style="margin-left:0;">Tap a day button to isolate that day's stops and zoom in — a Google Maps link appears below. Tap any pin for that venue's own listing. Requires internet for tiles; the strip map above is your offline fallback.</p>
+    <div id="daybtns" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px;"></div>
+    <div id="realmap" style="height:520px;border:1px solid var(--line);border-radius:6px;"></div>
+    <div id="leglink" style="margin-top:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;"></div>
+  </section>
+
+  <!-- ================= SCHEDULE ================= -->
+  <section id="schedule">
+    <h2><span class="no">02</span>Day-by-Day Schedule</h2>
+    <p class="sec-sub">2 dive days, 1 long north-island day, rest clustered around Naha. No day requires re-packing — same room the whole trip.</p>
+    <table>
+      <tr><th style="width:52px">Day</th><th style="width:78px">Date</th><th>Activity</th><th style="width:120px">Timing</th><th>Strategic Notes</th></tr>
+      <tr class="city-row"><td><b>0</b></td><td>Fri 5 Mar<br><span class="tag">NIGHT</span></td><td><b>Depart Singapore</b><br><span class="tag">TR834, booked as "Sat 6 Mar 02:38am"</span></td><td>Board ~11:30pm</td><td>Arrive Changi with the usual 2&ndash;3hr international buffer. This is the whole trip's one red-eye — sleep on the plane, don't fight it.</td></tr>
+      <tr class="city-row"><td><b>1</b></td><td>Sat 6 Mar</td><td><b>Arrive Naha</b><br><span class="tag">Land ~8am · check in · easy day</span></td><td>Land 8am<br>Check-in 3pm</td><td>Immigration + monorail into Naha, ~30min. Luggage storage at the hotel if early. Kokusai-dori wander, early dinner, early night — day 1 is jetlag day, not itinerary day.</td></tr>
+      <tr class="city-row"><td><b>2</b></td><td>Sun 7 Mar</td><td><b>Shuri Castle + Tsuboya pottery district</b><br><span class="tag">AM castle, PM pottery lanes</span></td><td>9am&ndash;5pm</td><td>Shuri Castle opens 8:30am — go early, it draws tour groups by mid-morning. Tsuboya's kiln-lined lanes are a 15min taxi/bus from the castle, not a walk. Both close by ~6&ndash;7pm.</td></tr>
+      <tr class="dive-row"><td><b>3</b></td><td>Mon 8 Mar</td><td><b>Dive day 1 — Kerama Islands</b><br><span class="tag">Depart Tomari Port ~7:30&ndash;8am · back ~3pm</span></td><td>7:30am&ndash;3pm</td><td>2&ndash;3 dives + likely humpback whale sighting en route (in-season Jan&ndash;Mar). Book your specific sites now, before Day 6's repeat. Full day — nothing else scheduled.</td></tr>
+      <tr class="city-row"><td><b>4</b></td><td>Tue 9 Mar</td><td><b>Recovery — Naminoue Beach</b><br><span class="tag">Low-key, walkable from Naha</span></td><td>Flexible</td><td>Naminoue Beach is inside Naha city limits, netted swim area, lifeguards on duty. Deliberately unscheduled after a dive day — this is rest, not a second activity slot.</td></tr>
+      <tr class="city-row"><td><b>5</b></td><td>Wed 10 Mar</td><td><b>North Okinawa day-trip</b><br><span class="tag">Churaumi Aquarium + Ocean Expo Park</span></td><td>8am&ndash;evening</td><td>~1.5&ndash;2hr each way — this is the trip's one long transit day. Aquarium's Kuroshio Sea tank (whale sharks, mantas) is the headline; Ocean Expo Park's dolphin show and gardens are free once you're there. Rent a car or book a coach tour — public transit this far north is slow.</td></tr>
+      <tr class="dive-row"><td><b>6</b></td><td>Thu 11 Mar</td><td><b>Dive day 2 — Kerama Islands</b><br><span class="tag">Request different sites from Day 3</span></td><td>7:30am&ndash;3pm</td><td>Same port, same operator recommended for continuity — ask specifically for sites you didn't see Monday. This is the day with no fallback if cancelled; see the flagged risk above.</td></tr>
+      <tr class="city-row"><td><b>7</b></td><td>Fri 12 Mar</td><td><b>Flex day: Kouri Island + Cape Manzamo, or weather makeup dive</b><br><span class="tag">Decide morning-of based on Day 6's outcome</span></td><td>8am&ndash;evening</td><td>If both dives went ahead: Kouri Bridge + Cape Manzamo coastal loop, roughly on the way back from the north if combined with rental car logic. If Thursday got cancelled: this day becomes the makeup dive, and Kouri/Manzamo gets dropped — say so honestly rather than trying to force both in one day.</td></tr>
+      <tr class="city-row"><td><b>8</b></td><td>Sat 13 Mar</td><td><b>Slow day, Naha</b><br><span class="tag">Pack, last market run, nothing planned</span></td><td>Flexible</td><td>Deliberately empty. Last look at Kokusai-dori / Makishi Public Market for gifts.</td></tr>
+      <tr class="city-row"><td><b>9</b></td><td>Sun 14 Mar</td><td><b>Depart</b><br><span class="tag">TR835, ~09:20/10:03am OKA &rarr; SIN</span></td><td>Depart hotel ~7:30am</td><td>Daytime flight, no rush. Land Singapore early afternoon.</td></tr>
+    </table>
+  </section>
+
+  <!-- ================= DIVE DAYS ================= -->
+  <section id="dive">
+    <h2><span class="no">03</span>Dive Days — Kerama Islands</h2>
+    <p class="sec-sub">One hub, two visits. Kerama National Marine Park, ~1hr boat from Tomari Port, Naha — no domestic flight, no second base.</p>
+    <div class="city-grid">
+      <div class="cg divec">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Kerama Islands — Full-Day Boat Dive</h4>
+          <div class="meta">TOMARI PORT DEPARTURE · ~7:30&ndash;8AM · 2&ndash;3 DIVES</div>
+          <dl>
+            <dt>Operators (named, verify current rates)</dt>
+            <dd><b>Aloha Divers Okinawa</b>, <b>SEAKERS Okinawa</b>, or <b>GOLD Scuba Diving</b> — all English-capable, Naha-based, run daily Kerama boat trips with hotel pickup. Full equipment rental (BCD, regulator, 5mm wetsuit, fins, computer) runs around &yen;4,000/day per diver at market rate.</dd>
+            <dt>Conditions in March</dt>
+            <dd>Water ~19&ndash;22&deg;C, visibility often 20&ndash;30m+. This is winter/early-spring water — a proper wetsuit is non-negotiable, not a preference.</dd>
+            <dt>Bonus</dt>
+            <dd>Humpback whale season runs Jan 12&ndash;Mar 31 in the Kerama channel — several operators fold whale watching into the boat transit at no extra cost. Not guaranteed, weather- and luck-dependent.</dd>
+            <dt>Booking</dt>
+            <dd>Book both days as soon as your flights are confirmed — weekend slots (your Day 6 falls on a Thursday, lower risk, but book early regardless) fill with local and tour-group demand.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div class="note"><b>Certification note:</b> <span class="conf">CERTAIN</span> these are fun dives requiring an existing open-water certification for the actual dive slots — if either of you isn't certified, operators offer "discover scuba" intro dives instead (shallower, instructor-led 1:1), which changes group logistics slightly. Confirm certification status for everyone before booking so the operator quotes the right package.</div>
+  </section>
+
+  <!-- ================= STAY & EAT ================= -->
+  <section id="cities">
+    <h2><span class="no">04</span>Stay &amp; Eat — Naha Basecamp</h2>
+    <p class="sec-sub">Single hotel, 8 nights — everything above is a day-trip from here.</p>
+    <div class="city-grid">
+      <div class="cg">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Naha — Matsuyama / Kokusai-dori</h4>
+          <div class="meta">NIGHTS 1&ndash;8 · MAR 6&ndash;13 · SINGLE BASE</div>
+          <dl>
+            <dt>Stay — rate band needs direct check</dt>
+            <dd><b>OMO5 Okinawa Naha by Hoshino Resorts</b> — design-led, tatami-inspired rooms, 4.2★ (917 reviews), walking distance to Kokusai-dori and a short monorail hop from the airport. <span class="conf">GUESSING</span> on March 2027 rate — Hoshino properties can run above your $50&ndash;80 band in peak periods; March is shoulder season so more likely to land in range, but confirm before booking.</dd>
+            <dt>Eat</dt>
+            <dd>Kokusai-dori for the tourist-friendly spread; Makishi Public Market for fresh seafood eaten upstairs; taco rice and Okinawa soba as the local staples worth seeking out over hotel breakfast.</dd>
+            <dt>Do</dt>
+            <dd>Everything in Days 2, 4, 8 above clusters within a short walk or taxi of this base — Shuri Castle, Tsuboya, Naminoue Beach, Kokusai-dori itself.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BUDGET ================= -->
+  <section id="budget">
+    <h2><span class="no">05</span>Budget Estimate</h2>
+    <p class="sec-sub">Order-of-magnitude planning figures in SGD. <span class="conf">GUESSING</span> throughout — March 2027 fares and rates aren't published; treat this as a planning envelope, not a quote.</p>
+    <table>
+      <tr><th>Line</th><th style="width:220px">Basis</th><th style="width:140px">Est. (SGD)</th></tr>
+      <tr><td>Flights — Scoot direct return</td><td>Based on historical SIN-OKA fares (~$300&ndash;450 return); March is shoulder season, not peak</td><td>~$300&ndash;450</td></tr>
+      <tr><td>Accommodation — 8 nights</td><td>OMO5 or equivalent, $50&ndash;80/nt band, rate unconfirmed for March 2027</td><td>~$400&ndash;640</td></tr>
+      <tr><td>Kerama diving — 2 full days</td><td>Boat + guide + full equipment rental, ~&yen;18,000&ndash;25,000/day per diver</td><td>~$230&ndash;320 total</td></tr>
+      <tr><td>North Okinawa day-trip</td><td>Rental car or coach tour + Churaumi Aquarium entry (~&yen;2,000)</td><td>~$60&ndash;100</td></tr>
+      <tr><td>Food — 9 days</td><td>Mix of hawker-style and mid-range, ~&yen;3,000&ndash;4,500/day</td><td>~$260&ndash;390</td></tr>
+      <tr><td>Local transport — monorail, taxis, buses</td><td>Naha-based days only; car rental covers north-island day separately</td><td>~$40&ndash;60</td></tr>
+      <tr><td>Buffer — weather makeup dive, misc</td><td>10%</td><td>~$130</td></tr>
+      <tr class="budget-total"><td>Total envelope</td><td></td><td><b>~$1,420&ndash;2,090</b></td></tr>
+    </table>
+  </section>
+
+  <!-- ================= PRACTICAL ================= -->
+  <section id="practical">
+    <h2><span class="no">06</span>Practical Notes</h2>
+    <table>
+      <tr><th style="width:190px">Topic</th><th>Detail</th></tr>
+      <tr><td>Visa</td><td><span class="conf">CERTAIN</span> Singapore passport holders get visa-free entry to Japan for short tourist stays (well within this trip's length). No action needed beyond a valid passport.</td></tr>
+      <tr><td>Flight schedule risk</td><td><span class="conf">LIKELY</span> this Sun/Tue/Wed/Sat pattern holds, but the route is barely a year old at booking time — recheck Scoot's schedule the moment it releases for March 2027, don't assume today's pattern is locked.</td></tr>
+      <tr><td>Getting around Naha</td><td>Yui Rail (monorail) covers the airport-to-city corridor and most in-town stops. Taxis for anything off the line.</td></tr>
+      <tr><td>Getting around North Okinawa</td><td>Rental car is the practical option for Day 5 and the Kouri/Manzamo leg — public transport up the Motobu peninsula is infrequent and slow. International driving permit required alongside your SG licence.</td></tr>
+      <tr><td>Money</td><td>Japan still leans cash-heavy outside major chains. IC card (Suica-compatible) for the monorail; cash for markets and smaller eateries.</td></tr>
+      <tr><td>SIM/data</td><td>eSIM or airport SIM on arrival — needed for maps on the north-island day and coordinating dive-day pickup times.</td></tr>
+      <tr><td>Weather — March</td><td><span class="conf">LIKELY</span> Okinawa in March is cool-mild (high teens to low 20s°C air), calmer than typhoon season, but still winter-pattern seas — the reason the dive-day weather risk is called out above, not a hypothetical.</td></tr>
+      <tr><td>Emergency</td><td>Japan emergency: <b>110</b> (police), <b>119</b> (ambulance/fire). DAN (Divers Alert Network) contact worth having on file given two dive days.</td></tr>
+    </table>
+  </section>
+
+  <footer>
+    SG &rarr; OKINAWA &rarr; SG · DIVE TRIP PLAN · v1 · COMPILED JUL 2026 · FARES, RATES &amp; THE FLIGHT SCHEDULE ARE ESTIMATES — VERIFY THE FLAGGED ITEMS BEFORE BOOKING
+  </footer>
+</div>
+
+<script>
+const stops = [
+  {x:60,  city:"Singapore", night:"START", km:"", vibe:"Board ~11:30pm Fri, TR834", rest:false},
+  {x:280, city:"Naha Arrive", night:"DAY 1", km:"Land ~8am Sat", vibe:"OMO5 Naha, jetlag day", rest:false},
+  {x:480, city:"Shuri + Tsuboya", night:"DAY 2", km:"", vibe:"Castle AM, pottery lanes PM", rest:false},
+  {x:680, city:"Dive Day 1", night:"DAY 3", km:"~1hr boat", vibe:"Kerama Islands, 2-3 dives", rest:true},
+  {x:880, city:"North Okinawa", night:"DAY 5", km:"~1.5-2hr drive", vibe:"Churaumi Aquarium, Ocean Expo Park", rest:false},
+  {x:1080, city:"Dive Day 2", night:"DAY 6", km:"~1hr boat", vibe:"Kerama repeat, different sites", rest:true},
+  {x:1260, city:"Home", night:"DEPART", km:"Sun 14 Mar", vibe:"TR835 daytime, land SIN early PM", rest:false},
+];
+const track = document.getElementById('track');
+track.style.width = (stops[stops.length-1].x + 80) + "px";
+stops.forEach((s, i) => {
+  const node = document.createElement('div');
+  node.className = 'node';
+  node.style.left = s.x + 'px';
+  const pin = document.createElement('div');
+  pin.className = 'pin' + (s.rest ? ' rest' : '');
+  node.appendChild(pin);
+  if(s.km){
+    const km = document.createElement('div');
+    km.className = 'km-tag';
+    km.textContent = s.km;
+    node.appendChild(km);
+  }
+  const card = document.createElement('div');
+  const isUp = i % 2 === 0;
+  card.className = 'card ' + (isUp ? 'up' : 'down') + (s.rest ? ' rest' : '');
+  card.innerHTML = `
+    <div class="shield">${i+1}</div>
+    <div class="city">${s.city}</div>
+    <div class="nights">${s.night}</div>
+    <div class="vibe">${s.vibe}</div>
+  `;
+  node.appendChild(card);
+  track.appendChild(node);
+});
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function(){
+  if (typeof L === 'undefined') {
+    document.getElementById('realmap').innerHTML =
+      '<div style="padding:30px;color:#9FC1C4;font-family:monospace;font-size:12px;">Real map needs an internet connection — tiles could not load. Use the strip map above.</div>';
+    return;
+  }
+  const map = L.map('realmap', {scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  const pts = [
+    [1, "OMO5 Okinawa Naha", 26.2174139, 127.6799278, "Basecamp · all 8 nights", "ChIJBZVf4yRp5TQRDYAUWPhtdaQ", 1],
+    [2, "Naha Airport", 26.2001297, 127.6466452, "Arrival Sat 6 Mar / Departure Sun 14 Mar", "ChIJjSyLjsRp5TQRkP5WN6rOTFA", 1],
+    [3, "Shuri Castle", 26.2170449, 127.7194833, "Day 2 AM · Ryukyu heritage", "ChIJZ9v0bP5r5TQRi0-esrqficA", 2],
+    [4, "Tsuboya Pottery District", 26.2137386, 127.6907026, "Day 2 PM · kiln lanes", "ChIJCR6kDnBp5TQRRuO-iVajEMI", 2],
+    [5, "Tomari Port", 26.2235557, 127.6837573, "Dive days 3 & 6 · Kerama departure point", "ChIJOy3eAX9p5TQRM8i7JkINg2E", 3],
+    [6, "Naminoue Beach", 26.2212041, 127.6720664, "Day 4 · recovery", "ChIJCW_zD5Bp5TQRngNNmTHsPVg", 4],
+    [7, "Okinawa Churaumi Aquarium", 26.694338, 127.8780131, "Day 5 · Ocean Expo Park", "ChIJPZ5hUjH65DQR_p_dD3CmCOo", 5],
+    [8, "Cape Manzamo", 26.5052353, 127.8504781, "Day 7 · coastal viewpoint", "ChIJ-adBh3gD5TQRGFnnzG897N8", 7],
+    [9, "Kouri Big Bridge", 26.6865208, 128.0172722, "Day 7 · island bridge", "ChIJyy0FRAhZ5DQRIfztLp8vdWc", 7]
+  ];
+
+  const CORAL='#E8734A', REEF='#3FA796';
+  const ll = i => pts[i].slice(2,4);
+  const legs = [
+    {label:"Day 1 · Arrival",          path:[ll(1),ll(0)],               dayNum:1, color:CORAL},
+    {label:"Day 2 · Shuri & Tsuboya",  path:[ll(0),ll(2),ll(3)],         dayNum:2, color:CORAL},
+    {label:"Day 3&6 · Kerama Dives",   path:[ll(0),ll(4)],               dayNum:3, color:REEF},
+    {label:"Day 4 · Naminoue Beach",   path:[ll(0),ll(5)],               dayNum:4, color:CORAL},
+    {label:"Day 5 · North Okinawa",    path:[ll(0),ll(6)],               dayNum:5, color:CORAL},
+    {label:"Day 7 · Kouri & Manzamo",  path:[ll(0),ll(7),ll(8)],         dayNum:7, color:CORAL},
+    {label:"Day 9 · Departure",        path:[ll(0),ll(1)],               dayNum:9, color:CORAL}
+  ];
+
+  legs.forEach(g => {
+    g.line = L.polyline(g.path, {color:g.color, weight:4, opacity:0.9}).addTo(map);
+    g.dir = 'https://www.google.com/maps/dir/?api=1&origin=' + g.path[0].join(',')
+          + '&destination=' + g.path[g.path.length-1].join(',') + '&travelmode=driving';
+  });
+
+  pts.forEach(p => {
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="width:26px;height:26px;border-radius:50%;background:${p[5]===3?'#3FA796':'#E8734A'};
+             border:2px solid #EAF6F4;color:#EAF6F4;font:700 12px/22px monospace;text-align:center;">${p[0]}</div>`,
+      iconSize: [26,26], iconAnchor:[13,13]
+    });
+    const gm = p[4]
+      ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p[1]) + '&query_place_id=' + p[4]
+      : 'https://www.google.com/maps/search/?api=1&query=' + p[2] + ',' + p[3];
+    L.marker(p.slice(2,4), {icon}).addTo(map)
+      .bindPopup(`<b>${p[0]}. ${p[1]}</b><br><span style="font-size:11px;">${p[4]}</span><br>
+        <a href="${gm}" target="_blank" style="font-size:11px;font-weight:700;">Open in Google Maps &nearr;</a>`);
+  });
+
+  const btnBox = document.getElementById('daybtns');
+  const legLink = document.getElementById('leglink');
+  const btnStyle = 'font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;cursor:pointer;padding:6px 12px;border-radius:3px;border:1px solid #1F4A5C;background:#123244;color:#9FC1C4;';
+  const activeStyle = 'border-color:#E8734A;color:#E8734A;';
+
+  function makeBtn(text){ const b=document.createElement('button'); b.textContent=text; b.setAttribute('style',btnStyle); return b; }
+
+  function showAll(){
+    legs.forEach(g => g.line.setStyle({opacity:0.9, weight:4}));
+    map.fitBounds(L.latLngBounds(pts.map(p=>p.slice(2,4))).pad(0.12));
+    legLink.innerHTML = '';
+    setActive(allBtn);
+  }
+  function showLeg(g, btn){
+    legs.forEach(x => x.line.setStyle({opacity: x===g?1:0.18, weight: x===g?6:3}));
+    map.fitBounds(L.latLngBounds(g.path).pad(0.25));
+    legLink.innerHTML = '<a href="'+g.dir+'" target="_blank" style="color:#E8734A;font-weight:700;text-decoration:none;">&#9658; Open '+g.label+' in Google Maps &nearr;</a>';
+    setActive(btn);
+  }
+  let btns=[];
+  function setActive(active){ btns.forEach(b=>b.setAttribute('style',btnStyle)); active.setAttribute('style',btnStyle+activeStyle); }
+
+  const allBtn = makeBtn('ALL DAYS');
+  allBtn.onclick = showAll; btnBox.appendChild(allBtn); btns.push(allBtn);
+  legs.forEach(g => {
+    const b = makeBtn(g.label.toUpperCase());
+    b.onclick = () => showLeg(g, b);
+    btnBox.appendChild(b); btns.push(b);
+  });
+
+  showAll();
+})();
+</script>
+</body>
+</html>

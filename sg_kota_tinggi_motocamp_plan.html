@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SG → Kota Tinggi → SG · Motocamping · May 20–23, 2027</title>
+<style>
+  :root{
+    --asphalt:#1C2321; --asphalt-2:#262F2C; --asphalt-3:#2F3A36;
+    --amber:#E8963C; --jade:#5C8A76; --brick:#B0532E;
+    --cream:#F2EDE4; --cream-dim:#B9B4A9; --line:#3A443F;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--asphalt);color:var(--cream);
+    font-family:'Arial Narrow','Helvetica Neue Condensed',Arial,sans-serif;line-height:1.5;}
+  .wrap{max-width:1150px;margin:0 auto;padding:30px 18px 60px;}
+  .hdr{border-bottom:3px double var(--line);padding-bottom:20px;margin-bottom:26px;
+       display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;}
+  .hdr h1{font-size:36px;letter-spacing:1px;text-transform:uppercase;margin:0;font-weight:800;}
+  .hdr h1 span{color:var(--amber);}
+  .hdr .sub{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--cream-dim);letter-spacing:.6px;margin-top:6px;}
+  .odo{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--asphalt-2);
+       border:1px solid var(--line);border-radius:4px;padding:10px 16px;text-align:right;}
+  .odo b{display:block;font-size:22px;color:var(--amber);letter-spacing:2px;}
+  .odo small{color:var(--cream-dim);font-size:10px;text-transform:uppercase;letter-spacing:1px;}
+  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
+  nav a{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;
+    color:var(--cream-dim);text-decoration:none;border:1px solid var(--line);
+    padding:6px 12px;border-radius:3px;text-transform:uppercase;}
+  nav a:hover{color:var(--amber);border-color:var(--amber);}
+  section{margin-bottom:44px;}
+  h2{font-size:22px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;
+    border-left:5px solid var(--amber);padding-left:12px;margin:0 0 6px;}
+  h2 .no{color:var(--brick);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;margin-right:8px;}
+  .sec-sub{color:var(--cream-dim);font-size:13px;margin:0 0 16px 17px;}
+  h3{font-size:16px;text-transform:uppercase;letter-spacing:1px;color:var(--amber);margin:22px 0 8px;}
+  .alert{background:var(--asphalt-2);border:1px solid var(--brick);border-left:6px solid var(--brick);
+    border-radius:4px;padding:16px 18px;margin-bottom:26px;}
+  .alert h4{margin:0 0 10px;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--brick);
+    font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .alert ul{margin:0;padding-left:20px;font-size:13.5px;color:var(--cream);}
+  .alert li{margin-bottom:8px;}
+  .alert li b{color:var(--amber);}
+  .conf{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;padding:1px 5px;border-radius:2px;
+    border:1px solid var(--line);color:var(--cream-dim);vertical-align:middle;}
+  .road{position:relative;padding:66px 6px 6px;overflow-x:auto;background:var(--asphalt);}
+  .road-track{position:relative;min-width:820px;height:330px;}
+  .centerline{position:absolute;top:165px;left:0;right:0;height:4px;
+    background-image:repeating-linear-gradient(to right,var(--amber) 0 26px,transparent 26px 46px);opacity:.85;}
+  .centerline::before,.centerline::after{content:"";position:absolute;left:0;right:0;height:1px;background:var(--line);}
+  .centerline::before{top:-14px;} .centerline::after{top:14px;}
+  .node{position:absolute;top:165px;width:190px;transform:translate(-50%,-50%);}
+  .pin{width:22px;height:22px;border-radius:50%;background:var(--cream);border:4px solid var(--asphalt);
+    outline:2px solid var(--amber);margin:0 auto;position:relative;z-index:3;}
+  .pin.rest{outline-color:var(--jade);}
+  .km-tag{position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);
+    background:var(--asphalt);padding:2px 6px;border:1px solid var(--line);border-radius:3px;white-space:nowrap;}
+  .card{position:absolute;left:50%;transform:translateX(-50%);width:186px;background:var(--asphalt-2);
+    border:1px solid var(--line);border-radius:6px;padding:10px 10px 12px;text-align:center;}
+  .card.up{bottom:58px;} .card.down{top:58px;}
+  .card::after{content:"";position:absolute;left:50%;width:1px;background:var(--line);}
+  .card.up::after{bottom:-58px;height:58px;transform:translateX(-50%);}
+  .card.down::after{top:-58px;height:58px;transform:translateX(-50%);}
+  .shield{width:34px;height:34px;margin:0 auto 6px;background:var(--brick);
+    clip-path:polygon(50% 0%,100% 22%,100% 78%,50% 100%,0% 78%,0% 22%);
+    display:flex;align-items:center;justify-content:center;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:13px;color:var(--cream);}
+  .card.rest .shield{background:var(--jade);}
+  .city{font-size:16px;text-transform:uppercase;letter-spacing:.5px;font-weight:800;}
+  .nights{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--amber);letter-spacing:.5px;margin-top:2px;}
+  .card.rest .nights{color:var(--jade);}
+  .vibe{margin-top:6px;color:var(--cream-dim);font-size:11px;line-height:1.35;font-family:Arial,sans-serif;}
+  .legend{display:flex;gap:22px;margin-top:12px;flex-wrap:wrap;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;border:2px solid var(--asphalt);}
+  .dot.travel{outline:2px solid var(--amber);} .dot.rest{outline:2px solid var(--jade);}
+  table{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:13.5px;}
+  th{background:var(--asphalt-3);color:var(--amber);text-transform:uppercase;letter-spacing:1px;
+    font-size:11px;font-family:ui-monospace,Menlo,Consolas,monospace;
+    padding:10px 12px;text-align:left;border:1px solid var(--line);}
+  td{padding:10px 12px;border:1px solid var(--line);vertical-align:top;background:var(--asphalt-2);}
+  tr.rest-row td{background:#26332D;}
+  tr.rest-row td:first-child{border-left:4px solid var(--jade);}
+  tr.ride-row td:first-child{border-left:4px solid var(--amber);}
+  td .tag{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);display:block;margin-top:3px;}
+  td b{color:var(--amber);font-weight:700;}
+  .city-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:14px;}
+  .cg{background:var(--asphalt-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .cg .band{height:6px;background:var(--amber);}
+  .cg.restc .band{background:var(--jade);}
+  .cg .inner{padding:16px 18px 18px;}
+  .cg .thumb{width:100%;height:150px;object-fit:cover;display:block;}
+  .cg h4{margin:0;font-size:19px;text-transform:uppercase;letter-spacing:.5px;}
+  .cg .meta{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;color:var(--cream-dim);
+    letter-spacing:.5px;margin:3px 0 12px;}
+  .cg dl{margin:0;font-size:13px;}
+  .cg dt{color:var(--amber);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;
+    text-transform:uppercase;letter-spacing:1px;margin-top:10px;}
+  .cg.restc dt{color:var(--jade);}
+  .cg dd{margin:3px 0 0;color:var(--cream);}
+  .cg dd small{color:var(--cream-dim);}
+  .note{background:var(--asphalt-2);border-left:4px solid var(--jade);padding:12px 16px;
+    font-size:13px;color:var(--cream-dim);margin-top:14px;}
+  .note b{color:var(--cream);}
+  .budget-total td{background:var(--asphalt-3);font-weight:700;}
+  footer{border-top:2px dashed var(--line);margin-top:30px;padding-top:18px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);}
+  @media (max-width:640px){.hdr h1{font-size:24px;} td,th{padding:7px 8px;font-size:12px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hdr">
+    <div>
+      <h1>SG <span>&rarr;</span> Kota Tinggi <span>&rarr;</span> SG</h1>
+      <div class="sub">HONDA CB350 · SOLO MOTOCAMP · MAY 20&ndash;23 2027 (THU&ndash;SUN) · ESTABLISHED + RAW MIX · JOHOR</div>
+    </div>
+    <div class="odo">
+      <b>~225 KM</b>
+      <small>total distance · est.</small>
+    </div>
+  </div>
+
+  <nav>
+    <a href="#checklist">Pre-Departure</a>
+    <a href="#map">Route Map</a>
+    <a href="#schedule">Day-by-Day</a>
+    <a href="#camps">Camp Guides</a>
+    <a href="#bike">Bike &amp; Maintenance</a>
+    <a href="#gear">Camping Gear</a>
+    <a href="#budget">Budget</a>
+    <a href="#practical">Practical Notes</a>
+  </nav>
+
+  <!-- ================= PRE-DEPARTURE ================= -->
+  <section id="checklist">
+    <div class="alert">
+      <h4>&#9888; Unresolved — your action items, not assumptions</h4>
+      <ul>
+        <li><b>Six Acres Campsite — booking risk.</b> <span class="conf">FLAGGED</span> No public phone number listed, and one recent review reports "no response from host... making a booking is like pulling teeth." Contrast: other reviews call it the cleanest, friendliest campsite in Johor. This is a real coin-flip — message via their booking channel (Instagram/Facebook, whatever they list) at least 3-4 weeks out and get a written confirmation before you treat this as locked. Have Kota Tinggi Waterfall camping ground as your fallback second night if Six Acres goes cold.</li>
+        <li><b>Crossing point — likely change from your usual Tuas run.</b> <span class="conf">LIKELY</span> Kota Tinggi sits east of JB. The Woodlands Causeway lands you directly into JB city center, pointed east toward Kota Tinggi via Route 3/Tebrau — Tuas Second Link would mean cutting across JB anyway, adding distance for no benefit on this specific route. Confirm via a live map check close to departure, since Causeway congestion patterns shift.</li>
+        <li><b>Camping permit / fee at Kota Tinggi Waterfall.</b> <span class="conf">LIKELY</span> ~RM5/pax campsite fee, payable on-site, no pre-booking mechanism found — arrive during daylight opening hours to register, don't roll up after dark expecting a night desk.</li>
+        <li><b>VEP — RESOLVED.</b> <span class="conf">RIDER-VERIFIED JUL 2026</span> Not required for SG-registered motorcycles. Re-glance at the JPJ portal the week before — same standing note as your other trips.</li>
+        <li><b>Insurance rider</b> covers West Malaysia generally — same policy check as your other Malaysia trips, no new action if already confirmed.</li>
+        <li><b>Weather window.</b> <span class="conf">Likely</span> May sits in the inter-monsoon transition — lighter rainfall than Nov&ndash;Feb, but afternoon thunderstorms are still the regional pattern. A wet tent on a hilltop campsite is a worse problem than a wet hotel room — pack accordingly (see Gear section).</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= ROUTE MAP ================= -->
+  <section id="map">
+    <h2><span class="no">01</span>Route Map</h2>
+    <p class="sec-sub">Out-and-back into a single district — no long transit day. Amber pins = travel, jade = camp/rest. Both campsites sit ~3.5km apart, inside the same Kota Tinggi pocket.</p>
+    <div class="road">
+      <div class="road-track" id="track">
+        <div class="centerline"></div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="dot travel"></i> Travel day</span>
+      <span><i class="dot rest"></i> Camp / rest</span>
+      <span>Longest leg: SG &rarr; Kota Tinggi, ~110km</span>
+    </div>
+
+    <h3 style="margin-top:30px;">Real Geography — Direction of Travel</h3>
+    <p class="sec-sub" style="margin-left:0;">Tap a day button to isolate that leg and zoom to it — a turn-by-turn Google Maps link appears below the map. Tap any pin for the stop's own Google Maps link. Solid amber = outbound (Thu), dashed jade = the relocate + return (Fri, Sun). Requires internet for tiles; the strip map above is your offline fallback.</p>
+    <div id="daybtns" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px;"></div>
+    <div id="realmap" style="height:520px;border:1px solid var(--line);border-radius:6px;"></div>
+    <div id="leglink" style="margin-top:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;"></div>
+    <div class="legend" style="margin-top:10px;">
+      <span><span style="display:inline-block;width:26px;height:0;border-top:3px solid var(--amber);"></span> Outbound Thu May 20</span>
+      <span><span style="display:inline-block;width:26px;height:0;border-top:3px dashed var(--jade);"></span> Relocate Fri / Return Sun</span>
+      <span>Numbered pins = order of arrival</span>
+    </div>
+  </section>
+
+  <!-- ================= SCHEDULE ================= -->
+  <section id="schedule">
+    <h2><span class="no">02</span>Day-by-Day Schedule</h2>
+    <p class="sec-sub">2 riding days out of 4, one short relocate, one full rest day. No day exceeds ~110km / ~2.5hr saddle time — deliberately light after the transit-heavy options this trip started from.</p>
+    <table>
+      <tr><th style="width:52px">Day</th><th style="width:78px">Date</th><th>Leg / Activity</th><th style="width:120px">Distance</th><th>Strategic Notes</th></tr>
+      <tr class="ride-row"><td><b>1</b></td><td>May 20<br><span class="tag">THU</span></td><td><b>Ride:</b> Singapore &rarr; Kota Tinggi Waterfall camp<br><span class="tag">Depart 9am · Woodlands Causeway &rarr; JB &rarr; Route 3 east</span></td><td>~110km<br>~2&ndash;2.5hr incl. border</td><td>Weekday morning crossing — lighter than a weekend wave. Register &amp; pitch at the established campground by early afternoon, leaving daylight for the main waterfall swim before evening.</td></tr>
+      <tr class="rest-row"><td><b>2</b></td><td>May 21<br><span class="tag">FRI</span></td><td><b>Short relocate:</b> Kota Tinggi Waterfall &rarr; Six Acres Campsite<br><span class="tag">~3.5km, mostly sealed road, short unpaved stretch on entry</span></td><td>~10min ride</td><td>Not a rest day yet — this is a deliberately tiny hop, no re-routing needed. Go slow on the entry track if it rained recently; reviews flag mud on the approach. Pitch, settle in, hilltop evening.</td></tr>
+      <tr class="rest-row"><td><b>3</b></td><td>May 22<br><span class="tag">SAT</span></td><td><b>Rest day — Six Acres</b><br><span class="tag">Stream, hilltop views, stargazing</span></td><td>—</td><td>No riding, no plan. This is the buffer that every one of your other short trips has needed and this one finally has room for. Bike stays parked.</td></tr>
+      <tr class="ride-row"><td><b>4</b></td><td>May 23<br><span class="tag">SUN</span></td><td><b>Ride:</b> Six Acres &rarr; Singapore<br><span class="tag">Route 3 west &rarr; JB &rarr; Woodlands Causeway</span></td><td>~110km<br>~2&ndash;2.5hr + border</td><td>Sunday-return traffic at Woodlands can build by afternoon — depart by 10am to stay ahead of it. Home by early afternoon.</td></tr>
+    </table>
+  </section>
+
+  <!-- ================= CAMP GUIDES ================= -->
+  <section id="camps">
+    <h2><span class="no">03</span>Camp Guides — Stay · Eat · Do</h2>
+    <p class="sec-sub">One established, one rawer — the mix you asked for, both inside the same district so the "relocate" costs you almost nothing.</p>
+    <div class="city-grid">
+
+      <div class="cg">
+        <div class="band"></div>
+        <img class="thumb" src="https://lh3.googleusercontent.com/place-photos/AJRVUZNHw9Q2ihSoA9SxvBksGAoQ5XlvOMXlf2tQF1rU9XZ8gGFIdmqqdmiEHYqYOpxE1_wboB_uVu6VAv8UCYiLF7vSwYYBkGyNpPl_ujJeBORJV4_Zae0M7UcOjT_U_Ds1y1xIJL4hav_L38bdQvA=s4800-w800-h600" alt="Kota Tinggi Waterfall area">
+        <div class="inner">
+          <h4>Kota Tinggi Waterfall — Established</h4>
+          <div class="meta">NIGHT 1 · MAY 20 · CAMPGROUND</div>
+          <dl>
+            <dt>Stay — ~RM5/pax campsite fee</dt>
+            <dd>Designated campsites near the main waterfall, on the same grounds as <b>Kota Rainforest Resort</b>. Toilets, showers, food stalls, parking on-site. Tent rental available if you want a backup. <small>Resort desk: +60 19-755 0231 — call to confirm current camping arrangements and gate hours before you ride down.</small></dd>
+            <dt>Eat</dt>
+            <dd>Food stalls near the entrance; resort restaurant needs advance booking per reviews and runs pricey/slow — don't count on it for a casual dinner. Kota Tinggi town (15km) is the fallback for a proper meal.</dd>
+            <dt>Do</dt>
+            <dd>Main waterfall swim (24m drop, developed pool), secondary waterfall via a short trail, water slides if you're in the mood. Mind the monkeys on the approach road. Crowds build on weekends — you arrive on a Thursday, so this should be quiet.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="cg restc">
+        <div class="band"></div>
+        <img class="thumb" src="https://lh3.googleusercontent.com/place-photos/AG9NLjCUrqr8lEXQ9ZowqAUSgt_kMskigwQGZmm75Hk8Gml3ml6sZnAGSYzXdSv5iC2PMjwEwhG8ySDKGSxrrRNLusjTZmttkTEr3cOHP6A3X5RrYfl0G4LBgCQa45ZNM3ry49sqoSySdbI4lNY4WDVCpy0TKA=s4800-w800-h600" alt="Six Acres Campsite hilltop">
+        <div class="inner">
+          <h4>Six Acres Campsite — Rawer</h4>
+          <div class="meta">NIGHTS 2&ndash;3 · MAY 21&ndash;22 · HILLTOP + STREAM</div>
+          <dl>
+            <dt>Stay — rate unconfirmed</dt>
+            <dd><span class="conf">FLAGGED</span> Hilltop plots (flat and sloped), shaded, natural stream, ~22&ndash;23&deg;C at night. 4.2&#9733; but only 13 reviews — one calls it "best in Johor," another reports host non-responsiveness on booking. Confirm directly and get it in writing before you ride down with no backup plan for the night.</dd>
+            <dt>Eat</dt>
+            <dd>No on-site food — pack in from Kota Tinggi town or the waterfall food stalls before you relocate. This is genuine self-sufficient camping for meals.</dd>
+            <dt>Do</dt>
+            <dd>Stream-side relaxation, short forest/hill trails, stargazing off the ridge, small playground if it matters to you. This is your actual rest day location — nothing scheduled here on purpose.</dd>
+          </dl>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= BIKE ================= -->
+  <section id="bike">
+    <h2><span class="no">04</span>Honda CB350 — Maintenance Plan</h2>
+    <p class="sec-sub">~225km total is the shortest of your Malaysia trips to date — well inside a service interval. Pre-trip, self-checks, post-trip is proportionate; no mid-trip dealer stop needed.</p>
+    <table>
+      <tr><th style="width:150px">When</th><th style="width:220px">Where</th><th>Work</th></tr>
+      <tr><td><b>Pre-trip</b><br><span class="tag">book ~2 weeks out</span></td><td>Your CB350's authorised dealer, Singapore</td><td>Chain tension/lube, tire tread &amp; pressure (unsealed entry track at Six Acres makes tread depth worth checking), brake pad visual, lights/signals/horn.</td></tr>
+      <tr><td><b>Day 2</b><br><span class="tag">May 21, before the Six Acres relocate</span></td><td>Kota Tinggi Waterfall camp</td><td>Quick visual: tire pressure, chain. The unpaved/muddy entry stretch at Six Acres is short but worth a dry-weather check first.</td></tr>
+      <tr><td><b>Day 4</b><br><span class="tag">May 23 AM, before the ride home</span></td><td>Six Acres, self-check</td><td>Tire pressures cold, chain lube if needed, brake lever feel. Non-negotiable before the 110km run.</td></tr>
+      <tr><td><b>Post-trip</b><br><span class="tag">within 1&ndash;2 weeks</span></td><td>Same SG authorised dealer</td><td>Light check — chain/sprocket, tire wear, general fasteners. A full service isn't warranted at this distance.</td></tr>
+    </table>
+  </section>
+
+  <!-- ================= CAMPING GEAR ================= -->
+  <section id="gear">
+    <h2><span class="no">05</span>Camping-Specific Carry Kit</h2>
+    <p class="sec-sub">This is your first motocamping trip in this set of docs — gear list reflects actual overnight camping, not a hotel backup.</p>
+    <table>
+      <tr><th>Item</th><th>Why</th></tr>
+      <tr><td>Compact tent, rated for wet season</td><td>Non-negotiable for Six Acres — no shelter fallback there if a storm hits overnight.</td></tr>
+      <tr><td>Sleeping mat + lightweight sleeping bag or liner</td><td>~22&ndash;23&deg;C nights at Six Acres — cooler than the lowland norm, a liner beats sweating through a full bag.</td></tr>
+      <tr><td>Tarp or rainfly, packed separately and accessible</td><td>Afternoon storms are the May pattern — you want this reachable without unpacking the whole bike.</td></tr>
+      <tr><td>Dry bags for electronics, documents, spare clothes</td><td>Riding gear + tent + wet-season risk means dry storage matters more than on your hotel-based trips.</td></tr>
+      <tr><td>Headlamp + spare batteries</td><td>Both sites are genuinely dark at night — no ambient city light.</td></tr>
+      <tr><td>Sealed food container / dry bag for food</td><td>Monkeys are noted on the Kota Tinggi approach road — don't leave food loose in camp.</td></tr>
+      <tr><td>Portable stove + minimal cookset (optional)</td><td>Six Acres has no food service — if you want a hot meal there, you're bringing it.</td></tr>
+      <tr><td>Chain lube, tire gauge, basic tool roll, puncture plug kit</td><td>Standard carry from your other trips — unchanged.</td></tr>
+      <tr><td>Cash (RM) small notes</td><td>Campsite fees, food stalls — assume no card terminals at either site.</td></tr>
+    </table>
+    <div class="note"><b>Fuel rule:</b> <span class="conf">LIKELY</span> RON97 only for a foreign-registered bike. At ~225km total this trip barely dents a tank — one fill covers the whole loop.</div>
+  </section>
+
+  <!-- ================= BUDGET ================= -->
+  <section id="budget">
+    <h2><span class="no">06</span>Budget Estimate</h2>
+    <p class="sec-sub">Lightest budget of your trips to date by distance and by accommodation cost — campsite fees replace hotel nights. Six Acres rate is a genuine unknown until you get a direct quote.</p>
+    <table>
+      <tr><th>Line</th><th style="width:180px">Basis</th><th style="width:120px">Est. (SGD)</th></tr>
+      <tr><td>Camping fees — 3 nights</td><td>Kota Tinggi ~RM5/pax &middot; Six Acres <span class="conf">GUESSING</span>, unconfirmed rate</td><td>~$15&ndash;40</td></tr>
+      <tr><td>Fuel — RON97</td><td>~225km &divide; ~35km/L &asymp; 6.5L &times; ~RM3.4</td><td>~$7</td></tr>
+      <tr><td>Tolls</td><td>Motorcycles largely toll-exempt on MY highways</td><td>~$0&ndash;5</td></tr>
+      <tr><td>Food — 4 days</td><td>Hawker/food-stall basis, ~RM50&ndash;80/day incl. packed-in meals for Six Acres</td><td>~$55&ndash;90</td></tr>
+      <tr><td>Waterfall park entry</td><td>~RM10 adult</td><td>~$3</td></tr>
+      <tr><td>Pre + post trip bike checks (SG)</td><td>Light checks, no full service needed at this distance</td><td>~$40&ndash;80</td></tr>
+      <tr><td>Buffer — rain gear losses, misc</td><td>10%</td><td>~$20</td></tr>
+      <tr class="budget-total"><td>Total envelope</td><td></td><td><b>~$140&ndash;245</b></td></tr>
+    </table>
+  </section>
+
+  <!-- ================= PRACTICAL ================= -->
+  <section id="practical">
+    <h2><span class="no">07</span>Practical Notes</h2>
+    <table>
+      <tr><th style="width:190px">Topic</th><th>Detail</th></tr>
+      <tr><td>Crossing — outbound Thu May 20</td><td><b>Woodlands Causeway</b>, depart 9am. Weekday morning — lighter than your usual weekend-adjacent crossings. <span class="conf">LIKELY</span> more direct than Tuas for this eastern-Johor route — verify with a live map check closer to the date.</td></tr>
+      <tr><td>Crossing — inbound Sun May 23</td><td>Woodlands again. Depart Six Acres by 10am to stay ahead of Sunday-afternoon return traffic.</td></tr>
+      <tr><td>Documents on the bike</td><td>Passport (6+ months validity), SG driving licence w/ Class 2A/2, vehicle log card / registration, insurance certificate showing West Malaysia cover. Photocopies in a separate bag.</td></tr>
+      <tr><td>VEP</td><td><span class="conf">RESOLVED — RIDER-VERIFIED JUL 2026</span> Not required for SG-registered motorcycles. Re-check the JPJ portal the week before departure — standard practice from your other trips.</td></tr>
+      <tr><td>Money</td><td>Cash RM for campsite fees and food stalls — assume no card acceptance at either site. ATMs in Kota Tinggi town, 15km from the waterfall camp.</td></tr>
+      <tr><td>Riding/camping weather</td><td><span class="conf">Likely</span> May is the inter-monsoon transition — lighter, shorter rain than Nov&ndash;Feb, but afternoon thunderstorms remain the regional pattern. Pitch and settle before early afternoon both camp days.</td></tr>
+      <tr><td>Emergency</td><td>Malaysia emergency: <b>999</b>. Honda Malaysia careline: 1-800-88-3993. PLUS highway assistance: 1-800-88-0000.</td></tr>
+    </table>
+  </section>
+
+  <footer>
+    SG &rarr; KOTA TINGGI &rarr; SG · CB350 MOTOCAMP PLAN · v1 · COMPILED JUL 2026 · RATES, GATE HOURS &amp; SIX ACRES BOOKING ARE ESTIMATES — VERIFY THE FLAGGED ITEMS BEFORE DEPARTURE
+  </footer>
+</div>
+
+<script>
+const stops = [
+  {x:60,  city:"Singapore", night:"START", km:"", vibe:"Depart 9am, Woodlands Causeway", rest:false},
+  {x:340, city:"Kota Tinggi Waterfall", night:"1 NIGHT", km:"~110km / 2-2.5hr", vibe:"Established campground — RM5/pax", rest:false},
+  {x:560, city:"Six Acres", night:"2 NIGHTS", km:"~3.5km / 10min", vibe:"Rawer hilltop + stream camp", rest:true},
+  {x:780, city:"Singapore", night:"END", km:"~110km / 2-2.5hr", vibe:"Home, post-trip bike check", rest:false},
+];
+const track = document.getElementById('track');
+track.style.width = (stops[stops.length-1].x + 80) + "px";
+stops.forEach((s, i) => {
+  const node = document.createElement('div');
+  node.className = 'node';
+  node.style.left = s.x + 'px';
+  const pin = document.createElement('div');
+  pin.className = 'pin' + (s.rest ? ' rest' : '');
+  node.appendChild(pin);
+  if(s.km){
+    const km = document.createElement('div');
+    km.className = 'km-tag';
+    km.textContent = s.km;
+    node.appendChild(km);
+  }
+  const card = document.createElement('div');
+  const isUp = i % 2 === 0;
+  card.className = 'card ' + (isUp ? 'up' : 'down') + (s.rest ? ' rest' : '');
+  card.innerHTML = `
+    <div class="shield">${i===0?'SG':i===stops.length-1?'SG':i}</div>
+    <div class="city">${s.city}</div>
+    <div class="nights">${s.night}</div>
+    <div class="vibe">${s.vibe}</div>
+  `;
+  node.appendChild(card);
+  track.appendChild(node);
+});
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function(){
+  if (typeof L === 'undefined') {
+    document.getElementById('realmap').innerHTML =
+      '<div style="padding:30px;color:#B9B4A9;font-family:monospace;font-size:12px;">Real map needs an internet connection — tiles could not load. Use the strip map above.</div>';
+    return;
+  }
+  const map = L.map('realmap', {scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  const pts = [
+    [1, "Woodlands Causeway — depart 9am Thu", 1.4409, 103.7690, "Border crossing, both directions", null],
+    [2, "Kota Tinggi Waterfall camp (Kota Rainforest Resort)", 1.8115019, 103.846733, "Night 1 · May 20 · established campground, RM5/pax", "ChIJyz7xlEmK2jERWs0ImUjjmZw"],
+    [3, "Six Acres Campsite", 1.8150104, 103.880197, "Nights 2–3 · May 21–22 · rawer hilltop + stream · FLAGGED booking risk", "ChIJf57DisWL2jERfEDszRgaDeA"],
+    [4, "Woodlands Causeway — home Sun", 1.4409, 103.7690, "Depart by 10am to beat Sunday return traffic", null]
+  ];
+
+  const ll = i => pts[i].slice(2,4);
+  const AMBER='#E8963C', JADE='#5C8A76';
+  const legs = [
+    {label:"Day 1 · SG→Kota Tinggi", path:[ll(0),ll(1)], from:0,to:1, color:AMBER, dash:null},
+    {label:"Day 2 · Relocate to Six Acres", path:[ll(1),ll(2)], from:1,to:2, color:JADE, dash:'6 6'},
+    {label:"Day 4 · Six Acres→SG", path:[ll(2),ll(0),ll(3)], from:2,to:3, color:JADE, dash:'10 8'}
+  ];
+
+  legs.forEach(g => {
+    g.line = L.polyline(g.path, {color:g.color, weight:4, opacity:0.9, dashArray:g.dash}).addTo(map);
+    g.dir = 'https://www.google.com/maps/dir/?api=1&origin=' + ll(g.from).join(',')
+          + '&destination=' + ll(g.to).join(',') + '&travelmode=driving';
+  });
+
+  pts.forEach(p => {
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="width:26px;height:26px;border-radius:50%;background:${p[0]===3?'#5C8A76':'#B0532E'};
+             border:2px solid #F2EDE4;color:#F2EDE4;font:700 12px/22px monospace;text-align:center;">${p[0]}</div>`,
+      iconSize: [26,26], iconAnchor:[13,13]
+    });
+    const gm = p[5]
+      ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p[1]) + '&query_place_id=' + p[5]
+      : 'https://www.google.com/maps/search/?api=1&query=' + p[2] + ',' + p[3];
+    L.marker(p.slice(2,4), {icon}).addTo(map)
+      .bindPopup(`<b>${p[0]}. ${p[1]}</b><br><span style="font-size:11px;">${p[4]}</span><br>
+        <a href="${gm}" target="_blank" style="font-size:11px;font-weight:700;">Open in Google Maps &nearr;</a>`);
+  });
+
+  const btnBox = document.getElementById('daybtns');
+  const legLink = document.getElementById('leglink');
+  const btnStyle = 'font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;cursor:pointer;padding:6px 12px;border-radius:3px;border:1px solid #3A443F;background:#262F2C;color:#B9B4A9;';
+  const activeStyle = 'border-color:#E8963C;color:#E8963C;';
+
+  function makeBtn(text){ const b=document.createElement('button'); b.textContent=text; b.setAttribute('style',btnStyle); return b; }
+
+  function showAll(){
+    legs.forEach(g => g.line.setStyle({opacity:0.9, weight:4}));
+    map.fitBounds(L.latLngBounds(pts.map(p=>p.slice(2,4))).pad(0.15));
+    legLink.innerHTML = '';
+    setActive(allBtn);
+  }
+  function showLeg(g, btn){
+    legs.forEach(x => x.line.setStyle({opacity: x===g?1:0.18, weight: x===g?6:3}));
+    map.fitBounds(L.latLngBounds(g.path).pad(0.25));
+    legLink.innerHTML = '<a href="'+g.dir+'" target="_blank" style="color:#E8963C;font-weight:700;text-decoration:none;">&#9658; Open '+g.label+' in Google Maps for turn-by-turn &nearr;</a>';
+    setActive(btn);
+  }
+  let btns=[];
+  function setActive(active){ btns.forEach(b=>b.setAttribute('style',btnStyle)); active.setAttribute('style',btnStyle+activeStyle); }
+
+  const allBtn = makeBtn('ALL DAYS');
+  allBtn.onclick = showAll; btnBox.appendChild(allBtn); btns.push(allBtn);
+  legs.forEach(g => {
+    const b = makeBtn(g.label.toUpperCase());
+    b.onclick = () => showLeg(g, b);
+    btnBox.appendChild(b); btns.push(b);
+  });
+
+  showAll();
+})();
+</script>
+</body>
+</html>
