@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tokyo → Fuji Five Lakes → Tokyo · Jimny Camp + Hike Plan · Oct 23–30 2027</title>
+<style>
+  :root{
+    --night:#1B1E2B;
+    --night-2:#242838;
+    --night-3:#2E3346;
+    --gold:#D3A24C;
+    --moss:#5C7A5E;
+    --vermillion:#B0432E;
+    --cream:#F1ECE1;
+    --cream-dim:#B7B2C4;
+    --line:#3A3F55;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--night);color:var(--cream);
+    font-family:'Arial Narrow','Helvetica Neue Condensed',Arial,sans-serif;
+    line-height:1.5;
+  }
+  .wrap{max-width:1150px;margin:0 auto;padding:30px 18px 60px;}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;}
+
+  /* ============ HEADER ============ */
+  .hdr{border-bottom:3px double var(--line);padding-bottom:20px;margin-bottom:26px;
+       display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;}
+  .hdr h1{font-size:36px;letter-spacing:1px;text-transform:uppercase;margin:0;font-weight:800;}
+  .hdr h1 span{color:var(--gold);}
+  .hdr .sub{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--cream-dim);letter-spacing:.6px;margin-top:6px;}
+  .odo{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--night-2);
+       border:1px solid var(--line);border-radius:4px;padding:10px 16px;text-align:right;}
+  .odo b{display:block;font-size:22px;color:var(--gold);letter-spacing:1.5px;}
+  .odo small{color:var(--cream-dim);font-size:10px;text-transform:uppercase;letter-spacing:1px;}
+
+  /* ============ NAV ============ */
+  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
+  nav a{
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;
+    color:var(--cream-dim);text-decoration:none;border:1px solid var(--line);
+    padding:6px 12px;border-radius:3px;text-transform:uppercase;
+  }
+  nav a:hover{color:var(--gold);border-color:var(--gold);}
+
+  /* ============ SECTIONS ============ */
+  section{margin-bottom:44px;}
+  h2{
+    font-size:21px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;
+    border-left:5px solid var(--gold);padding-left:12px;margin:0 0 6px;
+  }
+  h2 .no{color:var(--vermillion);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;margin-right:8px;}
+  .sec-sub{color:var(--cream-dim);font-size:13px;margin:0 0 16px 17px;}
+  h3{font-size:16px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin:22px 0 8px;}
+
+  /* ============ ALERT / CHECKLIST ============ */
+  .alert{
+    background:var(--night-2);border:1px solid var(--vermillion);border-left:6px solid var(--vermillion);
+    border-radius:4px;padding:16px 18px;margin-bottom:14px;
+  }
+  .alert h4{margin:0 0 10px;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--vermillion);
+            font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .alert ul{margin:0;padding-left:20px;font-size:13.5px;color:var(--cream);}
+  .alert li{margin-bottom:8px;}
+  .alert li b{color:var(--gold);}
+  .conf{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;padding:1px 5px;border-radius:2px;
+        border:1px solid var(--line);color:var(--cream-dim);vertical-align:middle;}
+  .correction{background:var(--night-2);border:1px solid var(--moss);border-left:6px solid var(--moss);
+        border-radius:4px;padding:14px 18px;margin-bottom:26px;font-size:13px;color:var(--cream);}
+  .correction b{color:var(--moss);font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.5px;}
+
+  /* ============ STRIP MAP ============ */
+  .road{position:relative;padding:66px 6px 6px;overflow-x:auto;background:var(--night);}
+  .road-track{position:relative;min-width:1300px;height:330px;}
+  .centerline{
+    position:absolute;top:165px;left:0;right:0;height:4px;
+    background-image:repeating-linear-gradient(to right,var(--gold) 0 26px,transparent 26px 46px);opacity:.85;
+  }
+  .centerline::before,.centerline::after{content:"";position:absolute;left:0;right:0;height:1px;background:var(--line);}
+  .centerline::before{top:-14px;} .centerline::after{top:14px;}
+  .node{position:absolute;top:165px;width:172px;transform:translate(-50%,-50%);}
+  .pin{width:22px;height:22px;border-radius:50%;background:var(--cream);border:4px solid var(--night);
+       outline:2px solid var(--gold);margin:0 auto;position:relative;z-index:3;}
+  .pin.rest{outline-color:var(--moss);}
+  .km-tag{position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);
+          background:var(--night);padding:2px 6px;border:1px solid var(--line);border-radius:3px;white-space:nowrap;}
+  .card{position:absolute;left:50%;transform:translateX(-50%);width:172px;background:var(--night-2);
+        border:1px solid var(--line);border-radius:6px;padding:10px 10px 12px;text-align:center;}
+  .card.up{bottom:58px;} .card.down{top:58px;}
+  .card::after{content:"";position:absolute;left:50%;width:1px;background:var(--line);}
+  .card.up::after{bottom:-58px;height:58px;transform:translateX(-50%);}
+  .card.down::after{top:-58px;height:58px;transform:translateX(-50%);}
+  .shield{width:34px;height:34px;margin:0 auto 6px;background:var(--vermillion);
+          clip-path:polygon(50% 0%,100% 22%,100% 78%,50% 100%,0% 78%,0% 22%);
+          display:flex;align-items:center;justify-content:center;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:13px;color:var(--cream);}
+  .card.rest .shield{background:var(--moss);}
+  .city{font-size:16px;text-transform:uppercase;letter-spacing:.5px;font-weight:800;}
+  .nights{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--gold);letter-spacing:.5px;margin-top:2px;}
+  .card.rest .nights{color:var(--moss);}
+  .vibe{margin-top:6px;color:var(--cream-dim);font-size:11px;line-height:1.35;font-family:Arial,sans-serif;}
+  .legend{display:flex;gap:22px;margin-top:12px;flex-wrap:wrap;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;border:2px solid var(--night);}
+  .dot.travel{outline:2px solid var(--gold);} .dot.rest{outline:2px solid var(--moss);}
+
+  /* ============ TABLES ============ */
+  table{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:13.5px;}
+  th{background:var(--night-3);color:var(--gold);text-transform:uppercase;letter-spacing:1px;
+     font-size:11px;font-family:ui-monospace,Menlo,Consolas,monospace;
+     padding:10px 12px;text-align:left;border:1px solid var(--line);}
+  td{padding:10px 12px;border:1px solid var(--line);vertical-align:top;background:var(--night-2);}
+  tr.rest-row td{background:#28303F;}
+  tr.rest-row td:first-child{border-left:4px solid var(--moss);}
+  tr.ride-row td:first-child{border-left:4px solid var(--gold);}
+  td .tag{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);
+          display:block;margin-top:3px;}
+  td b{color:var(--gold);font-weight:700;}
+
+  /* ============ CITY CARDS ============ */
+  .city-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:14px;}
+  .cg{background:var(--night-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .cg .band{height:6px;background:var(--gold);}
+  .cg.restc .band{background:var(--moss);}
+  .cg .inner{padding:16px 18px 18px;}
+  .cg h4{margin:0;font-size:18px;text-transform:uppercase;letter-spacing:.5px;}
+  .cg .meta{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;color:var(--cream-dim);
+            letter-spacing:.5px;margin:3px 0 12px;}
+  .cg dl{margin:0;font-size:13px;}
+  .cg dt{color:var(--gold);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;
+         text-transform:uppercase;letter-spacing:1px;margin-top:10px;}
+  .cg.restc dt{color:var(--moss);}
+  .cg dd{margin:3px 0 0;color:var(--cream);}
+  .cg dd small{color:var(--cream-dim);}
+
+  /* ============ MISC ============ */
+  .note{background:var(--night-2);border-left:4px solid var(--moss);padding:12px 16px;
+        font-size:13px;color:var(--cream-dim);margin-top:14px;}
+  .note b{color:var(--cream);}
+  .budget-total td{background:var(--night-3);font-weight:700;}
+  footer{border-top:2px dashed var(--line);margin-top:30px;padding-top:18px;
+         font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);}
+  @media (max-width:640px){
+    .hdr h1{font-size:24px;}
+    td,th{padding:7px 8px;font-size:12px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ================= HEADER ================= -->
+  <div class="hdr">
+    <div>
+      <h1>Tokyo <span>&rarr;</span> Fuji Five Lakes <span>&rarr;</span> Tokyo</h1>
+      <div class="sub">SUZUKI JIMNY SIERRA ROOFTOP CAMPER · 2-UP · SAT 23 &ndash; SAT 30 OCT 2027 · SINGLE BASECAMP + RYOKAN CONTRAST · 4 ANNUAL LEAVE DAYS</div>
+    </div>
+    <div class="odo">
+      <b>~180 KM LOOP</b>
+      <small>7 days / 6 nights · est.</small>
+    </div>
+  </div>
+
+  <nav>
+    <a href="#checklist">Pre-Departure</a>
+    <a href="#map">Route Map</a>
+    <a href="#schedule">Day-by-Day</a>
+    <a href="#stays">Stay &amp; Activity Guides</a>
+    <a href="#rental">Rental &amp; Practical</a>
+    <a href="#budget">Budget</a>
+  </nav>
+
+  <!-- ================= PRE-DEPARTURE ================= -->
+  <section id="checklist">
+    <div class="correction">
+      <b>CORRECTION —</b> in the earlier chat turn I quoted "2 annual leave days" for the compact 4-night version of this trip. That undercounted the return-travel day. The honest number for the version we've now locked (7 days on the ground) is <b>4 leave days</b> (Mon 25, Tue 26, Wed 27, Fri 29 Oct) — Thu 28 (Deepavali) is free, and both bookend weekends are free. Corrected throughout this document.
+    </div>
+    <div class="alert">
+      <h4>&#9888; Unresolved — your action items, not assumptions</h4>
+      <ul>
+        <li><b>International Driving Permit.</b> <span class="conf">LIKELY</span> Singapore issues Geneva Convention 1949 IDPs via the AA Singapore, and Japan recognizes them. Apply well before departure — processing can take 1-2 weeks and it's not a same-week fix.</li>
+        <li><b>Rental age &amp; licence-history minimum.</b> <span class="conf">GUESSING</span> Overland Japan's exact minimum age and "years licensed" requirement isn't public on the page I pulled — confirm directly with them before booking, especially since this is a 2-up rooftop-tent rig and they'll want to know driver experience.</li>
+        <li><b>Lake Shoji Campground reservation.</b> This week sits right on the koyo (autumn foliage) peak <i>and</i> a Singapore long weekend — Japanese domestic camper traffic will be heavy too. Book the site the moment dates are final, not "closer to the date."</li>
+        <li><b>Ubuya ryokan booking.</b> Fuji-view rooms at lakeside ryokans sell out fastest for exactly this kind of weekend. Book both nights (Mon 25 &amp; Tue 26) together.</li>
+        <li><b>Mt. Mitsutoge trail status.</b> <span class="conf">LIKELY</span> Sections close temporarily after heavy rain — check local trail-condition boards (posted at the ropeway station) the morning of, and have Day 3's Chureito Pagoda walk as the fallback if the mountain's closed that day — it's easy to swap since both are non-technical.</li>
+        <li><b>No dedicated weather-buffer day this time.</b> Unlike the Okinawa dive trip, this itinerary doesn't carry a spare day if a typhoon-tail system rolls through — the trip is short enough that losing a day to weather means losing an activity, not just re-shuffling. Worth knowing going in, not discovering on Day 2.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= ROUTE MAP ================= -->
+  <section id="map">
+    <h2><span class="no">01</span>Route Map</h2>
+    <p class="sec-sub">Single basecamp at Lake Shoji for both camping nights — no relocation mid-camp. One planned shift to a ryokan for contrast, one wine-region stop on the way back to Tokyo. Gold pins = active/transit days, jade = rest or leisure.</p>
+    <div class="road">
+      <div class="road-track" id="track">
+        <div class="centerline"></div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="dot travel"></i> Activity / transit day</span>
+      <span><i class="dot rest"></i> Rest / leisure</span>
+      <span>Longest drive: Kawaguchiko &rarr; Tokyo, ~90km</span>
+    </div>
+
+    <h3 style="margin-top:30px;">Real Geography — Direction of Travel</h3>
+    <p class="sec-sub" style="margin-left:0;">Tap a day button to isolate that leg and zoom to it — a turn-by-turn Google Maps link appears below the map. Tap any pin for its own Google Maps listing. Requires internet for tiles; the strip map above is your offline fallback.</p>
+    <div id="daybtns" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px;"></div>
+    <div id="realmap" style="height:520px;border:1px solid var(--line);border-radius:6px;"></div>
+    <div id="leglink" style="margin-top:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;"></div>
+    <div class="legend" style="margin-top:10px;">
+      <span><span style="display:inline-block;width:26px;height:0;border-top:3px solid var(--gold);"></span> Outbound leg</span>
+      <span><span style="display:inline-block;width:26px;height:0;border-top:3px dashed var(--moss);"></span> Return leg</span>
+      <span>Numbered pins = order of arrival</span>
+    </div>
+  </section>
+
+  <!-- ================= SCHEDULE ================= -->
+  <section id="schedule">
+    <h2><span class="no">02</span>Day-by-Day Schedule</h2>
+    <p class="sec-sub">2 camping nights (same site, no repack mid-camp), 2 ryokan nights, 2 Tokyo nights. One hike type per day is deliberately varied — moderate mountain, easy viewpoint, none, none, wine-region walk, free city day.</p>
+    <table>
+      <tr><th style="width:52px">Day</th><th style="width:90px">Date</th><th>Activity</th><th style="width:130px">Base</th><th>Strategic Notes</th></tr>
+      <tr class="ride-row"><td><b>1</b></td><td>Sat 23 Oct<br><span class="tag">SAT</span></td><td><b>Arrive Tokyo, Jimny pickup</b><br><span class="tag">Overland Japan, Yutenji &rarr; drive ~2hr to Fuji Five Lakes</span></td><td>Camp — Lake Shoji<br><span class="tag">Night 1</span></td><td>Redeye Fri 22 Oct lands Sat morning — build in a few hours' buffer before the pickup briefing and gear check. Set camp before dark; sunset ~5pm in late Oct.</td></tr>
+      <tr class="ride-row"><td><b>2</b></td><td>Sun 24 Oct<br><span class="tag">SUN</span></td><td><b>Hike:</b> Kachi Kachi Ropeway &rarr; Mt. Mitsutoge<br><span class="tag">Moderate, ~4-6hr round trip · 360&deg; Fuji view</span></td><td>Camp — Lake Shoji<br><span class="tag">Night 2</span></td><td>Start early — ropeway queues build by mid-morning. PM: Oshino Hakkai traditional spring-fed village for food and a slower pace after the hike. Same campsite tonight — no pack-down.</td></tr>
+      <tr class="rest-row"><td><b>3</b></td><td>Mon 25 Oct<br><span class="tag">MON · LEAVE</span></td><td><b>Pack down camp · Easy hike + onsen</b><br><span class="tag">Chureito Pagoda (AM) &rarr; Fujiyama Onsen (PM)</span></td><td>Ryokan — Ubuya<br><span class="tag">Night 3</span></td><td>Chureito before 8am — the 400-step climb gets a queue after that. Onsen doubles as your laundry stop (coin laundromat nearby). Check into Ubuya by late afternoon.</td></tr>
+      <tr class="rest-row"><td><b>4</b></td><td>Tue 26 Oct<br><span class="tag">TUE · LEAVE</span></td><td><b>Free / leisure day</b><br><span class="tag">Oishi Park lakeside walk · Kubota Itchiku Art Museum (optional)</span></td><td>Ryokan — Ubuya<br><span class="tag">Night 4</span></td><td>No driving planned. This is the couple's-pace day — a slow lakeside walk, the kimono-art museum if you want an indoor option, and a full onsen evening at the ryokan.</td></tr>
+      <tr class="ride-row"><td><b>5</b></td><td>Wed 27 Oct<br><span class="tag">WED · LEAVE</span></td><td><b>Drive:</b> Kawaguchiko &rarr; Katsunuma &rarr; Tokyo<br><span class="tag">Wine-region stop, ~1.5hr, then ~1.5hr on to Tokyo</span></td><td>Tokyo — Hotel Fukudaya<br><span class="tag">Night 5</span></td><td>Katsunuma Winery for a self-guided tasting — genuinely different activity type from anything else on the trip. Drop the Jimny at Yutenji with a full tank before checking in near Shibuya.</td></tr>
+      <tr class="rest-row"><td><b>6</b></td><td>Thu 28 Oct<br><span class="tag">THU · PUBLIC HOLIDAY</span></td><td><b>Free day — Tokyo</b><br><span class="tag">City culture/food, no car needed</span></td><td>Tokyo — Hotel Fukudaya<br><span class="tag">Night 6</span></td><td>Deepavali — no leave cost. Open day: neighbourhood-hop on foot/train (Shibuya is a 13-min walk from the hotel).</td></tr>
+      <tr class="ride-row"><td><b>7</b></td><td>Fri 29 Oct<br><span class="tag">FRI · LEAVE</span></td><td><b>Half-day Tokyo, evening flight home</b><br><span class="tag">Redeye departs Fri night</span></td><td>&mdash;</td><td>Last light shopping/sights, then airport. Lands Singapore Sat 30 Oct morning — a free weekend day to recover, no leave needed for the landing day.</td></tr>
+    </table>
+  </section>
+
+  <!-- ================= STAYS ================= -->
+  <section id="stays">
+    <h2><span class="no">03</span>Stay &amp; Activity Guides</h2>
+    <div class="city-grid">
+
+      <div class="cg">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Lake Shoji Campground</h4>
+          <div class="meta">NIGHTS 1&ndash;2 · OCT 23&ndash;24 · ★4.1</div>
+          <dl>
+            <dt>Stay</dt>
+            <dd><b>Sh&#333;jiko Camping Cottage</b> — lakeside pitch, classic thousand-yen-note Fuji reflection on clear mornings. Reservation strongly recommended for this weekend, not walk-up.</dd>
+            <dt>Eat</dt>
+            <dd>Cook at camp with the Jimny's kitchen kit; Oshino Hakkai's food stalls (grilled fish, corn, mochi) cover Day 2's lunch.</dd>
+            <dt>Do</dt>
+            <dd>Kachi Kachi Ropeway + Mt. Mitsutoge hike, Oshino Hakkai village. Backup if Mitsutoge's closed: swap in the Chureito Pagoda walk from Day 3 and push the onsen to Day 2 evening.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="cg restc">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Ubuya Ryokan, Lake Kawaguchiko</h4>
+          <div class="meta">NIGHTS 3&ndash;4 · OCT 25&ndash;26 · ★4.4</div>
+          <dl>
+            <dt>Stay</dt>
+            <dd><b>Ubuya</b> — boutique lakeside ryokan, Fuji-view rooms, indoor/outdoor onsen. Reviews flag that "private bath" rooms have a regular tub, not a private onsen — book the standard Fuji-view room and use the shared onsen instead, it's cheaper and the actual highlight.</dd>
+            <dt>Eat</dt>
+            <dd>Kaiseki dinner and breakfast typically included at this tier — confirm at booking. Local Yoshida udon (thick, firm noodles) is the regional specialty if you want one meal out.</dd>
+            <dt>Do</dt>
+            <dd>Oishi Park northern-shore lakeside walk, Kubota Itchiku Art Museum (kimono textile art) as an indoor option, onsen soak both evenings.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="cg">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Hotel Fukudaya, Shibuya/Meguro</h4>
+          <div class="meta">NIGHTS 5&ndash;6 · OCT 27&ndash;28 · ★4.4</div>
+          <dl>
+            <dt>Stay</dt>
+            <dd><b>Hotel Fukudaya</b> — tatami-style rooms, ryokan atmosphere in central Tokyo, ~13min walk to Shibuya station, close to the Yutenji drop-off point. No-shoes-indoors policy, luggage storage available if you want to explore before check-in.</dd>
+            <dt>Eat</dt>
+            <dd>Jalan-Alor-style izakaya hopping around Shibuya/Nakameguro on the free Deepavali day.</dd>
+            <dt>Do</dt>
+            <dd>Open city day — no fixed plan by design, this is the "wind-down" contrast to five days of driving and hiking.</dd>
+          </dl>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= RENTAL & PRACTICAL ================= -->
+  <section id="rental">
+    <h2><span class="no">04</span>Jimny Rental &amp; Practical Notes</h2>
+    <p class="sec-sub">This is a rental, not an owned vehicle — no maintenance plan needed, but the handover/return process and documentation carry their own risk points.</p>
+    <table>
+      <tr><th style="width:190px">Topic</th><th>Detail</th></tr>
+      <tr><td>Vehicle</td><td>Suzuki Jimny Sierra with rooftop tent, 2-seat capacity — matches a 2-up trip exactly. Comes with full camping/cooking gear, awning, and (per the operator) a house battery for camp power. Confirm exact inclusions at booking.</td></tr>
+      <tr><td>Licence &amp; IDP</td><td><span class="conf">LIKELY</span> Singapore driving licence + Geneva Convention 1949 International Driving Permit (via AA Singapore) should be sufficient — Japan recognises this convention. Apply for the IDP with enough lead time; it's not an on-arrival document.</td></tr>
+      <tr><td>Pickup / return</td><td>Overland Japan, Yutenji (Meguro City) — ★4.8, 8:30am&ndash;6pm daily. Return with a full tank; refuelling/service charges apply otherwise per their terms.</td></tr>
+      <tr><td>Fuel</td><td>Standard unleaded, no special grade restriction for Japan-registered rentals (unlike Malaysia's foreign-vehicle RON97 rule). Fill before returning to Yutenji.</td></tr>
+      <tr><td>Campsite etiquette</td><td>Open-flame cooking generally limited to gas stoves provided in the vehicle kit — no open fires inside the tent, per standard rental terms. Confirm each campground's specific fire/BBQ rules on arrival.</td></tr>
+      <tr><td>Weather watch</td><td><span class="conf">LIKELY</span> Late October is past peak typhoon season but not fully clear of it. No buffer day is built into this 7-day version — check the JMA forecast daily from ~5 days out and be ready to swap Day 2/Day 3 activities if a system is inbound.</td></tr>
+      <tr><td>Emergency</td><td>Japan emergency: <b>110</b> (police), <b>119</b> (fire/ambulance). Overland Japan roadside assistance number provided at handover — save it before you leave Tokyo, signal is patchy around the lakes.</td></tr>
+    </table>
+  </section>
+
+  <!-- ================= BUDGET ================= -->
+  <section id="budget">
+    <h2><span class="no">05</span>Budget Estimate</h2>
+    <p class="sec-sub">Order-of-magnitude planning figures in SGD, for two people. Autumn-foliage-weekend pricing may run above baseline — book accommodation now, not closer to the date.</p>
+    <table>
+      <tr><th>Line</th><th style="width:190px">Basis</th><th style="width:120px">Est. (SGD)</th></tr>
+      <tr><td>Flights — SG&ndash;Tokyo return, 2 pax</td><td>Redeye out/back, economy, holiday-adjacent pricing</td><td>~$900&ndash;1,300</td></tr>
+      <tr><td>Jimny Sierra rental — 6 days incl. camping kit</td><td>Overland Japan-tier pricing, includes gear</td><td>~$650&ndash;900</td></tr>
+      <tr><td>Campground — 2 nights</td><td>Lake Shoji, holiday-weekend rate</td><td>~$60&ndash;90</td></tr>
+      <tr><td>Ryokan — Ubuya, 2 nights</td><td>Fuji-view room, likely incl. dinner/breakfast</td><td>~$500&ndash;750</td></tr>
+      <tr><td>Tokyo hotel — 2 nights</td><td>Hotel Fukudaya, tatami double</td><td>~$260&ndash;340</td></tr>
+      <tr><td>Fuel</td><td>~180km loop + local driving</td><td>~$40&ndash;55</td></tr>
+      <tr><td>Ropeway + activity entries</td><td>Kachi Kachi Ropeway, Chureito parking, museum, onsen</td><td>~$60&ndash;90</td></tr>
+      <tr><td>Food — 7 days, 2 pax</td><td>Mix of camp cooking, casual, and one ryokan kaiseki</td><td>~$350&ndash;480</td></tr>
+      <tr><td>Wine tasting — Katsunuma</td><td>Self-guided tasting card, 2 pax</td><td>~$40&ndash;60</td></tr>
+      <tr><td>Buffer — misc, transit</td><td>~10%</td><td>~$280</td></tr>
+      <tr class="budget-total"><td>Total envelope</td><td></td><td><b>~$3,100&ndash;4,350</b></td></tr>
+    </table>
+  </section>
+
+  <footer>
+    TOKYO &rarr; FUJI FIVE LAKES &rarr; TOKYO · JIMNY CAMP + HIKE PLAN · v1 · COMPILED JUL 2026 · RATES, RENTAL TERMS &amp; TRAIL STATUS ARE ESTIMATES — VERIFY THE FLAGGED ITEMS BEFORE DEPARTURE
+  </footer>
+</div>
+
+<script>
+const stops = [
+  {x:60,  city:"Tokyo", night:"PICKUP", km:"", vibe:"Overland Japan, Yutenji — Jimny + gear", rest:false},
+  {x:340, city:"Lake Shoji", night:"2 NIGHTS", km:"~90km / 2hr", vibe:"Camp · lakeside · Fuji reflection", rest:false},
+  {x:660, city:"Kawaguchiko", night:"2 NIGHTS", km:"~10km / 20min", vibe:"Ubuya Ryokan · onsen · Fuji-view", rest:true},
+  {x:940, city:"Katsunuma", night:"PASS THROUGH", km:"~45km / 1hr", vibe:"Wine-region tasting stop", rest:false},
+  {x:1200, city:"Tokyo", night:"2 NIGHTS", km:"~90km / 1.5hr", vibe:"Hotel Fukudaya · drop-off · free day", rest:true},
+];
+const track = document.getElementById('track');
+track.style.width = (stops[stops.length-1].x + 100) + "px";
+stops.forEach((s, i) => {
+  const node = document.createElement('div');
+  node.className = 'node';
+  node.style.left = s.x + 'px';
+  const pin = document.createElement('div');
+  pin.className = 'pin' + (s.rest ? ' rest' : '');
+  node.appendChild(pin);
+  if(s.km){
+    const km = document.createElement('div');
+    km.className = 'km-tag';
+    km.textContent = s.km;
+    node.appendChild(km);
+  }
+  const card = document.createElement('div');
+  const isUp = i % 2 === 0;
+  card.className = 'card ' + (isUp ? 'up' : 'down') + (s.rest ? ' rest' : '');
+  card.innerHTML = `
+    <div class="shield">${i===0?'TYO':i===stops.length-1?'TYO':i}</div>
+    <div class="city">${s.city}</div>
+    <div class="nights">${s.night}</div>
+    <div class="vibe">${s.vibe}</div>
+  `;
+  node.appendChild(card);
+  track.appendChild(node);
+});
+</script>
+
+<!-- ============ REAL MAP (Leaflet + OSM) ============ -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function(){
+  if (typeof L === 'undefined') {
+    document.getElementById('realmap').innerHTML =
+      '<div style="padding:30px;color:#B7B2C4;font-family:monospace;font-size:12px;">Real map needs an internet connection — tiles could not load. Use the strip map above.</div>';
+    return;
+  }
+  const map = L.map('realmap', {scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  // [order, name, lat, lng, detail, google place_id or null]
+  const pts = [
+    [1, "Overland Japan — Yutenji pickup", 35.635177, 139.6945553, "Day 1 · Jimny + gear handover", "ChIJAfxJO1qLGGARY2SDszwET2c"],
+    [2, "Lake Shoji Campground", 35.4890087, 138.6025218, "Nights 1-2 · Oct 23-24 · lakeside, Fuji reflection", "ChIJW22e4IvmG2ARIQiRhMlME_Y"],
+    [3, "Kachi Kachi Ropeway / Mt. Mitsutoge", 35.504032099999996, 138.7720895, "Day 2 hike — ropeway-assisted, 360° Fuji view", "ChIJVVWpiyZeGWARQnEv2dEkp08"],
+    [4, "Oshino Hakkai", 35.4600675, 138.8324741, "Day 2 PM — traditional spring-fed village", "ChIJK4SZn4VmGWARcZ-vsGukOhY"],
+    [5, "Chureito Pagoda", 35.5012626, 138.8013852, "Day 3 AM — easy hike, iconic Fuji + pagoda view", "ChIJc6BS_UxnGWARmeeuIEnjV9o"],
+    [6, "Fujiyama Onsen", 35.4834879, 138.7794548, "Day 3 PM — soak + laundry", "ChIJW9hrJ8BgGWARkijUaC7BdcE"],
+    [7, "Ubuya Ryokan", 35.512822, 138.7689064, "Nights 3-4 · Oct 25-26 · boutique, Fuji-view, onsen", "ChIJK4evUjdeGWARU3gkvo_nU_4"],
+    [8, "Katsunuma Winery", 35.656131900000005, 138.7157307, "Day 5 — wine-region tasting stop en route", "ChIJZ7nu7n79G2ARG7VxJs6WY5s"],
+    [9, "Overland Japan — Yutenji drop-off", 35.635177, 139.6945553, "Day 5 PM — Jimny return, full tank", "ChIJAfxJO1qLGGARY2SDszwET2c"]
+  ];
+
+  const ll = i => pts[i].slice(2,4);
+  const GOLD='#D3A24C', MOSS='#5C7A5E';
+  const legs = [
+    {label:"Day 1 · Tokyo→Lake Shoji",       path:[ll(0),ll(1)],           from:0,to:1, color:GOLD, dash:null},
+    {label:"Day 2 · Mitsutoge hike loop",    path:[ll(1),ll(2),ll(3),ll(1)], from:1,to:1, color:GOLD, dash:null},
+    {label:"Day 3 · Pagoda→Onsen→Ryokan",    path:[ll(1),ll(4),ll(5),ll(6)], from:1,to:6, color:GOLD, dash:null},
+    {label:"Day 5 · Kawaguchiko→Tokyo",      path:[ll(6),ll(7),ll(8)],      from:6,to:8, color:MOSS, dash:'10 8'}
+  ];
+
+  legs.forEach(g => {
+    g.line = L.polyline(g.path, {color:g.color, weight:4, opacity:0.9, dashArray:g.dash}).addTo(map);
+    g.dir = 'https://www.google.com/maps/dir/?api=1&origin=' + ll(g.from).join(',')
+          + '&destination=' + ll(g.to).join(',') + '&travelmode=driving';
+  });
+
+  pts.forEach(p => {
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="width:26px;height:26px;border-radius:50%;background:${[2,7].includes(p[0])?'#5C7A5E':'#B0432E'};
+             border:2px solid #F1ECE1;color:#F1ECE1;font:700 12px/22px monospace;text-align:center;">${p[0]}</div>`,
+      iconSize: [26,26], iconAnchor:[13,13]
+    });
+    const gm = p[5]
+      ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p[1]) + '&query_place_id=' + p[5]
+      : 'https://www.google.com/maps/search/?api=1&query=' + p[2] + ',' + p[3];
+    L.marker(p.slice(2,4), {icon}).addTo(map)
+      .bindPopup(`<b>${p[0]}. ${p[1]}</b><br><span style="font-size:11px;">${p[4]}</span><br>
+        <a href="${gm}" target="_blank" style="font-size:11px;font-weight:700;">Open in Google Maps &nearr;</a>`);
+  });
+
+  // ---- Day toggle buttons ----
+  const btnBox = document.getElementById('daybtns');
+  const legLink = document.getElementById('leglink');
+  const btnStyle = 'font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;cursor:pointer;padding:6px 12px;border-radius:3px;border:1px solid #3A3F55;background:#242838;color:#B7B2C4;';
+  const activeStyle = 'border-color:#D3A24C;color:#D3A24C;';
+
+  function makeBtn(text){ const b=document.createElement('button'); b.textContent=text; b.setAttribute('style',btnStyle); return b; }
+
+  function showAll(){
+    legs.forEach(g => g.line.setStyle({opacity:0.9, weight:4}));
+    map.fitBounds(L.latLngBounds(pts.map(p=>p.slice(2,4))).pad(0.12));
+    legLink.innerHTML = '';
+    setActive(allBtn);
+  }
+  function showLeg(g, btn){
+    legs.forEach(x => x.line.setStyle({opacity: x===g?1:0.18, weight: x===g?6:3}));
+    map.fitBounds(L.latLngBounds(g.path).pad(0.25));
+    legLink.innerHTML = '<a href="'+g.dir+'" target="_blank" style="color:#D3A24C;font-weight:700;text-decoration:none;">&#9658; Open '+g.label+' in Google Maps for turn-by-turn &nearr;</a>';
+    setActive(btn);
+  }
+  let btns=[];
+  function setActive(active){ btns.forEach(b=>b.setAttribute('style',btnStyle)); active.setAttribute('style',btnStyle+activeStyle); }
+
+  const allBtn = makeBtn('ALL DAYS');
+  allBtn.onclick = showAll; btnBox.appendChild(allBtn); btns.push(allBtn);
+  legs.forEach(g => {
+    const b = makeBtn(g.label.toUpperCase());
+    b.onclick = () => showLeg(g, b);
+    btnBox.appendChild(b); btns.push(b);
+  });
+
+  showAll();
+})();
+</script>
+</body>
+</html>
