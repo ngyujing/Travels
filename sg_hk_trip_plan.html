@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hong Kong 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+/* ─── TOKENS ─── */
+:root {
+  --bg:           #F0EFEA;
+  --surface:      #FAFAF8;
+  --surface-2:    #EEECEA;
+  --surface-3:    #E4E2DD;
+  --text:         #111318;
+  --text-muted:   #6B6E7F;
+  --border:       #D8D6D1;
+  --accent:       #B8820E;
+  --accent-bg:    rgba(184,130,14,0.10);
+  --jade:         #158F6A;
+  --jade-bg:      rgba(21,143,106,0.10);
+  --red:          #C0231A;
+  --red-bg:       rgba(192,35,26,0.10);
+  --amber-glow:   0 0 0 1px rgba(184,130,14,0.25);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:           #0B0D13;
+    --surface:      #13161F;
+    --surface-2:    #1A1D27;
+    --surface-3:    #21253A;
+    --text:         #C2C5D3;
+    --text-muted:   #5A5D70;
+    --border:       #252836;
+    --accent:       #F4B942;
+    --accent-bg:    rgba(244,185,66,0.10);
+    --jade:         #3EC9A7;
+    --jade-bg:      rgba(62,201,167,0.10);
+    --red:          #E8382D;
+    --red-bg:       rgba(232,56,45,0.10);
+    --amber-glow:   0 0 18px rgba(244,185,66,0.18), 0 0 0 1px rgba(244,185,66,0.25);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:           #0B0D13;
+  --surface:      #13161F;
+  --surface-2:    #1A1D27;
+  --surface-3:    #21253A;
+  --text:         #C2C5D3;
+  --text-muted:   #5A5D70;
+  --border:       #252836;
+  --accent:       #F4B942;
+  --accent-bg:    rgba(244,185,66,0.10);
+  --jade:         #3EC9A7;
+  --jade-bg:      rgba(62,201,167,0.10);
+  --red:          #E8382D;
+  --red-bg:       rgba(232,56,45,0.10);
+  --amber-glow:   0 0 18px rgba(244,185,66,0.18), 0 0 0 1px rgba(244,185,66,0.25);
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+img { max-width: 100%; }
+
+/* ─── NAV ─── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 48px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+nav::-webkit-scrollbar { height: 2px; }
+.nav-brand {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-right: 2rem;
+  flex-shrink: 0;
+}
+nav a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0 1rem;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s, border-bottom 0.15s;
+  border-bottom: 2px solid transparent;
+}
+nav a:hover, nav a.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+  text-decoration: none;
+}
+.nav-right {
+  margin-left: auto;
+}
+.theme-toggle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.theme-toggle:hover { color: var(--text); border-color: var(--accent); }
+
+/* ─── HERO ─── */
+.hero {
+  background: var(--bg);
+  padding: 5rem 2rem 3.5rem;
+  border-bottom: 1px solid var(--border);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(3.5rem, 10vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow: var(--amber-glow);
+  text-wrap: balance;
+  margin-bottom: 0.4rem;
+}
+.hero-subtitle {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stat-value {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--text);
+  line-height: 1;
+}
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.stat-divider {
+  width: 1px;
+  background: var(--border);
+  align-self: stretch;
+}
+
+/* ─── SECTION WRAPPER ─── */
+.section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+.section:last-child { border-bottom: none; }
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 1.75rem;
+  text-wrap: balance;
+}
+
+/* ─── ALERTS ─── */
+.alert-box {
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.alert-red { background: var(--red-bg); border: 1px solid var(--red); }
+.alert-amber { background: var(--accent-bg); border: 1px solid var(--accent); }
+.alert-jade { background: var(--jade-bg); border: 1px solid var(--jade); }
+.alert-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.alert-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+}
+.alert-red .alert-title { color: var(--red); }
+.alert-amber .alert-title { color: var(--accent); }
+.alert-jade .alert-title { color: var(--jade); }
+.alert-body {
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+.badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+.badge-guessing { background: var(--red-bg); color: var(--red); }
+.badge-likely { background: var(--accent-bg); color: var(--accent); }
+.badge-certain { background: var(--jade-bg); color: var(--jade); }
+
+/* ─── STRIP MAP ─── */
+.strip-map {
+  overflow-x: auto;
+  padding: 1.5rem 0;
+}
+.strip-map svg { min-width: 700px; width: 100%; }
+
+/* ─── LEAFLET MAP ─── */
+#map {
+  height: 480px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.map-offline {
+  display: none;
+  background: var(--surface-2);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+.day-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.day-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.day-btn:hover { border-color: var(--accent); color: var(--text); }
+.day-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 500; }
+.day-btn.d1.active { background: #F4B942; border-color: #F4B942; color: #0B0D13; }
+.day-btn.d2.active { background: #3EC9A7; border-color: #3EC9A7; color: #0B0D13; }
+.day-btn.d3.active { background: #9B7FE8; border-color: #9B7FE8; color: #0B0D13; }
+.day-btn.d4.active { background: #E88A3E; border-color: #E88A3E; color: #0B0D13; }
+.gmaps-link {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-radius: 4px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  margin-top: 0.75rem;
+  transition: all 0.15s;
+}
+.gmaps-link:hover { background: var(--accent); color: var(--bg); text-decoration: none; }
+#gmaps-container { min-height: 48px; }
+
+/* ─── TABLES ─── */
+.table-wrap { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+thead tr { border-bottom: 2px solid var(--accent); }
+th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: left;
+  padding: 0.6rem 1rem;
+  white-space: nowrap;
+  font-weight: 500;
+}
+td {
+  padding: 0.75rem 1rem;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--surface-2); }
+.row-travel td { border-left: 3px solid var(--accent); }
+.row-nature td { border-left: 3px solid var(--jade); }
+.row-arrive td { border-left: 3px solid var(--text-muted); }
+.row-depart td { border-left: 3px solid var(--text-muted); }
+.td-day {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  color: var(--text-muted);
+  min-width: 100px;
+}
+.td-day strong { display: block; color: var(--text); font-size: 0.85rem; }
+.tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-right: 4px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+}
+.tag-food { background: var(--accent-bg); color: var(--accent); }
+.tag-walk { background: var(--jade-bg); color: var(--jade); }
+.tag-hike { background: rgba(155,127,232,0.12); color: #9B7FE8; }
+.tag-transit { background: var(--surface-3); color: var(--text-muted); }
+.tag-beach { background: rgba(62,180,232,0.12); color: #3EB4E8; }
+
+/* ─── STAY CARDS ─── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--amber-glow);
+}
+.card-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+.card-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+.card-rate {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+.card-body {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+.card-body strong { color: var(--text); font-weight: 500; }
+.card-footer {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* ─── FOOD SECTION ─── */
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+.food-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.food-card-header {
+  padding: 1rem 1.25rem 0.75rem;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+.food-day-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 2px;
+}
+.food-card-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+.food-card-body { padding: 1rem 1.25rem; }
+.food-item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.83rem;
+}
+.food-item:last-child { border-bottom: none; }
+.food-item-emoji { flex-shrink: 0; width: 1.5rem; text-align: center; }
+.food-item-text strong { display: block; color: var(--text); font-weight: 500; }
+.food-item-text span { color: var(--text-muted); font-size: 0.78rem; }
+
+/* ─── BUDGET TABLE ─── */
+.budget-total td {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-top: 2px solid var(--accent);
+  color: var(--accent);
+}
+
+/* ─── TRAVEL DNA FOOTER ─── */
+.dna-section {
+  background: var(--surface);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 1.75rem;
+}
+.dna-header {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+.dna-item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.dna-item:last-child { border-bottom: none; }
+.dna-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.dna-text { color: var(--text); }
+.dna-text em { color: var(--text-muted); font-style: normal; font-size: 0.8rem; }
+
+/* ─── DOC FOOTER ─── */
+.doc-footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+.doc-footer p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+/* ─── TYPHOON BADGE ─── */
+.signal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--red-bg);
+  border: 1px solid var(--red);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 640px) {
+  nav { padding: 0 1rem; }
+  .hero { padding: 3rem 1.25rem 2rem; }
+  .section { padding: 2.5rem 1.25rem; }
+  .stats-row { gap: 1rem; }
+  .stat-divider { display: none; }
+}
+
+/* ─── LEAFLET OVERRIDES ─── */
+.leaflet-popup-content-wrapper {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+  color: var(--text) !important;
+}
+.leaflet-popup-tip { background: var(--surface) !important; }
+.leaflet-popup-content {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  margin: 12px 16px !important;
+}
+.popup-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.popup-day {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.popup-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+.popup-link {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 3px 8px;
+}
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <span class="nav-brand">HKG 2027</span>
+  <a href="#alerts">Alerts</a>
+  <a href="#map-section">Map</a>
+  <a href="#itinerary">Itinerary</a>
+  <a href="#stays">Stays</a>
+  <a href="#food">Food</a>
+  <a href="#budget">Budget</a>
+  <a href="#dna">Travel DNA</a>
+  <button class="theme-toggle nav-right" onclick="toggleTheme()">☀ / ☾</button>
+</nav>
+
+<!-- ─── HERO ─── -->
+<div class="hero">
+  <div class="hero-eyebrow">Singapore → Hong Kong · 6–9 Aug 2027</div>
+  <div class="hero-title">Hong Kong</div>
+  <div class="hero-subtitle">夜光 &nbsp;·&nbsp; Night City</div>
+  <div class="stats-row">
+    <div class="stat">
+      <span class="stat-value">4</span>
+      <span class="stat-label">Days</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <span class="stat-value">3</span>
+      <span class="stat-label">Nights</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <span class="stat-value">1</span>
+      <span class="stat-label">Basecamp · Wan Chai</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <span class="stat-value">3–5</span>
+      <span class="stat-label">Pax</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <span class="stat-value">SGD 150–250</span>
+      <span class="stat-label">Per Room / Night</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── ALERTS ─── -->
+<section class="section" id="alerts">
+  <div class="section-label">Pre-Departure Checklist</div>
+  <div class="section-title">Action Items Before You Book</div>
+
+  <div class="alert-box alert-red">
+    <div class="alert-icon">🌀</div>
+    <div>
+      <div class="alert-title">Typhoon Season — Highest Risk Window</div>
+      <div class="alert-body">
+        August is peak typhoon season in Hong Kong <span class="badge badge-certain">Certain</span>. A Signal 8 or above means all outdoor attractions close, ferries halt, and most restaurants shut. A Signal 10 (rare) = full city shutdown. Most trips run fine — but if a typhoon hits during your 4 days, you will lose a day of activities with no recourse.
+        <br><br>
+        <strong>Action:</strong> Buy travel insurance with typhoon/weather disruption coverage before flying. Check HKO (Hong Kong Observatory) 48h before each day's activities: <a href="https://www.hko.gov.hk" target="_blank">hko.gov.hk</a>.
+        Have an indoor backup plan for Day 3 (Harbour City, PMQ, Temple Street night market indoors).
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-box alert-amber">
+    <div class="alert-icon">🛂</div>
+    <div>
+      <div class="alert-title">Singapore Passport → HK Entry: 90-Day Visa-Free</div>
+      <div class="alert-body">
+        Singapore passport holders currently enter Hong Kong visa-free for up to 90 days <span class="badge badge-likely">Likely</span>. Verify with ICA or HK Immigration before travel — entry requirements can shift.
+        <br><strong>Action:</strong> Check <a href="https://www.immd.gov.hk" target="_blank">immd.gov.hk</a> ~3 months before departure.
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-box alert-amber">
+    <div class="alert-icon">✈️</div>
+    <div>
+      <div class="alert-title">6 Aug 2027 = Singapore National Day — Book Flights Early</div>
+      <div class="alert-body">
+        Departing Singapore on National Day means high outbound demand and potential fare inflation <span class="badge badge-certain">Certain</span>. Cathay Pacific and Singapore Airlines both fly direct SIN–HKG (~3h30m).
+        <br><strong>Action:</strong> Book flights 3–4 months ahead. Aim for a morning departure to maximise Day 1 in HKG.
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-box alert-amber">
+    <div class="alert-icon">🏨</div>
+    <div>
+      <div class="alert-title">CORRECTION: Base moved from TST (Kowloon) → Wan Chai (HK Island)</div>
+      <div class="alert-body">
+        The original plan used Tsim Sha Tsui as basecamp. <strong>This version switches to Dorsett Hong Kong, HK Island.</strong> Changes: Day 1 evening now uses Wan Chai night food corridor instead of Temple Street (avoids a harbour crossing right after a long flight). Day 4 morning uses Tai Kwun instead of Jade Market. Kowloon night markets moved to optional. Days 2 and 3 are materially better from this base.
+        <br><br>
+        <span class="badge badge-likely">Note</span> Dorsett operates multiple HK properties — verify you are booking <strong>Dorsett Hong Kong</strong> (not Dorsett Wanchai or Dorsett Kwun Tong). Confirm the exact address before booking.
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-box alert-jade">
+    <div class="alert-icon">🚇</div>
+    <div>
+      <div class="alert-title">Get an Octopus Card at the Airport</div>
+      <div class="alert-body">
+        The Octopus card covers MTR, buses, ferries, 7-Eleven, and most restaurants <span class="badge badge-certain">Certain</span>. Pick one up at the arrivals hall at HKG. Load HKD 200–300pp for 4 days. The Airport Express from HKG → Kowloon takes 22 minutes and drops you a 5-min walk from most TST hotels.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── STRIP MAP ─── -->
+<section class="section" id="map-section">
+  <div class="section-label">Route Visual</div>
+  <div class="section-title">4-Day Flow · One Basecamp</div>
+
+  <div class="strip-map">
+    <svg viewBox="0 0 960 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Route line -->
+      <line x1="60" y1="100" x2="900" y2="100" stroke="var(--border)" stroke-width="2" stroke-dasharray="6 4"/>
+
+      <!-- Node 1: Arrive / SIN -->
+      <circle cx="60" cy="100" r="14" fill="var(--surface-2)" stroke="var(--text-muted)" stroke-width="2"/>
+      <text x="60" y="105" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="var(--text-muted)">SIN</text>
+      <text x="60" y="128" text-anchor="middle" font-family="Outfit" font-size="12" fill="var(--text-muted)">Depart</text>
+      <text x="60" y="143" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="var(--text-muted)">6 Aug</text>
+
+      <!-- Leg 1: Flight -->
+      <text x="155" y="88" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="var(--accent)">✈ 3h30m</text>
+
+      <!-- Node 2: TST Basecamp -->
+      <circle cx="280" cy="100" r="20" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="2"/>
+      <circle cx="280" cy="100" r="8" fill="var(--accent)"/>
+      <text x="280" y="58" text-anchor="middle" font-family="Syne" font-weight="800" font-size="13" fill="var(--accent)">BASECAMP</text>
+      <text x="280" y="75" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="var(--accent)">TST · Kowloon</text>
+      <text x="280" y="135" text-anchor="middle" font-family="Outfit" font-size="12" fill="var(--text)">Hotel ICON</text>
+      <text x="280" y="150" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="var(--text-muted)">Check-in · 3 Nights</text>
+
+      <!-- Day 2 loop: HK Island -->
+      <path d="M340 100 Q480 40 620 100" stroke="#3EC9A7" stroke-width="2.5" stroke-dasharray="none" fill="none"/>
+      <circle cx="480" cy="70" r="8" fill="#3EC9A7" opacity="0.2" stroke="#3EC9A7" stroke-width="1.5"/>
+      <text x="480" y="55" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#3EC9A7">DAY 2</text>
+      <text x="480" y="43" text-anchor="middle" font-family="Outfit" font-size="11" fill="var(--text)">HK Island</text>
+
+      <!-- Day 3 loop: Dragon's Back -->
+      <path d="M340 108 Q480 185 620 108" stroke="#9B7FE8" stroke-width="2.5" fill="none"/>
+      <circle cx="480" cy="165" r="8" fill="#9B7FE8" opacity="0.2" stroke="#9B7FE8" stroke-width="1.5"/>
+      <text x="480" y="185" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#9B7FE8">DAY 3</text>
+      <text x="480" y="200" text-anchor="middle" font-family="Outfit" font-size="11" fill="var(--text)">Dragon's Back</text>
+
+      <!-- Node 3: Temple Street (Day 1 evening) -->
+      <circle cx="620" cy="100" r="14" fill="var(--surface-2)" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 2"/>
+      <text x="620" y="80" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="var(--accent)">DAY 1</text>
+      <text x="620" y="70" text-anchor="middle" font-family="Outfit" font-size="11" fill="var(--text)">Temple St</text>
+      <text x="620" y="128" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="var(--text-muted)">Night Mkt</text>
+
+      <!-- Node 4: Depart -->
+      <circle cx="900" cy="100" r="14" fill="var(--surface-2)" stroke="var(--text-muted)" stroke-width="2"/>
+      <text x="900" y="105" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="var(--text-muted)">HKG</text>
+      <text x="900" y="128" text-anchor="middle" font-family="Outfit" font-size="12" fill="var(--text-muted)">Depart</text>
+      <text x="900" y="143" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="var(--text-muted)">9 Aug</text>
+    </svg>
+  </div>
+
+  <!-- Interactive Leaflet Map -->
+  <div class="day-toggles" id="day-toggles">
+    <button class="day-btn active" onclick="showDay('all')">All Days</button>
+    <button class="day-btn d1" onclick="showDay('d1')">Day 1 · Arrive + TST</button>
+    <button class="day-btn d2" onclick="showDay('d2')">Day 2 · HK Island</button>
+    <button class="day-btn d3" onclick="showDay('d3')">Day 3 · Dragon's Back</button>
+    <button class="day-btn d4" onclick="showDay('d4')">Day 4 · Depart</button>
+  </div>
+
+  <div id="map"></div>
+  <div class="map-offline" id="map-offline">
+    <p>Interactive map unavailable — refer to the strip map above.</p>
+  </div>
+  <div id="gmaps-container"></div>
+</section>
+
+<!-- ─── ITINERARY ─── -->
+<section class="section" id="itinerary">
+  <div class="section-label">Day-by-Day Schedule</div>
+  <div class="section-title">4 Days · Table-First</div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Day / Date</th>
+          <th>Time</th>
+          <th>Activity</th>
+          <th>Location</th>
+          <th>Tags</th>
+          <th>Strategic Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- DAY 1 -->
+        <tr class="row-arrive">
+          <td class="td-day" rowspan="5"><strong>Day 1</strong><br>Thu 6 Aug</td>
+          <td>Morning</td>
+          <td>Fly SIN → HKG (Cathay / SQ direct)</td>
+          <td>Singapore Changi</td>
+          <td><span class="tag tag-transit">Transit</span></td>
+          <td>Book morning flight — ~3h30m; land by noon if departing 08:00 SIN. National Day surcharge risk: book early.</td>
+        </tr>
+        <tr class="row-arrive">
+          <td></td>
+          <td>Airport Express → Hong Kong Station → Wan Chai MTR</td>
+          <td>HKG → Wan Chai, HK Island</td>
+          <td><span class="tag tag-transit">Transit</span></td>
+          <td>24 min to HK Station, then 2 stops east on Island Line to Wan Chai. Buy Octopus cards at arrivals. Load HKD 300pp.</td>
+        </tr>
+        <tr>
+          <td>Afternoon</td>
+          <td>Check-in + rest. Wan Chai Harbourfront walk — promenade, Star Ferry views</td>
+          <td>Wan Chai Waterfront</td>
+          <td><span class="tag tag-walk">Walk</span></td>
+          <td>Opposite TST across the harbour. Low effort — you've just flown. Convention Centre pier is 10-min walk from Dorsett.</td>
+        </tr>
+        <tr>
+          <td>18:00</td>
+          <td>Roast goose dinner — Yat Lok (Stanley St, Central) or Joy Hing (Wan Chai)</td>
+          <td>Wan Chai / Central</td>
+          <td><span class="tag tag-food">Food</span></td>
+          <td>Joy Hing Roasted Meat is a Wan Chai institution — char siu and roast pork, no queue drama. Yat Lok (Central, 10-min tram) for roast goose.</td>
+        </tr>
+        <tr>
+          <td>20:00</td>
+          <td>Wan Chai night food crawl — Lockhart Road corridor + dai pai dong</td>
+          <td>Wan Chai</td>
+          <td><span class="tag tag-walk">Walk</span><span class="tag tag-food">Food</span></td>
+          <td>Cooked food stalls, cha chaan tengs still open, local bars. All walkable from hotel. Avoids a harbour crossing after a long flight day — save Kowloon night markets for energy later in trip.</td>
+        </tr>
+
+        <!-- DAY 2 -->
+        <tr class="row-travel">
+          <td class="td-day" rowspan="6"><strong>Day 2</strong><br>Fri 7 Aug</td>
+          <td>08:30</td>
+          <td>Dim sum breakfast</td>
+          <td>Tim Ho Wan (multiple locations)</td>
+          <td><span class="tag tag-food">Food</span></td>
+          <td>Arrive at opening. Friday crowd is lighter than weekend. Order baked BBQ pork buns + rice rolls.</td>
+        </tr>
+        <tr class="row-travel">
+          <td>10:00</td>
+          <td>MTR to Central. Hollywood Road antiques walk → PMQ creative market</td>
+          <td>Central / Sheung Wan</td>
+          <td><span class="tag tag-walk">Walk</span></td>
+          <td>Hollywood Rd is ~1.2km long. Antique shops, dried seafood, incense stalls. PMQ opens 10:00; 80+ designer studios.</td>
+        </tr>
+        <tr class="row-travel">
+          <td>12:30</td>
+          <td>Lunch: Beef brisket noodles at Kau Kee Restaurant</td>
+          <td>Gough St, Central</td>
+          <td><span class="tag tag-food">Food</span></td>
+          <td>Cash only. Arrive before 12:00 or queue. Cash ~HKD 60–80pp. Non-negotiable stop.</td>
+        </tr>
+        <tr class="row-travel">
+          <td>14:00</td>
+          <td>Western District walk — colourful stairs, Man Mo Temple, old trams</td>
+          <td>Sai Ying Pun / Sheung Wan</td>
+          <td><span class="tag tag-walk">Walk</span></td>
+          <td>PMQ to Man Mo Temple is 10-min walk. Instagram-heavy but genuinely atmospheric. Catch a tram for HKD 3.</td>
+        </tr>
+        <tr class="row-travel">
+          <td>16:30</td>
+          <td>Optional: Peak Tram → Victoria Peak views (go before dark)</td>
+          <td>The Peak</td>
+          <td><span class="tag tag-walk">Walk</span></td>
+          <td>Tram tickets online in advance. Skip if queue exceeds 45 min. Sunset from Lion's Pavilion is the reward.</td>
+        </tr>
+        <tr class="row-travel">
+          <td>19:30</td>
+          <td>Dinner: Wan Chai dai pai dong cluster or Typhoon Shelter crab at Aberdeen</td>
+          <td>Wan Chai / Aberdeen</td>
+          <td><span class="tag tag-food">Food</span></td>
+          <td>Typhoon Shelter crab = must-do for a small group; pricy but iconic. Aberdeen Typhoon Shelter boat dining (book ahead). Or cheaper: Cooked Food Centre, Wan Chai.</td>
+        </tr>
+
+        <!-- DAY 3 -->
+        <tr class="row-nature">
+          <td class="td-day" rowspan="5"><strong>Day 3</strong><br>Sat 8 Aug</td>
+          <td>07:30</td>
+          <td>Check typhoon signal. If Signal 3 or below → proceed. Signal 8+ → activate indoor plan.</td>
+          <td>HKO App</td>
+          <td><span class="tag tag-hike">Weather Check</span></td>
+          <td>Download HK Observatory app before trip. August typhoon probability ~25% of disrupting any given day.</td>
+        </tr>
+        <tr class="row-nature">
+          <td>08:30</td>
+          <td>Bus 9 from Shau Kei Wan MTR → Dragon's Back Trail start</td>
+          <td>Shek O Road Trailhead</td>
+          <td><span class="tag tag-hike">Hike</span><span class="tag tag-transit">Transit</span></td>
+          <td>~8.5km trail; 3–4 hours including breaks. Start early — heat and humidity are brutal by 11:00. Bring 2L water/person. Trail is well-marked.</td>
+        </tr>
+        <tr class="row-nature">
+          <td>12:00</td>
+          <td>End at Big Wave Bay beach. Lunch at beachside café. Optional swim.</td>
+          <td>Big Wave Bay</td>
+          <td><span class="tag tag-beach">Beach</span><span class="tag tag-food">Food</span></td>
+          <td>Multiple seafood shacks. Weekend crowds on the beach. Swim only if typhoon signal clear; check lifeguard flags.</td>
+        </tr>
+        <tr class="row-nature">
+          <td>14:30</td>
+          <td>Bus → Stanley Market + Stanley waterfront promenade</td>
+          <td>Stanley</td>
+          <td><span class="tag tag-walk">Walk</span></td>
+          <td>30-min bus from Big Wave Bay. Stanley Market is touristy but relaxed. Good for linen shirts + souvenirs. Stanley Main Beach adjacent.</td>
+        </tr>
+        <tr class="row-nature">
+          <td>19:00</td>
+          <td>Return to TST. Mong Kok street food + night walk</td>
+          <td>Mong Kok</td>
+          <td><span class="tag tag-food">Food</span><span class="tag tag-walk">Walk</span></td>
+          <td>Ladies' Market, Sneaker Street, cooked food stalls. The most dense, authentic night-city feel in HK.</td>
+        </tr>
+
+        <!-- DAY 4 -->
+        <tr class="row-depart">
+          <td class="td-day" rowspan="5"><strong>Day 4</strong><br>Sun 9 Aug</td>
+          <td>08:00</td>
+          <td>Final dim sum — local cha chaan teng breakfast</td>
+          <td>Wan Chai / Causeway Bay</td>
+          <td><span class="tag tag-food">Food</span></td>
+          <td>Pineapple bun, iced milk tea, macaroni in soup. Total HKD 40–60pp. Any local cha chaan teng within walking distance of hotel.</td>
+        </tr>
+        <tr class="row-depart">
+          <td>09:30</td>
+          <td>Tai Kwun Centre for Heritage &amp; Arts</td>
+          <td>Central (Old Police HQ)</td>
+          <td><span class="tag tag-walk">Walk</span></td>
+          <td>Former colonial police HQ, now arts/dining complex. Atmospheric granite courtyards. 10-min taxi from hotel. Galleries open 11:00 — arrive for courtyard wander first. Free entry to grounds.</td>
+        </tr>
+        <tr class="row-depart">
+          <td>10:30</td>
+          <td>Optional: PMQ final pass + Hollywood Road last look</td>
+          <td>Sheung Wan / Central</td>
+          <td><span class="tag tag-walk">Walk</span></td>
+          <td>5-min walk from Tai Kwun. Good for any last souvenir or design pick-ups you missed on Day 2.</td>
+        </tr>
+        <tr class="row-depart">
+          <td>11:30</td>
+          <td>Check out. Luggage storage at hotel.</td>
+          <td>Dorsett Hong Kong</td>
+          <td><span class="tag tag-transit">Logistics</span></td>
+          <td>Confirm late checkout or free luggage storage. Taxi back from Central takes 10 min.</td>
+        </tr>
+        <tr class="row-depart">
+          <td>14:00+</td>
+          <td>Airport Express from Hong Kong Station → HKG. In-town check-in available.</td>
+          <td>Hong Kong Station, Central</td>
+          <td><span class="tag tag-transit">Transit</span></td>
+          <td>HK Station (Central) has in-town check-in for most airlines — drop bags, clear immigration there. Factor 2.5h before flight. 24 min to airport. <em>Optional add-on: MTR to Yau Ma Tei (Jade Market) if energy allows — Kowloon Station also has ITCI.</em></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert-box alert-amber" style="margin-top:1.5rem">
+    <div class="alert-icon">🔄</div>
+    <div>
+      <div class="alert-title">Indoor Backup Plan (Typhoon Signal 8+)</div>
+      <div class="alert-body">
+        Replace Day 3 with: Harbour City mall (connected to hotel area) → IFC Mall → Art Basel at ArtHK if active → Dinner at any hotel restaurant (most reopen once signal lowers). Monitor HKO every 3 hours. Signals drop fast after a typhoon passes — sometimes a full afternoon opens up.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── STAYS ─── -->
+<section class="section" id="stays">
+  <div class="section-label">Accommodations</div>
+  <div class="section-title">TST Basecamp · 3 Nights</div>
+
+  <p style="font-size:0.87rem; color:var(--text-muted); margin-bottom:1.5rem; max-width:620px;">
+    HK Island base in Wan Chai puts you walking distance from Days 2 and 3 launch points, and a short MTR from Central. Rates below are <span class="badge badge-guessing">Estimates · 2025 basis</span> — verify at booking time. <strong>Confirm the exact Dorsett property before booking</strong> — Dorsett operates multiple HK hotels and the addresses differ significantly.
+  </p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-eyebrow">Your Pick · Mid-Range HK Island</div>
+      <div class="card-name">Dorsett Hong Kong</div>
+      <div class="card-rate">~HKD 700–950 / night &nbsp;≈&nbsp; SGD 120–165 <span class="badge badge-guessing">Estimate</span></div>
+      <div class="card-body">
+        Dorsett's flagship HK property. Clean, functional mid-range — good value for HK Island, especially versus the luxury tier around Admiralty/Central. Rooms are compact but well-fitted.
+        <br><br>
+        <strong>Honest note:</strong> This sits at the lower end of your SGD 150–250 band or slightly below — which is fine if you want to redirect budget to food and activities. Design is polished-neutral, not characterful. No rooftop pool.
+        <br><br>
+        <strong>For small group:</strong> Book 2 Superior or Deluxe rooms. Book directly for best rate and free cancellation window.
+        <br><br>
+        <strong>⚠ Verify property:</strong> Confirm you are booking "Dorsett Hong Kong" and not "Dorsett Wanchai" — different hotels, different locations.
+      </div>
+      <div class="card-footer">
+        <a href="https://www.dorsetthotels.com" target="_blank">dorsetthotels.com</a> &nbsp;·&nbsp;
+        <a href="https://www.google.com/maps/search/?api=1&query=Dorsett+Hong+Kong+Hotel" target="_blank">Google Maps</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Upgrade Option · Boutique Character</div>
+      <div class="card-name">The Fleming</div>
+      <div class="card-rate">~HKD 900–1,250 / night &nbsp;≈&nbsp; SGD 156–217</div>
+      <div class="card-body">
+        Wan Chai boutique hotel with genuine personality — Art Deco-influenced design, rooftop terrace, strong F&B. <strong>Sits squarely in your budget band</strong> and brings the character Dorsett lacks.
+        <br><br>
+        If Dorsett feels too functional after seeing it in person, The Fleming is a 5-min taxi away and available as a walk-in upgrade.
+      </div>
+      <div class="card-footer">
+        📍 41 Fleming Road, Wan Chai &nbsp;·&nbsp;
+        <a href="https://www.thefleming.com.hk" target="_blank">thefleming.com.hk</a> &nbsp;·&nbsp;
+        <a href="https://www.google.com/maps/search/?api=1&query=The+Fleming+Wan+Chai+Hong+Kong" target="_blank">Google Maps</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-eyebrow">Alternative · Central-Adjacent</div>
+      <div class="card-name">Hotel Indigo Hong Kong Island</div>
+      <div class="card-rate">~HKD 850–1,200 / night &nbsp;≈&nbsp; SGD 148–208</div>
+      <div class="card-body">
+        IHG boutique brand, each property themed to its neighbourhood. HK Island branch in Wan Chai / Happy Valley vicinity. Compact rooms, but designed with intent rather than just furnished.
+        <br><br>
+        Good fit if Dorsett is sold out or rates spike for August.
+      </div>
+      <div class="card-footer">
+        <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Indigo+Hong+Kong+Island" target="_blank">Google Maps</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOD ─── -->
+<section class="section" id="food">
+  <div class="section-label">Food + Drink Guide</div>
+  <div class="section-title">The Non-Negotiable Eat List</div>
+
+  <div class="food-grid">
+
+    <div class="food-card">
+      <div class="food-card-header">
+        <div class="food-day-label">Day 1 Evening · Kowloon</div>
+        <div class="food-card-title">Roast + Night Market</div>
+      </div>
+      <div class="food-card-body">
+        <div class="food-item">
+          <div class="food-item-emoji">🦆</div>
+          <div class="food-item-text">
+            <strong>Kam's Roast Goose (TST Branch)</strong>
+            <span>Roast goose + char siu · Queue forms by 18:00 · HKD 120–180pp</span>
+          </div>
+        </div>
+        <div class="food-item">
+          <div class="food-item-emoji">🥚</div>
+          <div class="food-item-text">
+            <strong>Temple Street Egg Waffles</strong>
+            <span>Street stalls · Bubble waffles, curry fish balls, stinky tofu · HKD 15–30/item</span>
+          </div>
+        </div>
+        <div class="food-item">
+          <div class="food-item-emoji">🍺</div>
+          <div class="food-item-text">
+            <strong>1 Pint at any TST Sports Bar</strong>
+            <span>Decompression move · Knutsford Terrace has a cluster</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="food-card">
+      <div class="food-card-header">
+        <div class="food-day-label">Day 2 · HK Island</div>
+        <div class="food-card-title">Dim Sum → Classic Noodles → Crab</div>
+      </div>
+      <div class="food-card-body">
+        <div class="food-item">
+          <div class="food-item-emoji">🥟</div>
+          <div class="food-item-text">
+            <strong>Tim Ho Wan (Sham Shui Po or Central)</strong>
+            <span>Michelin star, queue-worthy · Baked BBQ pork buns + shrimp dumplings · HKD 70–100pp</span>
+          </div>
+        </div>
+        <div class="food-item">
+          <div class="food-item-emoji">🍜</div>
+          <div class="food-item-text">
+            <strong>Kau Kee Restaurant · Gough St, Central</strong>
+            <span>Beef brisket noodles · Cash only · Arrive before 12:00 · HKD 60–80pp</span>
+          </div>
+        </div>
+        <div class="food-item">
+          <div class="food-item-emoji">🦀</div>
+          <div class="food-item-text">
+            <strong>Typhoon Shelter Crab · Aberdeen</strong>
+            <span>Garlic + chilli mud crab on a floating sampan · Book ahead · HKD 500–800pp</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="food-card">
+      <div class="food-card-header">
+        <div class="food-day-label">Day 3 · Post-Hike</div>
+        <div class="food-card-title">Hiker Fuel + Night Street Food</div>
+      </div>
+      <div class="food-card-body">
+        <div class="food-item">
+          <div class="food-item-emoji">🥤</div>
+          <div class="food-item-text">
+            <strong>Cold Yuenyeung (Big Wave Bay)</strong>
+            <span>Coffee + milk tea hybrid · Beach café · HKD 25–35 · Non-negotiable post-hike order</span>
+          </div>
+        </div>
+        <div class="food-item">
+          <div class="food-item-emoji">🦞</div>
+          <div class="food-item-text">
+            <strong>Stanley Waterfront Seafood</strong>
+            <span>Murray House restaurants · Calamari, clams, chilli prawns · HKD 150–250pp</span>
+          </div>
+        </div>
+        <div class="food-item">
+          <div class="food-item-emoji">🍢</div>
+          <div class="food-item-text">
+            <strong>Mong Kok Cooked Food Stalls</strong>
+            <span>Skewers, claypot rice, pork intestine noodles · Each dish HKD 20–50 · Eat at counters</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="food-card">
+      <div class="food-card-header">
+        <div class="food-day-label">Day 4 Morning · Last Meal</div>
+        <div class="food-card-title">Cha Chaan Teng Breakfast</div>
+      </div>
+      <div class="food-card-body">
+        <div class="food-item">
+          <div class="food-item-emoji">🍞</div>
+          <div class="food-item-text">
+            <strong>Pineapple Bun (菠蘿包)</strong>
+            <span>With thick slab of cold butter · HKD 10–15 · Any local cha chaan teng</span>
+          </div>
+        </div>
+        <div class="food-item">
+          <div class="food-item-emoji">☕</div>
+          <div class="food-item-text">
+            <strong>Iced Hong Kong Milk Tea</strong>
+            <span>Silk-stocking brewed · HKD 15–25 · The defining breakfast drink</span>
+          </div>
+        </div>
+        <div class="food-item">
+          <div class="food-item-emoji">🍳</div>
+          <div class="food-item-text">
+            <strong>Macaroni in Soup (火腿通粉)</strong>
+            <span>With egg + ham · HKD 30–50 · Classic Hong Kong-style "Western breakfast"</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── BUDGET ─── -->
+<section class="section" id="budget">
+  <div class="section-label">Budget Breakdown</div>
+  <div class="section-title">Estimated Cost · 4 Pax · Mid-Range</div>
+
+  <p style="font-size:0.83rem; color:var(--text-muted); margin-bottom:1.25rem;">
+    All figures in SGD. <span class="badge badge-guessing">Estimates</span> based on 2025 pricing — verify before booking. August = shoulder-to-peak leisure season; no extreme holiday surcharge (unlike CNY). Assumes 4 people sharing 2 rooms.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Basis</th>
+          <th>Unit Cost (SGD)</th>
+          <th>Total (SGD)</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Flights</strong></td>
+          <td>4 pax · SIN–HKG–SIN return</td>
+          <td>280–400 /pp</td>
+          <td><strong>1,120–1,600</strong></td>
+          <td>Book 3–4 months out. CX / SQ direct. National Day surcharge on 6 Aug dep.</td>
+        </tr>
+        <tr>
+          <td><strong>Hotel</strong></td>
+          <td>2 rooms × 3 nights · Hotel ICON est.</td>
+          <td>190–260 /room/night</td>
+          <td><strong>1,140–1,560</strong></td>
+          <td>3 nights = SGD 570–780 per room. Book direct. Early-bird rates ~15% lower.</td>
+        </tr>
+        <tr>
+          <td><strong>Food &amp; Drink</strong></td>
+          <td>4 pax × 4 days · mix of budget to mid-range</td>
+          <td>65–100 /pp/day</td>
+          <td><strong>1,040–1,600</strong></td>
+          <td>Day 2 dinner (Typhoon Shelter crab) is the splurge. Breakfast + lunch stay cheap.</td>
+        </tr>
+        <tr>
+          <td><strong>Transport (local)</strong></td>
+          <td>Octopus, buses, 1–2 taxis</td>
+          <td>25–40 /pp total</td>
+          <td><strong>100–160</strong></td>
+          <td>MTR is cheap. Bus to Dragon's Back ~HKD 8. Avoid taxis except late nights.</td>
+        </tr>
+        <tr>
+          <td><strong>Activities</strong></td>
+          <td>Peak Tram, entry fees</td>
+          <td>15–30 /pp</td>
+          <td><strong>60–120</strong></td>
+          <td>Dragon's Back: free. Peak Tram: ~HKD 90 return. Most sights are walk-in.</td>
+        </tr>
+        <tr>
+          <td><strong>Shopping / Misc</strong></td>
+          <td>Allowance</td>
+          <td>50–150 /pp</td>
+          <td><strong>200–600</strong></td>
+          <td>Stanley Market, Jade Market, pharmacy buys. HK is a shopping city — set a ceiling.</td>
+        </tr>
+        <tr class="budget-total">
+          <td><strong>TOTAL ESTIMATE</strong></td>
+          <td>4 pax, 3 nights</td>
+          <td>—</td>
+          <td><strong>SGD 3,660–5,640</strong></td>
+          <td>~SGD 915–1,410 per person all-in. Well within mid-range comfort tier.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─── TRAVEL DNA ─── -->
+<section class="section" id="dna">
+  <div class="section-label">Travel DNA</div>
+  <div class="section-title">Preference Rules Inferred · Confirm to Lock</div>
+
+  <div class="dna-section">
+    <div class="dna-header">🧭 Travel DNA Updates — HK 2027</div>
+
+    <div class="dna-item">
+      <div class="dna-num">01</div>
+      <div class="dna-text">
+        <strong>Single basecamp, multi-spoke routing.</strong> Prefers one well-located hotel for the full stay — no hotel-switching friction — with each day radiating out and returning. Eliminates packing/logistics overhead on every non-travel day.
+        <em>(Confirmed: 3 nights, no mid-trip moves requested)</em>
+      </div>
+    </div>
+
+    <div class="dna-item">
+      <div class="dna-num">02</div>
+      <div class="dna-text">
+        <strong>Food and outdoors are co-primary, not ranked.</strong> The trip brief combined food, hiking, and urban exploration at equal weight. Itineraries should treat these as parallel pillars, not hierarchy.
+        <em>(Confirmed: all three selected as primary trip vibe)</em>
+      </div>
+    </div>
+
+    <div class="dna-item">
+      <div class="dna-num">03</div>
+      <div class="dna-text">
+        <strong>Comfortable with contingency planning, not avoidance.</strong> Options held loosely — build flex into outdoor days; indoor backup plans ready but non-intrusive.
+        <em>(Confirmed: day trip flexibility answer + typhoon context)</em>
+      </div>
+    </div>
+
+    <div class="dna-item">
+      <div class="dna-num">04</div>
+      <div class="dna-text">
+        <strong>HK Island base preference over Kowloon.</strong> When given the choice, prefers HK Island side despite the loss of easy Kowloon night market access. Willing to trade Jade Market / Temple Street convenience for better Day 2–3 proximity and island-side character.
+        <em>(Inferred: chose Dorsett HK Island over TST when options presented)</em>
+      </div>
+    </div>
+
+    <div style="margin-top:1rem; padding-top:1rem; border-top:1px solid var(--border); font-size:0.82rem; color:var(--text-muted);">
+      Reply to confirm or correct any of these — confirmed rules carry forward into every future itinerary without re-stating.
+    </div>
+  </div>
+</section>
+
+<!-- ─── DOC FOOTER ─── -->
+<footer class="doc-footer">
+  <p>v1.1 · Updated 30 Aug 2026 · Base moved TST → Wan Chai (Dorsett HK) · All prices estimates — verify flagged items before booking</p>
+  <p>Route: SIN → HKG · 6–9 Aug 2027 · 4 pax · 3 nights Wan Chai, HK Island</p>
+</footer>
+
+<!-- ─── SCRIPTS ─── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// Theme toggle
+function toggleTheme() {
+  const root = document.documentElement;
+  const current = root.getAttribute('data-theme');
+  if (current === 'dark') {
+    root.setAttribute('data-theme', 'light');
+  } else if (current === 'light') {
+    root.setAttribute('data-theme', 'dark');
+  } else {
+    // No explicit theme set, check computed
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    root.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  }
+}
+
+// ─── MAP ───
+let map, allLayers = {}, routeLines = {}, currentDay = 'all';
+
+const DAY_COLORS = {
+  d1: '#F4B942',
+  d2: '#3EC9A7',
+  d3: '#9B7FE8',
+  d4: '#E88A3E'
+};
+
+const places = {
+  d1: [
+    { name: 'Dorsett Hong Kong / Basecamp', lat: 22.2769, lng: 114.1731, desc: 'Check-in. HK Island base for 3 nights.', day: 'DAY 1' },
+    { name: 'Wan Chai Harbourfront', lat: 22.2833, lng: 114.1796, desc: 'Promenade walk, Star Ferry views. Easy decompression after the flight.', day: 'DAY 1 · PM' },
+    { name: 'Joy Hing Roasted Meat', lat: 22.2769, lng: 114.1731, desc: 'Wan Chai roast institution. Char siu, roast pork. No frills, all quality.', day: 'DAY 1 · Dinner' },
+    { name: 'Wan Chai Lockhart Road Food Corridor', lat: 22.2773, lng: 114.1742, desc: 'Night cooked food stalls, cha chaan tengs, local bars. All walkable.', day: 'DAY 1 · Night' },
+  ],
+  d2: [
+    { name: 'Tim Ho Wan (Central)', lat: 22.2796, lng: 114.1585, desc: 'Dim sum breakfast. Arrive at opening.', day: 'DAY 2 · Breakfast' },
+    { name: 'PMQ Creative Market', lat: 22.2826, lng: 114.1533, desc: '80+ designer studios. Sheung Wan / Central.', day: 'DAY 2 · Morning' },
+    { name: 'Kau Kee Restaurant', lat: 22.2831, lng: 114.1528, desc: 'Beef brisket noodles. Cash only. Legendary.', day: 'DAY 2 · Lunch' },
+    { name: 'Man Mo Temple', lat: 22.2838, lng: 114.1488, desc: 'Incense coils, Taoist temple. Hollywood Road.', day: 'DAY 2 · PM' },
+    { name: 'Victoria Peak', lat: 22.2716, lng: 114.1462, desc: 'Peak Tram up. Sunset views over HK Island.', day: 'DAY 2 · Sunset' },
+    { name: 'Aberdeen Typhoon Shelter', lat: 22.2482, lng: 114.1548, desc: 'Floating sampan dinner. Typhoon Shelter Crab. Book ahead.', day: 'DAY 2 · Dinner' },
+  ],
+  d3: [
+    { name: "Dragon's Back Trailhead", lat: 22.2489, lng: 114.2464, desc: 'Start of 8.5km trail. Depart by 08:30. Bring 2L water.', day: 'DAY 3 · Hike' },
+    { name: 'Big Wave Bay Beach', lat: 22.2372, lng: 114.2567, desc: 'Trail exit. Beach café. Cold yuenyeung essential.', day: 'DAY 3 · Midday' },
+    { name: 'Stanley Market', lat: 22.2204, lng: 114.2118, desc: 'Bus from Big Wave Bay. Relaxed afternoon market.', day: 'DAY 3 · Afternoon' },
+    { name: 'Mong Kok Street Food', lat: 22.3193, lng: 114.1694, desc: 'Cooked food stalls. Ladies Market. Night energy.', day: 'DAY 3 · Night' },
+  ],
+  d4: [
+    { name: 'Tai Kwun Centre for Heritage & Arts', lat: 22.2818, lng: 114.1543, desc: 'Former colonial police HQ. Courtyards, galleries, brunch. Free grounds entry.', day: 'DAY 4 · Morning' },
+    { name: 'PMQ / Hollywood Road', lat: 22.2826, lng: 114.1533, desc: 'Final souvenir pass. 5-min walk from Tai Kwun.', day: 'DAY 4 · Morning' },
+    { name: 'Hong Kong Station (Airport Express)', lat: 22.2849, lng: 114.1584, desc: 'In-town check-in. Drop bags here, clear immigration, 24 min to HKG.', day: 'DAY 4 · Depart' },
+  ]
+};
+
+const routeCoords = {
+  d1: [
+    [22.2769, 114.1731],
+    [22.2833, 114.1796],
+    [22.2769, 114.1731],
+    [22.2773, 114.1742]
+  ],
+  d2: [
+    [22.2769, 114.1731],
+    [22.2796, 114.1585],
+    [22.2826, 114.1533],
+    [22.2831, 114.1528],
+    [22.2838, 114.1488],
+    [22.2716, 114.1462],
+    [22.2482, 114.1548],
+    [22.2769, 114.1731]
+  ],
+  d3: [
+    [22.2769, 114.1731],
+    [22.2489, 114.2464],
+    [22.2372, 114.2567],
+    [22.2204, 114.2118],
+    [22.2769, 114.1731]
+  ],
+  d4: [
+    [22.2769, 114.1731],
+    [22.2818, 114.1543],
+    [22.2826, 114.1533],
+    [22.2849, 114.1584]
+  ]
+};
+
+const gmapsLinks = {
+  d1: 'https://www.google.com/maps/dir/?api=1&origin=22.2769,114.1731&destination=22.2773,114.1742&waypoints=22.2833,114.1796&travelmode=walking',
+  d2: 'https://www.google.com/maps/dir/?api=1&origin=22.2769,114.1731&destination=22.2769,114.1731&waypoints=22.2796,114.1585|22.2826,114.1533|22.2716,114.1462|22.2482,114.1548&travelmode=transit',
+  d3: 'https://www.google.com/maps/dir/?api=1&origin=22.2489,114.2464&destination=22.2204,114.2118&waypoints=22.2372,114.2567&travelmode=walking',
+  d4: 'https://www.google.com/maps/dir/?api=1&origin=22.2769,114.1731&destination=22.2849,114.1584&waypoints=22.2818,114.1543|22.2826,114.1533&travelmode=walking'
+};
+
+const gmapsLabels = {
+  d1: 'Open Day 1 Route in Google Maps',
+  d2: 'Open Day 2 Route in Google Maps',
+  d3: 'Open Day 3 Route in Google Maps',
+  d4: 'Open Day 4 Route in Google Maps'
+};
+
+try {
+  // Detect dark mode for map tiles
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    || (document.documentElement.getAttribute('data-theme') !== 'light'
+        && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+  const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  const tileAttrib = '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+  map = L.map('map', {
+    center: [22.2769, 114.1731],
+    zoom: 13,
+    zoomControl: true
+  });
+
+  L.tileLayer(tileUrl, {
+    attribution: tileAttrib,
+    maxZoom: 18,
+    opacity: isDark ? 0.85 : 1
+  }).addTo(map);
+
+  // Add a dark overlay for dark mode
+  if (isDark) {
+    const canvas = document.createElement('div');
+    canvas.style.cssText = 'position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(11,13,19,0.35);z-index:200;pointer-events:none;border-radius:8px';
+    document.getElementById('map').appendChild(canvas);
+  }
+
+  // Create markers and route lines per day
+  function makeIcon(color, num) {
+    return L.divIcon({
+      html: `<div style="
+        width:28px;height:28px;
+        background:${color};
+        border:2px solid rgba(255,255,255,0.9);
+        border-radius:50%;
+        display:flex;align-items:center;justify-content:center;
+        font-family:'JetBrains Mono',monospace;
+        font-size:10px;font-weight:500;
+        color:#0B0D13;
+        box-shadow:0 2px 8px rgba(0,0,0,0.4);">
+        ${num}
+      </div>`,
+      className: '',
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+      popupAnchor: [0, -16]
+    });
+  }
+
+  const dayLayers = {};
+  const routeLayersMap = {};
+
+  ['d1','d2','d3','d4'].forEach(day => {
+    const markerGroup = L.layerGroup();
+    const color = DAY_COLORS[day];
+
+    places[day].forEach((p, i) => {
+      const marker = L.marker([p.lat, p.lng], { icon: makeIcon(color, i+1) });
+      const popupContent = `
+        <div class="popup-name">${p.name}</div>
+        <div class="popup-day">${p.day}</div>
+        <div class="popup-desc">${p.desc}</div>
+        <a class="popup-link" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name)}+Hong+Kong" target="_blank">Open in Maps ↗</a>
+      `;
+      marker.bindPopup(popupContent, { maxWidth: 240 });
+      markerGroup.addLayer(marker);
+    });
+
+    const routeLine = L.polyline(routeCoords[day], {
+      color: color,
+      weight: 3,
+      opacity: 0.8,
+      smoothFactor: 1.5
+    });
+
+    dayLayers[day] = markerGroup;
+    routeLayersMap[day] = routeLine;
+
+    markerGroup.addTo(map);
+    routeLine.addTo(map);
+  });
+
+  allLayers = dayLayers;
+  routeLines = routeLayersMap;
+
+  function showDay(day) {
+    // Update buttons
+    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`[onclick="showDay('${day}')"]`).classList.add('active');
+
+    // Update Google Maps link
+    const gmapsContainer = document.getElementById('gmaps-container');
+    if (day !== 'all') {
+      gmapsContainer.innerHTML = `<a class="gmaps-link" href="${gmapsLinks[day]}" target="_blank">↗ ${gmapsLabels[day]}</a>`;
+    } else {
+      gmapsContainer.innerHTML = '';
+    }
+
+    if (day === 'all') {
+      ['d1','d2','d3','d4'].forEach(d => {
+        allLayers[d].addTo(map);
+        routeLines[d].addTo(map);
+      });
+      map.setView([22.2700, 114.1800], 12);
+    } else {
+      ['d1','d2','d3','d4'].forEach(d => {
+        map.removeLayer(allLayers[d]);
+        map.removeLayer(routeLines[d]);
+      });
+      allLayers[day].addTo(map);
+      routeLines[day].addTo(map);
+
+      // Fit to bounds
+      const coords = routeCoords[day];
+      if (coords.length > 0) {
+        map.fitBounds(L.latLngBounds(coords), { padding: [40, 40] });
+      }
+    }
+    currentDay = day;
+  }
+
+  // Export to global scope
+  window.showDay = showDay;
+
+} catch(e) {
+  document.getElementById('map').style.display = 'none';
+  document.getElementById('map-offline').style.display = 'block';
+  document.getElementById('day-toggles').style.display = 'none';
+}
+</script>
+<script src="scripts/pull-to-refresh.js" defer></script>
+</body>
+</html>
