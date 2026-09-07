@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SG → Kota Kinabalu → SG · Mount Kinabalu Summit · Dec 24, 2027 – Jan 2, 2028</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  :root{
+    --deep:#0B2230;
+    --deep-2:#123244;
+    --deep-3:#184257;
+    --peak:#D89A4C;
+    --summit:#5E9B8F;
+    --sand:#F2E9D8;
+    --foam:#EAF6F4;
+    --dim:#9FC1C4;
+    --line:#1F4A5C;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--deep);color:var(--foam);
+    font-family:'Segoe UI',Arial,sans-serif;
+    line-height:1.55;
+  }
+  .wrap{max-width:1150px;margin:0 auto;padding:30px 18px 60px;}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;}
+
+  .hdr{border-bottom:3px double var(--line);padding-bottom:20px;margin-bottom:26px;
+       display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;}
+  .hdr h1{font-size:36px;letter-spacing:.5px;margin:0;font-weight:800;}
+  .hdr h1 span{color:var(--peak);}
+  .hdr .sub{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--dim);letter-spacing:.6px;margin-top:6px;}
+  .odo{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--deep-2);
+       border:1px solid var(--line);border-radius:4px;padding:10px 16px;text-align:right;}
+  .odo b{display:block;font-size:20px;color:var(--summit);letter-spacing:1px;}
+  .odo small{color:var(--dim);font-size:10px;text-transform:uppercase;letter-spacing:1px;}
+  .odo.eff{display:inline-block;margin-bottom:8px;margin-right:8px;}
+
+  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
+  nav a{
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;
+    color:var(--dim);text-decoration:none;border:1px solid var(--line);
+    padding:6px 12px;border-radius:3px;text-transform:uppercase;
+  }
+  nav a:hover{color:var(--peak);border-color:var(--peak);}
+
+  section{margin-bottom:44px;}
+  h2{
+    font-size:22px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;
+    border-left:5px solid var(--peak);padding-left:12px;margin:0 0 6px;
+  }
+  h2 .no{color:var(--summit);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;margin-right:8px;}
+  .sec-sub{color:var(--dim);font-size:13px;margin:0 0 16px 17px;}
+  h3{font-size:16px;text-transform:uppercase;letter-spacing:1px;color:var(--peak);margin:22px 0 8px;}
+
+  .alert{
+    background:var(--deep-2);border:1px solid var(--peak);border-left:6px solid var(--peak);
+    border-radius:4px;padding:16px 18px;margin-bottom:26px;
+  }
+  .alert h4{margin:0 0 10px;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--peak);
+            font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .alert ul{margin:0;padding-left:20px;font-size:13.5px;color:var(--foam);}
+  .alert li{margin-bottom:8px;}
+  .alert li b{color:var(--summit);}
+  .conf{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;padding:1px 5px;border-radius:2px;
+        border:1px solid var(--line);color:var(--dim);vertical-align:middle;}
+
+  .road{position:relative;padding:66px 6px 6px;overflow-x:auto;background:var(--deep);}
+  .road-track{position:relative;min-width:1300px;height:300px;}
+  .centerline{
+    position:absolute;top:150px;left:0;right:0;height:4px;
+    background-image:repeating-linear-gradient(to right,var(--summit) 0 26px,transparent 26px 46px);opacity:.85;
+  }
+  .node{position:absolute;top:150px;width:180px;transform:translate(-50%,-50%);}
+  .pin{width:22px;height:22px;border-radius:50%;background:var(--foam);border:4px solid var(--deep);
+       outline:2px solid var(--peak);margin:0 auto;position:relative;z-index:3;}
+  .pin.rest{outline-color:var(--summit);}
+  .card{position:absolute;left:50%;transform:translateX(-50%);width:176px;background:var(--deep-2);
+        border:1px solid var(--line);border-radius:6px;padding:10px 10px 12px;text-align:center;}
+  .card.up{bottom:58px;} .card.down{top:58px;}
+  .card::after{content:"";position:absolute;left:50%;width:1px;background:var(--line);}
+  .card.up::after{bottom:-58px;height:58px;transform:translateX(-50%);}
+  .card.down::after{top:-58px;height:58px;transform:translateX(-50%);}
+  .shield{width:34px;height:34px;margin:0 auto 6px;background:var(--peak);
+          clip-path:polygon(50% 0%,100% 22%,100% 78%,50% 100%,0% 78%,0% 22%);
+          display:flex;align-items:center;justify-content:center;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:13px;color:var(--foam);}
+  .card.rest .shield{background:var(--summit);}
+  .city{font-size:16px;text-transform:uppercase;letter-spacing:.5px;font-weight:800;}
+  .nights{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--peak);letter-spacing:.5px;margin-top:2px;}
+  .card.rest .nights{color:var(--summit);}
+  .vibe{margin-top:6px;color:var(--dim);font-size:11px;line-height:1.35;font-family:Arial,sans-serif;}
+  .legend{display:flex;gap:22px;margin-top:12px;flex-wrap:wrap;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--dim);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;border:2px solid var(--deep);}
+  .dot.climb{outline:2px solid var(--peak);} .dot.rest{outline:2px solid var(--summit);}
+
+  table{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:13.5px;}
+  th{background:var(--deep-3);color:var(--peak);text-transform:uppercase;letter-spacing:1px;
+     font-size:11px;font-family:ui-monospace,Menlo,Consolas,monospace;
+     padding:10px 12px;text-align:left;border:1px solid var(--line);}
+  td{padding:10px 12px;border:1px solid var(--line);vertical-align:top;background:var(--deep-2);}
+  tr.climb-row td{background:#1C2F42;}
+  tr.climb-row td:first-child{border-left:4px solid var(--peak);}
+  tr.rest-row td{background:#152428;}
+  tr.rest-row td:first-child{border-left:4px solid var(--summit);}
+  td .tag{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--dim);
+          display:block;margin-top:3px;}
+  td b{color:var(--peak);font-weight:700;}
+
+  .city-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:14px;}
+  .cg{background:var(--deep-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .cg .band{height:6px;background:var(--peak);}
+  .cg.rest .band{background:var(--summit);}
+  .cg .inner{padding:16px 18px 18px;}
+  .cg h4{margin:0;font-size:19px;text-transform:uppercase;letter-spacing:.5px;}
+  .cg .meta{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;color:var(--dim);
+            letter-spacing:.5px;margin:3px 0 12px;}
+  .cg dl{margin:0;font-size:13px;}
+  .cg dt{color:var(--peak);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;
+         text-transform:uppercase;letter-spacing:1px;margin-top:10px;}
+  .cg.rest dt{color:var(--summit);}
+  .cg dd{margin:3px 0 0;color:var(--foam);}
+  .cg dd small{color:var(--dim);}
+
+  .note{background:var(--deep-2);border-left:4px solid var(--summit);padding:12px 16px;
+        font-size:13px;color:var(--dim);margin-top:14px;}
+  .note b{color:var(--foam);}
+  .budget-total td{background:var(--deep-3);font-weight:700;color:var(--peak);}
+
+  .eff-box{background:var(--deep-2);border:1px solid var(--summit);border-radius:6px;padding:16px 18px;margin:16px 0;}
+  .eff-box th{color:var(--summit);}
+  .eff-box tr.eff-total td{background:var(--deep-3);font-weight:700;color:var(--summit);font-family:ui-monospace,Menlo,Consolas,monospace;}
+
+  .map-container{width:100%;height:500px;margin:16px 0 26px;border-radius:6px;overflow:hidden;border:1px solid var(--line);}
+  .map-btns{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  .map-btn{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;padding:6px 12px;background:var(--deep-2);
+           border:1px solid var(--line);color:var(--dim);border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;}
+  .map-btn:hover{color:var(--peak);border-color:var(--peak);}
+  .map-btn.active{background:var(--deep-3);color:var(--peak);border-color:var(--peak);}
+
+  .dna{background:var(--deep-2);border:1px solid var(--summit);border-left:6px solid var(--summit);
+       border-radius:4px;padding:16px 18px;margin-bottom:16px;}
+  .dna h4{margin:0 0 12px;font-size:13px;color:var(--summit);text-transform:uppercase;
+          letter-spacing:1px;font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .dna-item{margin:8px 0;font-size:13px;line-height:1.45;}
+  .dna-item b{color:var(--peak);}
+
+  footer{border-top:2px dashed var(--line);margin-top:30px;padding-top:18px;
+         font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--dim);}
+  @media (max-width:640px){
+    .hdr h1{font-size:24px;}
+    td,th{padding:7px 8px;font-size:12px;}
+    .road-track{min-width:100vw;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hdr">
+    <div>
+      <h1>SG <span>→</span> Kota Kinabalu <span>→</span> SG</h1>
+      <div class="sub">4-PERSON GROUP · DEC 24 2027 – JAN 2 2028 · MOUNT KINABALU SUMMIT · 10 DAYS · 6 ANNUAL LEAVE</div>
+    </div>
+    <div>
+      <div class="odo eff">
+        <b>10 DAYS</b>
+        <small>Away</small>
+      </div>
+      <div class="odo eff">
+        <b>6 LEAVES</b>
+        <small>Annual</small>
+      </div>
+      <div class="odo eff">
+        <b>1.67x</b>
+        <small>Efficiency</small>
+      </div>
+    </div>
+  </div>
+
+  <nav>
+    <a href="#pre-flight">Pre-Flight</a>
+    <a href="#leave-calc">Leave Calc</a>
+    <a href="#strip">Route</a>
+    <a href="#map">Map</a>
+    <a href="#itinerary">Day-by-Day</a>
+    <a href="#kinabalu">Kinabalu Guide</a>
+    <a href="#kkguide">KK Base</a>
+    <a href="#budget">Budget</a>
+    <a href="#dna">DNA</a>
+  </nav>
+
+  <section id="pre-flight">
+    <h2><span class="no">0.</span>Pre-Flight Action Items</h2>
+    <div class="alert">
+      <h4>Critical Bookings & Fitness Gate</h4>
+      <ul>
+        <li><b>[URGENT]</b> All four climbers must formally confirm fitness + summit readiness. No hedging. <span class="conf">[Certain]</span></li>
+        <li><b>[URGENT]</b> Book Mount Kinabalu Parks 2D/1N package at mountkinabalu.com — LIMITED SLOTS Dec 24–Jan 2. <span class="conf">[Certain]</span></li>
+        <li><b>[URGENT]</b> Book SIN-KK flights (AirAsia, Malindo, Malaysia Airlines) — Dec 24 AM / Jan 2 PM. <span class="conf">[Certain]</span></li>
+        <li><b>[URGENT]</b> Reserve Kota Kinabalu mid-range hotel (Promenade or Novotel, 5 nights). Spa on-site required. <span class="conf">[Certain]</span></li>
+        <li>Verify travel insurance: high-altitude climbing coverage up to 4,500m + evacuation. <span class="conf">[Likely]</span></li>
+        <li>Check Malaysian visa requirements (SG passport = typically 90-day visa-free). <span class="conf">[Guessing]</span></li>
+        <li>Begin fitness training NOW: 6 weeks cardio + stair climbing. Test fitness at wk 4. <span class="conf">[Certain]</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="leave-calc">
+    <h2><span class="no">1.</span>Leave Efficiency Calculation</h2>
+    <p class="sec-sub">10 days away on 6 annual leaves = 1.67x efficiency ratio. Outperforms Chinese New Year (1.4x) and all other 2027 holiday windows.</p>
+    <div class="eff-box">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Day</th>
+            <th>Type</th>
+            <th>Activity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="climb-row">
+            <td><b>Dec 24</b></td>
+            <td>Fri</td>
+            <td>LEAVE</td>
+            <td>Depart SG (morning) → Arrive KK</td>
+          </tr>
+          <tr>
+            <td><b>Dec 25</b></td>
+            <td>Sat</td>
+            <td>HOLIDAY</td>
+            <td>Christmas Day (public holiday)</td>
+          </tr>
+          <tr class="rest-row">
+            <td><b>Dec 26</b></td>
+            <td>Sun</td>
+            <td>WEEKEND</td>
+            <td>Acclimatize in KK</td>
+          </tr>
+          <tr class="climb-row">
+            <td><b>Dec 27</b></td>
+            <td>Mon</td>
+            <td>LEAVE</td>
+            <td>Drive to Park HQ, prep</td>
+          </tr>
+          <tr class="climb-row">
+            <td><b>Dec 28</b></td>
+            <td>Tue</td>
+            <td>LEAVE</td>
+            <td>Summit Day 1 (climb to Laban Rata)</td>
+          </tr>
+          <tr class="climb-row">
+            <td><b>Dec 29</b></td>
+            <td>Wed</td>
+            <td>LEAVE</td>
+            <td>Summit Day 2 (push + descent)</td>
+          </tr>
+          <tr class="climb-row">
+            <td><b>Dec 30</b></td>
+            <td>Thu</td>
+            <td>LEAVE</td>
+            <td>Return KK, deep massage</td>
+          </tr>
+          <tr class="climb-row">
+            <td><b>Dec 31</b></td>
+            <td>Fri</td>
+            <td>LEAVE</td>
+            <td>Recovery + NYE in KK</td>
+          </tr>
+          <tr>
+            <td><b>Jan 1</b></td>
+            <td>Sat</td>
+            <td>HOLIDAY</td>
+            <td>New Year's Day (public holiday)</td>
+          </tr>
+          <tr class="rest-row">
+            <td><b>Jan 2</b></td>
+            <td>Sun</td>
+            <td>WEEKEND</td>
+            <td>Return KK → SG (evening)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <table style="margin-top:14px;font-size:12px;">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Value</th>
+          <th style="text-align:left;">Calculation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Total Trip Days</b></td>
+          <td class="mono">10</td>
+          <td>Dec 24 – Jan 2</td>
+        </tr>
+        <tr>
+          <td><b>Public Holidays Captured</b></td>
+          <td class="mono">2</td>
+          <td>Dec 25 + Jan 1</td>
+        </tr>
+        <tr>
+          <td><b>Weekends Captured</b></td>
+          <td class="mono">2</td>
+          <td>Dec 26 (Sun) + Jan 2 (Sun)</td>
+        </tr>
+        <tr class="eff-total">
+          <td><b>Annual Leave Days</b></td>
+          <td class="mono">6</td>
+          <td>Dec 24, 27, 28, 29, 30, 31</td>
+        </tr>
+        <tr class="eff-total">
+          <td><b>Leave Efficiency Ratio</b></td>
+          <td class="mono">1.67x</td>
+          <td>10 days ÷ 6 leaves</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note"><b>Decision rationale:</b> December outperforms all 2027 holiday windows. Chinese New Year (Feb 3–4) yields only 1.4x efficiency despite similar holiday structure. This window saves 1 annual leave day while gaining 3+ travel days.</p>
+  </section>
+
+  <section id="strip">
+    <h2><span class="no">2.</span>Strip Map: Linear Route</h2>
+    <p class="sec-sub">No backtracking. Arrive, acclimatize, summit, recover, return. All bases are Kota Kinabalu except 2D/1N on mountain.</p>
+    <div class="road">
+      <div class="road-track">
+        <div class="centerline"></div>
+        <div class="node" style="left:8%;">
+          <div class="card down">
+            <div class="shield">1</div>
+            <div class="city">Singapore</div>
+            <div class="nights">Depart</div>
+            <div class="vibe">SIN-KK flight, 3 hrs. Dec 24 morning.</div>
+          </div>
+        </div>
+        <div class="node" style="left:28%;">
+          <div class="card up">
+            <div class="shield rest">2</div>
+            <div class="city">Kota Kinabalu</div>
+            <div class="nights">Arrive</div>
+            <div class="vibe">Acclimatize Dec 25–26. Hotel base.</div>
+          </div>
+        </div>
+        <div class="node" style="left:50%;">
+          <div class="card down">
+            <div class="shield">3</div>
+            <div class="city">Kinabalu Park</div>
+            <div class="nights">2D/1N</div>
+            <div class="vibe">Summit Dec 28–29. 4,101m peak.</div>
+          </div>
+        </div>
+        <div class="node" style="left:72%;">
+          <div class="card up">
+            <div class="shield rest">4</div>
+            <div class="city">Kota Kinabalu</div>
+            <div class="nights">Recover</div>
+            <div class="vibe">Spa + rest Dec 30–Jan 1. 3 nights.</div>
+          </div>
+        </div>
+        <div class="node" style="left:92%;">
+          <div class="card down">
+            <div class="shield">5</div>
+            <div class="city">Singapore</div>
+            <div class="nights">Return</div>
+            <div class="vibe">KK-SIN flight, Jan 2 evening.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px;">
+      <div class="legend">
+        <span><div class="dot climb"></div> Climb / Transit Day</span>
+        <span><div class="dot rest"></div> Rest / Recovery Day</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="map">
+    <h2><span class="no">3.</span>Interactive Route Map</h2>
+    <p class="sec-sub">Leaflet + OpenStreetMap. Click pins for venue details. Use day toggles to highlight specific legs.</p>
+    <div class="map-btns">
+      <button class="map-btn active" onclick="toggleDay('all')">ALL LEGS</button>
+      <button class="map-btn" onclick="toggleDay('1')">Leg 1: SG→KK</button>
+      <button class="map-btn" onclick="toggleDay('2')">Leg 2: Acclimatize</button>
+      <button class="map-btn" onclick="toggleDay('3')">Leg 3: Summit</button>
+      <button class="map-btn" onclick="toggleDay('4')">Leg 4: Recover</button>
+      <button class="map-btn" onclick="toggleDay('5')">Leg 5: Return</button>
+    </div>
+    <div class="map-container" id="map"></div>
+  </section>
+
+  <section id="itinerary">
+    <h2><span class="no">4.</span>Day-by-Day Itinerary</h2>
+    <p class="sec-sub">10 days: 2 transit, 2 acclimatize, 2 summit, 3 recover, 1 return.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Date</th>
+          <th>Activity</th>
+          <th>Strategic Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="climb-row">
+          <td><b>1</b></td>
+          <td>Dec 24 (Fri)</td>
+          <td>Depart SG → Kota Kinabalu</td>
+          <td>Morning flight, ~3 hrs. Arrive 1–2 PM. Check hotel. Early dinner + 10-hr sleep. Hydrate heavily.</td>
+        </tr>
+        <tr class="rest-row">
+          <td><b>2</b></td>
+          <td>Dec 25 (Sat)</td>
+          <td>Acclimatize — Light Activity</td>
+          <td>Tanjung Aru Beach walk (flat, scenic). Warung breakfast. Afternoon rest. 9–10 hr sleep target.</td>
+        </tr>
+        <tr class="rest-row">
+          <td><b>3</b></td>
+          <td>Dec 26 (Sun)</td>
+          <td>Acclimatize — Very Light</td>
+          <td>Optional riverside walk. Spa 90 min (BOOK NOW). Hydrate 3L+. High-carb meals. Early bed.</td>
+        </tr>
+        <tr class="climb-row">
+          <td><b>4</b></td>
+          <td>Dec 27 (Mon)</td>
+          <td>Drive KK → Kinabalu Park HQ</td>
+          <td>90 min drive. Arrive 1–2 PM. Meet guide + briefing. Dinner 6 PM. Bed 8 PM sharp (sleep night).</td>
+        </tr>
+        <tr class="climb-row">
+          <td><b>5</b></td>
+          <td>Dec 28 (Tue)</td>
+          <td>Summit Day 1: Ascent to Laban Rata</td>
+          <td><b>3:00 AM dep.</b> 6–7 hrs climb. Arrive Laban Rata 10–11 AM (3,272m, ~10°C). Rest/hydrate. Bed 6:30 PM.</td>
+        </tr>
+        <tr class="climb-row">
+          <td><b>6</b></td>
+          <td>Dec 29 (Wed)</td>
+          <td>Summit Day 2: Peak Push + Descent</td>
+          <td><b>2:30 AM dep.</b> 1.5–2 hrs to summit (4,101m, ~0°C). Sunrise 6:30 AM. 2 hr rest + photos. Descent 2–3 hrs to HQ.</td>
+        </tr>
+        <tr class="rest-row">
+          <td><b>7</b></td>
+          <td>Dec 30 (Thu)</td>
+          <td>Recovery — Full Rest</td>
+          <td>Return KK (~90 min). Massive soreness. 2-hr deep tissue massage (PRIORITY). High-protein meals. 11+ hr sleep.</td>
+        </tr>
+        <tr class="rest-row">
+          <td><b>8</b></td>
+          <td>Dec 31 (Fri)</td>
+          <td>Recovery — Active Rest (NYE)</td>
+          <td>Morning: Spa facial. Afternoon: slow market/waterfront walk. Seafood dinner + NYE with group. Bed by midnight.</td>
+        </tr>
+        <tr class="rest-row">
+          <td><b>9</b></td>
+          <td>Jan 1 (Sat)</td>
+          <td>Recovery — Light Leisure</td>
+          <td>Slow brunch. Light market shopping if energy permits. Seafood dinner. Early bed (flight tomorrow).</td>
+        </tr>
+        <tr class="climb-row">
+          <td><b>10</b></td>
+          <td>Jan 2 (Sun)</td>
+          <td>Kota Kinabalu → Singapore</td>
+          <td>Checkout morning. Lunch at airport. Evening flight 6–7 PM. Arrive SG 9–10 PM. Buffer before work Monday.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="kinabalu">
+    <h2><span class="no">5.</span>Mount Kinabalu: The Climb</h2>
+    <p class="sec-sub">Non-technical but grueling: 20 km, 2,000+ m elevation over 2 days. 40% less oxygen at summit.</p>
+
+    <h3>Fitness Gate [Certain]</h3>
+    <p>All four must be capable of 6+ hours sustained climbing + high-altitude tolerance. Pre-training (6 wks): stair climbing, long-distance running, hill sprints. No hedging on fitness confirmation.</p>
+
+    <h3>Day 1: Ascent to Laban Rata (3,272 m)</h3>
+    <p><b>Departure:</b> 3:00 AM Timpohon Gate. <b>Duration:</b> 6–7 hrs. <b>Elevation gain:</b> 5.2 km. <b>Terrain:</b> Well-trodden trail, steep roots + rope handles, sparse vegetation. <b>Temp:</b> ~10°C. <b>Challenge:</b> AMS begins (headache, nausea). Exhaustion rapid after 4 PM. <b>Sleep:</b> Laban Rata rest house (3,272 m, cold, thin air = broken sleep normal). <b>Priority:</b> Hydrate + rest.</p>
+
+    <h3>Day 2: Summit Push (4,101 m) & Descent</h3>
+    <p><b>Departure:</b> 2:30 AM Laban Rata. <b>Duration to peak:</b> 1.5–2 hrs. <b>Terrain:</b> Exposed granite, steep scrambles, ropes for safety, freezing wind (–5 to 0°C). <b>Headlamp:</b> Required (darkness). <b>Summit time:</b> 30–60 mins (sunrise ~6:30 AM, views Brunei + South China Sea). <b>Descent:</b> 2–3 hrs to Park HQ (different route, leg-taxing). <b>Arrive:</b> Early afternoon. <b>Soreness:</b> Extreme immediately (quads, glutes, lower back).</p>
+
+    <h3>Altitude Sickness (AMS)</h3>
+    <p><b>Risk:</b> [Likely] 30–50% mild AMS (headache, nausea, dizziness). Rare to severe here. <b>Mitigation:</b> Slow ascent (Day 1 = rest pace). 2–3 L water/day. Carbs + salt. Laban Rata sleep = critical acclimatization. <b>Red flags:</b> Severe headache, confusion, difficulty walking = descend. Guides trained; abort if needed (no shame).</p>
+
+    <h3>Booking & Logistics</h3>
+    <p><b>Operator:</b> Mount Kinabalu Sabah Parks. <a href="https://www.mountkinabalu.com" style="color:var(--peak);">www.mountkinabalu.com</a> | +60 88-889 933. <b>Book:</b> 2–3 months ahead (holiday Dec slots fill fast). <b>Package includes:</b> Park entry, guide (mandatory), Laban Rata accommodation, meals (Day 1 lunch/dinner + Day 2 breakfast), porter optional (~SGD 50–80 for 15 kg). <b>Cost:</b> ~SGD 180–250/person 2D/1N. <b>Bring:</b> Thermal leggings, fleece, windbreaker, broken-in boots, headlamp + batteries, high-cal snacks, sunscreen, altitude medication (optional—consult doctor), pain relief + antiemetic.</p>
+  </section>
+
+  <section id="kkguide">
+    <h2><span class="no">6.</span>Kota Kinabalu: Recovery Base</h2>
+    <p class="sec-sub">Single 5-night basecamp (Dec 24–26, Dec 30–Jan 1). Spa on-site mandatory. No multi-location moves.</p>
+
+    <div class="city-grid">
+      <div class="cg">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Stay: Promenade Hotel</h4>
+          <div class="meta">WATERFRONT · MID-RANGE</div>
+          <dl>
+            <dt>Address</dt>
+            <dd>Bintang Empat Jalan Promenade, Kota Kinabalu</dd>
+            <dt>Rate</dt>
+            <dd>SGD 70–90/night <small>(5 nights: ~SGD 350–450)</small></dd>
+            <dt>Why</dt>
+            <dd><b>Spa on-site</b> (critical post-summit), waterfront, restaurant, central. Pool can be noisy; request higher floor.</dd>
+            <dt>Google Rating</dt>
+            <dd>3.5/5</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="cg">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Backup: Novotel Kota Kinabalu</h4>
+          <div class="meta">WATERFRONT · BUSINESS</div>
+          <dl>
+            <dt>Address</dt>
+            <dd>Coastal Zone, Kota Kinabalu</dd>
+            <dt>Rate</dt>
+            <dd>SGD 85–110/night</dd>
+            <dt>Why</dt>
+            <dd>Similar tier, slightly better gym + spa. Free parking. Waterfront location.</dd>
+            <dt>Google Rating</dt>
+            <dd>3.7/5</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="cg rest">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Spa & Massage [URGENT]</h4>
+          <div class="meta">POST-CLIMB RECOVERY</div>
+          <dl>
+            <dt>Dec 30 Booking</dt>
+            <dd><b>2-hour deep tissue massage</b> (post-summit soreness peaks Day 2–3). On-site hotel spa or standalone.</dd>
+            <dt>Cost</dt>
+            <dd>SGD 60–90 (book NOW via hotel)</dd>
+            <dt>Fallback</dt>
+            <dd>Spa Kinabalu (standalone, waterfront). +60 88-238 299</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <h3>Eat</h3>
+    <p><b>Post-summit nutrition [Certain]:</b> 30g protein + 80g carbs within 2 hrs of descent. Pack energy bars for drive back if needed.</p>
+    <p><b>Seafood (Tanjung Aru Beach):</b> Casual warung cluster, grilled fish + prawns, ~SGD 12–20 per dish. <b>Hinava</b> (raw fish salad, ginger + lime + shallot): demand at any warung. <b>Laksa Sabah</b> (spicy coconut broth): ~SGD 5–8 at kopitiam. <b>Sabah coffee:</b> Hit any kopitiam, ~SGD 2–3. Strong local coffee culture.</p>
+
+    <h3>Do</h3>
+    <p><b>Dec 30–Jan 1: Recovery block only.</b> <b>Allowed:</b> Slow walks (waterfront, market 2–3 km/day), local food, spa, light shopping. <b>NOT allowed:</b> Water sports, island hopping, jungle treks. Too sore. <b>Optional:</b> Tanjung Aru Beach walk (flat, scenic, 3 km, 45 mins slow pace). Safe, no climbing. Clear-head activity if energy permits (no pressure).</p>
+  </section>
+
+  <section id="budget">
+    <h2><span class="no">7.</span>Budget Breakdown (Per Person)</h2>
+    <p class="sec-sub">Mid-range tier. SGD 1,360–1,750 total. Group can optimize by sharing transport + booking early.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Cost</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="climb-row">
+          <td><b>Flight SIN-KK (round-trip)</b></td>
+          <td>SGD 200–280</td>
+          <td>Dec 24 AM / Jan 2 PM. AirAsia, Malindo, Malaysia Airlines. Budget carriers typical. 3 hrs each way.</td>
+        </tr>
+        <tr>
+          <td><b>Airport transfers</b></td>
+          <td>SGD 40–60</td>
+          <td>Taxi/Grab KK airport ↔ hotel (~20 min). Book via Grab or hotel concierge.</td>
+        </tr>
+        <tr class="climb-row">
+          <td><b>Park HQ transfers</b></td>
+          <td>SGD 50–80</td>
+          <td>Hotel ↔ Kinabalu Park HQ (~90 min each way). Group can share mini-van (~SGD 200 ÷ 4).</td>
+        </tr>
+        <tr class="rest-row">
+          <td><b>Kota Kinabalu hotel (5 nights)</b></td>
+          <td>SGD 350–450</td>
+          <td>Mid-range 3-star: Dec 24–25 (pre) + Dec 30–Jan 1 (recovery). @ SGD 70–90/night. Promenade or Novotel.</td>
+        </tr>
+        <tr class="rest-row">
+          <td><b>Laban Rata (1 night, included)</b></td>
+          <td>SGD 120–160</td>
+          <td>Included in Kinabalu Parks 2D/1N package. Shared dorm or private room.</td>
+        </tr>
+        <tr class="climb-row">
+          <td><b>Kinabalu Parks 2D/1N</b></td>
+          <td>SGD 200–280</td>
+          <td>Park entry, guide (mandatory), Laban Rata, meals (lunch/dinner Day 1 + breakfast Day 2). Book early via mountkinabalu.com.</td>
+        </tr>
+        <tr class="climb-row">
+          <td><b>Porter service (optional)</b></td>
+          <td>SGD 50–80</td>
+          <td>Highly recommended. Carries ~15 kg gear each. Book with guide at HQ.</td>
+        </tr>
+        <tr>
+          <td><b>Meals (pre-summit)</b></td>
+          <td>SGD 100–150</td>
+          <td>Breakfasts ~SGD 8–12, lunches ~SGD 12–18, dinners ~SGD 15–25. Park HQ meals included.</td>
+        </tr>
+        <tr class="rest-row">
+          <td><b>Meals (recovery block)</b></td>
+          <td>SGD 120–180</td>
+          <td>Post-summit nutrition priority (high protein). Seafood dinners ~SGD 20–30. Breakfasts ~SGD 8–12.</td>
+        </tr>
+        <tr class="rest-row">
+          <td><b>Spa / massage</b></td>
+          <td>SGD 60–100</td>
+          <td>Deep tissue 2 hrs, Dec 30 morning (CRITICAL). Hotel spa or Spa Kinabalu standalone.</td>
+        </tr>
+        <tr>
+          <td><b>Contingency snacks</b></td>
+          <td>SGD 30–50</td>
+          <td>Energy bars, electrolyte powder, coffee/tea. Buy in SG or KK hypermart before trip.</td>
+        </tr>
+        <tr>
+          <td><b>Travel insurance</b></td>
+          <td>SGD 40–80</td>
+          <td>High-altitude climbing coverage up to 4,500m + evacuation. Verify before departure.</td>
+        </tr>
+        <tr>
+          <td><b>Hiking gear (optional)</b></td>
+          <td>SGD 0–100</td>
+          <td>If you own boots + layers: SGD 0. Rental in KK: ~SGD 40–80 for group.</td>
+        </tr>
+        <tr class="budget-total">
+          <td><b>TOTAL PER PERSON</b></td>
+          <td><b>SGD 1,360–1,750</b></td>
+          <td>Mid-range tier. Group can save by booking flights + hotel early + sharing transport.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="dna">
+    <h2><span class="no">8.</span>🧭 Travel DNA Updates</h2>
+    <p class="sec-sub">Confirm these three locked preferences so they apply to all future trip planning.</p>
+
+    <div class="dna">
+      <h4>✓ Lock Rule 1: Leave Efficiency is Structural</h4>
+      <div class="dna-item">Every trip artifact must display annual leave consumed vs. trip duration, with efficiency ratio calculated (10 days away ÷ 6 leaves = 1.67x). December crushes alternatives like Chinese New Year (1.4x). This framework applies to all future trip planning—holidays are chosen first, then dates optimized for maximum efficiency. <b>Confirm this locks in?</b></div>
+    </div>
+
+    <div class="dna">
+      <h4>✓ Lock Rule 2: Recovery Stops Are Non-Negotiable After Summits</h4>
+      <div class="dna-item">Post-altitude-climb structure is now: 3+ recovery nights in a single comfortable basecamp (no logistics, no multi-destination moves). Spa/massage embedded as a structural cost, not optional add-on. No "extra activities" bookended onto climbing trips—rest is the activity. <b>Confirm?</b></div>
+    </div>
+
+    <div class="dna">
+      <h4>✓ Lock Rule 3: Group Fitness Must Be Pressure-Tested Before Booking</h4>
+      <div class="dna-item">For group trips with fixed objectives (summits, multi-day paddles, long rides), all members must pre-confirm fitness + willingness in writing before any dates or payments lock. No hedging; no "might be okay." Prevents trip collapse mid-journey. <b>Confirm this becomes standing rule?</b></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p><strong>sg_kinabalu_summit_plan.html</strong> | Compiled Sep 2026 | Mount Kinabalu Quest (Dec 24, 2027 – Jan 2, 2028)</p>
+  <p>Estimates marked [Likely] or [Guessing] require verification before departure. Cross-reference official sources (Mount Kinabalu Sabah Parks, Malaysia tourism, airlines). See pre-flight checklist for action items.</p>
+</footer>
+
+<script>
+let map = null;
+let allLayers = { markers: [], dayLayers: {} };
+
+function initializeMap() {
+  if (typeof L === 'undefined') {
+    document.getElementById('map').innerHTML = '<p style="padding:20px;color:var(--peak);">Map unavailable. Refer to strip map above.</p>';
+    return;
+  }
+
+  map = L.map('map').setView([4.5, 110.5], 7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+  }).addTo(map);
+
+  const points = {
+    '1': { coords: [1.3521, 103.8198], label: 'Singapore' },
+    '2': { coords: [5.9788, 118.0894], label: 'Kota Kinabalu' },
+    '3': { coords: [6.0815, 116.5538], label: 'Kinabalu Park' },
+    '4': { coords: [5.9788, 118.0894], label: 'Kota Kinabalu (Recover)' },
+    '5': { coords: [1.3521, 103.8198], label: 'Singapore' }
+  };
+
+  // Add markers
+  for (let i = 1; i <= 5; i++) {
+    const pt = points[i.toString()];
+    const marker = L.circleMarker(pt.coords, {
+      radius: 10,
+      fillColor: 'var(--foam)',
+      fillOpacity: 0.8,
+      color: 'var(--deep)',
+      weight: 2
+    }).bindPopup(`<b>${i}.</b> ${pt.label}`);
+    marker.addTo(map);
+    allLayers.markers.push(marker);
+  }
+
+  // Route layers
+  allLayers.dayLayers['1'] = [L.polyline([[1.3521, 103.8198], [5.9788, 118.0894]], {
+    color: 'var(--peak)', weight: 3
+  }).addTo(map)];
+
+  allLayers.dayLayers['2'] = [L.polyline([[5.9788, 118.0894], [6.0815, 116.5538]], {
+    color: 'var(--summit)', weight: 2, dashArray: '5,5'
+  }).addTo(map)];
+
+  allLayers.dayLayers['3'] = [L.polyline([[6.0815, 116.5538], [5.9788, 118.0894]], {
+    color: 'var(--summit)', weight: 2, dashArray: '5,5'
+  }).addTo(map)];
+
+  allLayers.dayLayers['4'] = [L.polyline([[5.9788, 118.0894], [1.3521, 103.8198]], {
+    color: 'var(--peak)', weight: 3, dashArray: '5,5'
+  }).addTo(map)];
+
+  map.fitBounds([[0.5, 102], [7, 120]]);
+}
+
+function toggleDay(day) {
+  // Hide all
+  for (let d in allLayers.dayLayers) {
+    allLayers.dayLayers[d].forEach(l => {
+      if (map.hasLayer(l)) map.removeLayer(l);
+    });
+  }
+
+  // Update buttons
+  document.querySelectorAll('.map-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+
+  // Show selected
+  if (day === 'all') {
+    for (let d in allLayers.dayLayers) {
+      allLayers.dayLayers[d].forEach(l => l.addTo(map));
+    }
+  } else if (allLayers.dayLayers[day]) {
+    allLayers.dayLayers[day].forEach(l => l.addTo(map));
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initializeMap);
+</script>
+</body>
+</html>
