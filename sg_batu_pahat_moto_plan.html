@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batu Pahat Motorcycle Trip | 6–8 Nov 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        header p { font-size: 1.1rem; opacity: 0.95; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .section {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+        #map {
+            width: 100%;
+            height: 500px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+        th {
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        tr:hover { background: #f8f9fa; }
+        .time { font-weight: 600; color: #667eea; }
+        .location { color: #764ba2; font-weight: 500; }
+        .note { font-size: 0.9rem; color: #7f8c8d; font-style: italic; }
+        .activity-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 4px;
+        }
+        .activity-box strong { color: #667eea; }
+        .day-toggle {
+            display: inline-block;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            padding: 0.7rem 1.2rem;
+            background: #ecf0f1;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .day-toggle.active {
+            background: #667eea;
+            color: white;
+            border-color: #764ba2;
+        }
+        .day-content { display: none; }
+        .day-content.active { display: block; }
+        .venue-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .venue-card {
+            background: #f8f9fa;
+            border: 1px solid #ecf0f1;
+            border-radius: 6px;
+            padding: 1.2rem;
+            transition: all 0.3s;
+        }
+        .venue-card:hover {
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+        .venue-card h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        .venue-card p { font-size: 0.9rem; color: #7f8c8d; margin: 0.3rem 0; }
+        .budget-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        .budget-row strong { color: #667eea; }
+        .budget-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #764ba2;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #667eea;
+        }
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 0.7rem;
+            margin: 0.3rem 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+        .checklist li:before {
+            content: "✓";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 0.8rem;
+            font-size: 1.1rem;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .legend-marker {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+        .dna-footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+        .dna-footer h3 { margin-bottom: 1rem; }
+        .dna-footer ul { margin-left: 1.5rem; line-height: 1.8; }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            .container { padding: 1rem; }
+            .section { padding: 1.5rem; }
+            #map { height: 350px; }
+            table { font-size: 0.85rem; }
+            th, td { padding: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🏍️ Batu Pahat Escape</h1>
+        <p>CB350 Motorcycle Trip | 6–8 November 2026</p>
+        <p style="font-size: 0.95rem; margin-top: 0.5rem;">Singapore → Batu Pahat → Singapore | 3 Nights | 2 Riders</p>
+    </header>
+
+    <div class="container">
+        <!-- OVERVIEW SECTION -->
+        <div class="section">
+            <h2>🗺️ Trip Overview</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                <div style="background: #f0f4ff; padding: 1rem; border-radius: 6px;">
+                    <strong style="color: #667eea;">Basecamp</strong><br>
+                    Katerina Hotel, Batu Pahat<br>
+                    <span style="font-size: 0.9rem; color: #7f8c8d;">✓ Booked</span>
+                </div>
+                <div style="background: #f0f4ff; padding: 1rem; border-radius: 6px;">
+                    <strong style="color: #667eea;">Duration</strong><br>
+                    3 nights (Sat 6 – Mon 8 Nov)<br>
+                    <span style="font-size: 0.9rem; color: #7f8c8d;">Depart 4 PM Monday</span>
+                </div>
+                <div style="background: #f0f4ff; padding: 1rem; border-radius: 6px;">
+                    <strong style="color: #667eea;">Focus</strong><br>
+                    Food + Culture + Relaxation<br>
+                    <span style="font-size: 0.9rem; color: #7f8c8d;">Zero backtracking routing</span>
+                </div>
+                <div style="background: #f0f4ff; padding: 1rem; border-radius: 6px;">
+                    <strong style="color: #667eea;">Distance</strong><br>
+                    Singapore ↔ Batu Pahat: ~150 km<br>
+                    <span style="font-size: 0.9rem; color: #7f8c8d;">~2 hours each way</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAP SECTION -->
+        <div class="section">
+            <h2>📍 Interactive Route Map</h2>
+            <p style="color: #7f8c8d; margin-bottom: 1rem;">Venues clustered by proximity. Zoom and drag to explore. Click markers for details.</p>
+            <div id="map"></div>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-marker" style="background: #667eea;"></div>
+                    <span>Basecamp (Hotel)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-marker" style="background: #764ba2;"></div>
+                    <span>Food / Cafe</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-marker" style="background: #f39c12;"></div>
+                    <span>Activity / Culture</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-marker" style="background: #e74c3c;"></div>
+                    <span>Spa / Wellness</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAY-BY-DAY SCHEDULE -->
+        <div class="section">
+            <h2>📅 Day-by-Day Itinerary</h2>
+            <div>
+                <button class="day-toggle active" onclick="toggleDay(0)">SAT 6 NOV (Arrival)</button>
+                <button class="day-toggle" onclick="toggleDay(1)">SUN 7 NOV (Full Day)</button>
+                <button class="day-toggle" onclick="toggleDay(2)">MON 8 NOV (Relaxation)</button>
+            </div>
+
+            <!-- SAT 6 NOV -->
+            <div id="day0" class="day-content active">
+                <h3 style="color: #667eea; margin-top: 1rem;">Saturday, 6 November 2026 — Arrival & Settle</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Activity</th>
+                            <th>Location</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time">7:00 AM</td>
+                            <td>Depart Singapore (CB350)</td>
+                            <td>Home → Woodlands Causeway</td>
+                            <td class="note">Avoid Tuas Second Link. Light traffic at this hour.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">9:00–9:30 AM</td>
+                            <td>Rest stop (optional)</td>
+                            <td>Halfway point (Seremban area)</td>
+                            <td class="note">Stretch, fuel, bathroom. Skip if energy is good.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">3:00–3:30 PM</td>
+                            <td>Arrive Batu Pahat</td>
+                            <td>Katerina Hotel</td>
+                            <td class="note">Check-in. Rest 30–60 min. Freshen up.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">5:00 PM</td>
+                            <td>Light exploration + dinner</td>
+                            <td>Hotel cafe or nearby</td>
+                            <td class="note">Keep it low-key. Early night to recover from ride.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">9:00 PM</td>
+                            <td>Rest</td>
+                            <td>Katerina Hotel</td>
+                            <td class="note">Sleep well. Tomorrow is the main food day.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- SUN 7 NOV -->
+            <div id="day1" class="day-content">
+                <h3 style="color: #667eea; margin-top: 1rem;">Sunday, 7 November 2026 — Cultural Immersion & Food Deep Dive</h3>
+                <p style="color: #7f8c8d; font-style: italic;">All venues clustered on Jalan Jenang/Ismail (walkable from hotel, or short 2–5 min rides between stops).</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Activity</th>
+                            <th>Location</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time">9:00 AM</td>
+                            <td><strong>Ah See Wan Tan Mee</strong><br>Breakfast: Homemade wanton noodles</td>
+                            <td class="location">Jalan Jenang Dalam</td>
+                            <td class="note">Opens 9 AM. Queue early (very busy). Order: white noodles + fried wontons. RM8–12.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">9:45 AM</td>
+                            <td><strong>JomBatu</strong><br>Photo walk: Heritage alleyway art curation</td>
+                            <td class="location">Jalan Jenang (5 min walk)</td>
+                            <td class="note">Creative alley project. Photos, installations, cafes. Theme: "What is happiness?" 30–45 min.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">10:30 AM</td>
+                            <td><strong>FilmNeverDie.Asia</strong><br>Film photography studio + exhibition</td>
+                            <td class="location">Jalan Jenang (adjacent)</td>
+                            <td class="note">Opens 11 AM (Wed closed). Film development, vintage cameras, exhibitions. 45–60 min browsing.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">11:45 AM</td>
+                            <td><strong>Mistra Coffee</strong><br>Mid-morning cafe break</td>
+                            <td class="location">Jalan Soga (2 min ride)</td>
+                            <td class="note">Specialty coffee + fresh desserts. Cozy vibe. Rating 4.9. 30 min.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">12:30 PM</td>
+                            <td><strong>Sama Sama Cuisine</strong><br>Lunch: Malaysian comfort food</td>
+                            <td class="location">Jalan Ismail (adjacent Mistra)</td>
+                            <td class="note">Opens 12 PM. BIG portions. Signature squid nasi lemak or chicken chop. RM20–35. 60–90 min.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">2:00 PM</td>
+                            <td>Rest at hotel</td>
+                            <td>Katerina Hotel</td>
+                            <td class="note">Afternoon siesta. Digest lunch. Recharge for evening.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">5:00 PM</td>
+                            <td><strong>9% Coffee</strong><br>Sunset drinks + light snack</td>
+                            <td class="location">Jalan Ismail (hotel area)</td>
+                            <td class="note">Opens 10 AM, closes 12 AM. Aesthetic rustic cafe. Taro matcha, crepe cake. RM15–25. 60 min.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">7:00 PM</td>
+                            <td>Dinner (optional)</td>
+                            <td>Hotel or casual eat-in</td>
+                            <td class="note">Light eat or skip if full from Sama Sama. Early night prep.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="warning">
+                    <strong>Crowding Note:</strong> Sunday is weekend. JomBatu and photo spots will be busy 10 AM–2 PM. Arrive early (before 9:30 AM) or expect queues.
+                </div>
+            </div>
+
+            <!-- MON 8 NOV -->
+            <div id="day2" class="day-content">
+                <h3 style="color: #667eea; margin-top: 1rem;">Monday, 8 November 2026 — Relaxation & Final Bites</h3>
+                <p style="color: #7f8c8d; font-style: italic;">Light morning activity + spa-focused afternoon. Depart 4 PM for Singapore.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Activity</th>
+                            <th>Location</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time">9:30 AM</td>
+                            <td><strong>Kedai Makan Soon Lai</strong><br>Breakfast: Braised kway chap</td>
+                            <td class="location">Jalan Fatimah, Kampung Sateh</td>
+                            <td class="note">Opens 9:30 AM. Famous for smooth kway + herbal broth. RM20–25. 45 min. (2 km from hotel, short ride.)</td>
+                        </tr>
+                        <tr>
+                            <td class="time">11:00 AM</td>
+                            <td><strong>Da Bei Shui Kopitiam</strong><br>Fresh fruit juice + Min Jiang Kuek (apam balik)</td>
+                            <td class="location">Jalan Penjaja 3 (near Banyan Palace)</td>
+                            <td class="note">Opens 10:30 AM. Fri-Sun special: Min Jiang Kuek (pre-order). Fruit juice with fresh fruit cubes. RM10–20. 30 min.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">11:45 AM</td>
+                            <td><strong>Louvre Brewer</strong><br>Specialty coffee + cheesecake</td>
+                            <td class="location">Jalan Mustaffa (2 min ride)</td>
+                            <td class="note">Serious coffee shop. Quiet, artistic vibe. Rating 4.6. RM15–18. 30–45 min.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">1:00 PM</td>
+                            <td>Light lunch (optional)</td>
+                            <td>Hotel or carry-over from morning</td>
+                            <td class="note">Eat light before massage.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">3:00–4:00 PM</td>
+                            <td><strong>Banyan Palace</strong><br>Thai aromatherapy oil massage (60 min)</td>
+                            <td class="location">Jalan Penjaja 3, Kim's Park</td>
+                            <td class="note"><strong>BOOK AHEAD</strong> (60-min massage ends at 4 PM). Perfect timing for immediate departure. Rating 4.9. RM80–120 per person.</td>
+                        </tr>
+                        <tr>
+                            <td class="time">4:00 PM</td>
+                            <td>Depart Batu Pahat (CB350)</td>
+                            <td>Woodlands Causeway → Singapore</td>
+                            <td class="note">Fresh from massage. Arrive Singapore ~6 PM. Ride home steady pace.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="warning">
+                    <strong>CRITICAL:</strong> Banyan Palace must be booked in advance for a 3:00–4:00 PM slot. Call <strong>+60 13-570 0883</strong> by Nov 7 morning to confirm 60-min Thai massage. This ensures you can depart exactly at 4 PM without rush.
+                </div>
+            </div>
+        </div>
+
+        <!-- VENUE GUIDE -->
+        <div class="section">
+            <h2>🏪 Venue Guide & Ratings</h2>
+            <div class="venue-grid">
+                <div class="venue-card">
+                    <h4>🍜 Ah See Wan Tan Mee</h4>
+                    <p><strong>Type:</strong> Chinese noodle shop</p>
+                    <p><strong>Hours:</strong> 9 AM–4 PM (Closed Thu)</p>
+                    <p><strong>Rating:</strong> 3.9/5 (1,167 reviews)</p>
+                    <p><strong>Price:</strong> RM8–12</p>
+                    <p><strong>Signature:</strong> Homemade wanton noodles + fried wontons</p>
+                    <p><strong>Pro tip:</strong> Arrive before 9:30 AM to avoid 30+ min queues.</p>
+                </div>
+                <div class="venue-card">
+                    <h4>🎨 JomBatu</h4>
+                    <p><strong>Type:</strong> Urban art alley + cafes</p>
+                    <p><strong>Hours:</strong> Open daily (flexible)</p>
+                    <p><strong>Rating:</strong> 4.8/5 (13 reviews)</p>
+                    <p><strong>Price:</strong> Free entry</p>
+                    <p><strong>Signature:</strong> Photo walls, installations, heritage storytelling</p>
+                    <p><strong>Pro tip:</strong> Curated project on "What is happiness?" Visit for 30–45 min.</p>
+                </div>
+                <div class="venue-card">
+                    <h4>📷 FilmNeverDie.Asia</h4>
+                    <p><strong>Type:</strong> Film photography studio + shop</p>
+                    <p><strong>Hours:</strong> 11 AM–6 PM (Closed Wed)</p>
+                    <p><strong>Rating:</strong> 4.8/5 (85 reviews)</p>
+                    <p><strong>Price:</strong> Free browsing (film dev/workshops extra)</p>
+                    <p><strong>Signature:</strong> Film development, vintage cameras, photo exhibitions</p>
+                    <p><strong>Pro tip:</strong> Staff very friendly. Ask about current exhibitions.</p>
+                </div>
+                <div class="venue-card">
+                    <h4>☕ Mistra Coffee</h4>
+                    <p><strong>Type:</strong> Specialty cafe</p>
+                    <p><strong>Hours:</strong> 10 AM–5 PM daily</p>
+                    <p><strong>Rating:</strong> 4.9/5 (21 reviews)</p>
+                    <p><strong>Price:</strong> RM12–18</p>
+                    <p><strong>Signature:</strong> Specialty mistra coffee + coco aura + fresh desserts</p>
+                    <p><strong>Pro tip:</strong> Cozy rustic-classic vibe. Perfect for a quiet sit-down.</p>
+                </div>
+                <div class="venue-card">
+                    <h4>☕ 9% Coffee</h4>
+                    <p><strong>Type:</strong> Aesthetic cafe + light meals</p>
+                    <p><strong>Hours:</strong> 10 AM–12 AM daily</p>
+                    <p><strong>Rating:</strong> 4.8/5 (1,088 reviews)</p>
+                    <p><strong>Price:</strong> RM15–25</p>
+                    <p><strong>Signature:</strong> Taro matcha latte, Hokkaido crepe, rustic interior</p>
+                    <p><strong>Pro tip:</strong> Great for sunset drinks (5–6 PM). Booking recommended on weekends.</p>
+                </div>
+                <div class="venue-card">
+                    <h4>🍽️ Sama Sama Cuisine</h4>
+                    <p><strong>Type:</strong> Malaysian restaurant</p>
+                    <p><strong>Hours:</strong> 12 PM–10 PM daily</p>
+                    <p><strong>Rating:</strong> 4.8/5 (973 reviews)</p>
+                    <p><strong>Price:</strong> RM20–35</p>
+                    <p><strong>Signature:</strong> Squid nasi lemak, mee goreng, huge chicken chop</p>
+                    <p><strong>Pro tip:</strong> Big portions. Go hungry. May need to wait 15–20 min on weekends.</p>
+                </div>
+                <div class="venue-card">
+                    <h4>🍜 Kedai Makan Soon Lai</h4>
+                    <p><strong>Type:</strong> Chinese braised-dish kopitiam</p>
+                    <p><strong>Hours:</strong> 9:30 AM–4 PM daily</p>
+                    <p><strong>Rating:</strong> 4.0/5 (897 reviews)</p>
+                    <p><strong>Price:</strong> RM20–30</p>
+                    <p><strong>Signature:</strong> Kway chap (braised kway + herbal broth), pig organs, tofu</p>
+                    <p><strong>Pro tip:</strong> Air-conditioned. Smooth kway is the highlight. Only 1 staff, so wait 10–15 min.</p>
+                </div>
+                <div class="venue-card">
+                    <h4>🥤 Da Bei Shui Kopitiam</h4>
+                    <p><strong>Type:</strong> Fruit juice bar + kopitiam</p>
+                    <p><strong>Hours:</strong> 10:30 AM–4:30 PM (Closed Tue–Wed)</p>
+                    <p><strong>Rating:</strong> 4.1/5 (316 reviews)</p>
+                    <p><strong>Price:</strong> RM5–15</p>
+                    <p><strong>Signature:</strong> Fresh fruit juice (with fruit cubes), Min Jiang Kueh (apam balik), duck noodles</p>
+                    <p><strong>Pro tip:</strong> Large size juice comes with generous cut fruit. Mon/Fri–Sun: apam balik available (pre-order recommended).</p>
+                </div>
+                <div class="venue-card">
+                    <h4>☕ Louvre Brewer</h4>
+                    <p><strong>Type:</strong> Specialty coffee slow bar</p>
+                    <p><strong>Hours:</strong> 10:30 AM–5:30 PM daily</p>
+                    <p><strong>Rating:</strong> 4.6/5 (55 reviews)</p>
+                    <p><strong>Price:</strong> RM12–18</p>
+                    <p><strong>Signature:</strong> Premium coffee + cheesecake + artistic ambiance</p>
+                    <p><strong>Pro tip:</strong> Quieter, more serious coffee bar. Pair with cheesecake. Hidden gem feel.</p>
+                </div>
+                <div class="venue-card">
+                    <h4>💆 Banyan Palace</h4>
+                    <p><strong>Type:</strong> Spa + massage</p>
+                    <p><strong>Hours:</strong> 11 AM–1:30 AM daily</p>
+                    <p><strong>Rating:</strong> 4.9/5 (358 reviews)</p>
+                    <p><strong>Price:</strong> RM80–120 (60-min massage)</p>
+                    <p><strong>Signature:</strong> Thai aromatherapy oil massage, professional pressure</p>
+                    <p><strong>CRITICAL:</strong> <strong>Book 3:00–4:00 PM slot for Mon 8 Nov NOW</strong>. Call +60 13-570 0883.</p>
+                </div>
+                <div class="venue-card">
+                    <h4>🏨 Katerina Hotel (Basecamp)</h4>
+                    <p><strong>Type:</strong> 4-star boutique hotel</p>
+                    <p><strong>Location:</strong> Jln Zabedah, Kampung Pegawai</p>
+                    <p><strong>Rating:</strong> 4.0/5 (2,172 reviews)</p>
+                    <p><strong>Status:</strong> ✓ Booked (Ref: 1578949591289080)</p>
+                    <p><strong>Amenities:</strong> Cafe, clean rooms, helpful staff, cozy lobby</p>
+                    <p><strong>Pro tip:</strong> Centrally located. Most venues 2–5 km away (short CB350 rides).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BUDGET BREAKDOWN -->
+        <div class="section">
+            <h2>💰 Budget Estimate (2 Riders)</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div>
+                    <h3 style="color: #667eea; font-size: 1.1rem; margin-bottom: 1rem;">Accommodation & Transport</h3>
+                    <div class="budget-row">
+                        <span>Katerina Hotel (3 nights)</span>
+                        <strong>RM 300–400</strong>
+                    </div>
+                    <div class="budget-row">
+                        <span>Motorcycle fuel (round trip, CB350: ~12L @ RM2.30/L)</span>
+                        <strong>RM 55–60</strong>
+                    </div>
+                    <div class="budget-row">
+                        <span><strong>Subtotal: Staying & Riding</strong></span>
+                        <strong style="color: #667eea;">RM 355–460</strong>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: #667eea; font-size: 1.1rem; margin-bottom: 1rem;">Food & Activities (Per Person)</h3>
+                    <div class="budget-row">
+                        <span>Sat 6: Arrival dinner (light)</span>
+                        <strong>RM 30</strong>
+                    </div>
+                    <div class="budget-row">
+                        <span>Sun 7: Noodles + coffee + lunch + cafe + evening drinks</span>
+                        <strong>RM 80–100</strong>
+                    </div>
+                    <div class="budget-row">
+                        <span>Mon 8: Breakfast + juice + coffee + massage</span>
+                        <strong>RM 120–150</strong>
+                    </div>
+                    <div class="budget-row">
+                        <span><strong>Subtotal: Food & Spa (1 Person)</strong></span>
+                        <strong style="color: #667eea;">RM 230–280</strong>
+                    </div>
+                </div>
+            </div>
+            <div style="background: #f0f4ff; padding: 1.5rem; border-radius: 6px; margin-top: 1rem;">
+                <h3 style="color: #667eea; margin-bottom: 0.5rem;">📊 Total Trip Estimate (For 2 Riders)</h3>
+                <div class="budget-total">
+                    Accommodation + Fuel + Food (2 people): <strong>RM 815–1,020</strong>
+                    <br>
+                    <span style="font-size: 1rem; color: #7f8c8d;">~RM 408–510 per person</span>
+                </div>
+                <p style="margin-top: 1rem; color: #7f8c8d; font-size: 0.9rem;">
+                    <strong>Buffer for contingencies:</strong> Add RM 100–150 for unexpected expenses (parking, tips, extras).
+                </p>
+            </div>
+        </div>
+
+        <!-- PRACTICAL NOTES -->
+        <div class="section">
+            <h2>⚙️ Practical Notes & Logistics</h2>
+            <div class="activity-box">
+                <strong>🏍️ Motorcycle (CB350) Specifics</strong>
+                <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                    <li>Fuel consumption: ~4.5 L/100km. Singapore–Batu Pahat ~150 km = ~6.75L each way.</li>
+                    <li>Cruise speed: 80–100 km/h. Total ride time: ~2 hours (Singapore → Batu Pahat).</li>
+                    <li>Departure 7 AM from Singapore = arrive ~9 AM at Batu Pahat (or ~3 PM with 1–2 rest stops).</li>
+                    <li><strong>Route:</strong> Woodlands Causeway (SG) → Federal Route 2 → Senai → Batu Pahat. Prefer this over Tuas Second Link.</li>
+                    <li>Parking at Katerina Hotel: Secured lot available. No extra charge mentioned.</li>
+                </ul>
+            </div>
+            <div class="activity-box">
+                <strong>📍 Venue Clustering & Navigation</strong>
+                <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                    <li><strong>North Cluster (Sun 7 AM–2 PM):</strong> Ah See → JomBatu → FilmNeverDie → Mistra → Sama Sama. All within 0–2 km radius. Mostly walkable or 2–5 min CB350 rides.</li>
+                    <li><strong>South Cluster (Mon 8 AM–4 PM):</strong> Kedai Makan Soon Lai → Da Bei Shui → Louvre Brewer → Banyan Palace. All within 1–3 km radius.</li>
+                    <li><strong>Hotel to North Cluster:</strong> ~1 km (5 min ride or short walk).</li>
+                    <li><strong>Hotel to South Cluster:</strong> ~1.5–2 km (5–10 min ride).</li>
+                    <li>Use Google Maps offline or screenshot routes before departing Singapore (data on Malaysian network may be slow/unreliable).</li>
+                </ul>
+            </div>
+            <div class="activity-box">
+                <strong>💳 Booking & Reservation Requirements</strong>
+                <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                    <li><strong>Banyan Palace (Massage):</strong> <strong>BOOK NOW for 3:00–4:00 PM Mon 8 Nov. Call +60 13-570 0883.</strong> Essential for 4 PM departure timing.</li>
+                    <li><strong>Sama Sama Cuisine (Sun lunch):</strong> No pre-booking required, but expect 15–20 min wait on Sunday. Arrive 12:15 PM to beat peak.</li>
+                    <li><strong>9% Coffee (Sun evening):</strong> No pre-booking required. Peak hours 5–7 PM. Arrive before 5 PM or after 6:30 PM for short waits.</li>
+                    <li><strong>Da Bei Shui (Mon breakfast):</strong> Min Jiang Kueh (apam balik) should be pre-ordered if wanting a specific quantity. Call +60 16-791 0503 day before.</li>
+                    <li><strong>All other venues:</strong> Walk-in friendly. No bookings needed.</li>
+                </ul>
+            </div>
+            <div class="activity-box">
+                <strong>🛣️ Entry & Exit Routes</strong>
+                <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                    <li><strong>Entering Malaysia:</strong> Woodlands Causeway (SG) → JB Checkpoint → Federal Route 2 (southbound) → Batu Pahat. Direct and efficient.</li>
+                    <li><strong>Exiting Malaysia:</strong> Same route in reverse. Depart Batu Pahat 4 PM → arrive Woodlands ~6 PM (2-hour return ride).</li>
+                    <li><strong>Border formalities:</strong> Passport + IC (if Malaysian national). Motorcycle documents (registration, insurance, international riding permit if required).</li>
+                </ul>
+            </div>
+            <div class="activity-box">
+                <strong>🌦️ Weather & Packing</strong>
+                <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                    <li>November in Batu Pahat: Warm & humid, occasional rain (monsoon season). Expect 28–32°C.</li>
+                    <li><strong>Packing:</strong> Light clothes, sunscreen, helmet/riding gear, light rain jacket (optional), phone charger, cash (MYR).</li>
+                    <li><strong>Motorcycle gear:</strong> Helmets mandatory. Protective jacket/pants recommended. Bring spare gloves (hand grips get hot).</li>
+                </ul>
+            </div>
+            <div class="activity-box">
+                <strong>💰 Cash & Currency</strong>
+                <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                    <li>Malaysia currency: MYR (Ringgit). Most venues accept cash; some cafes have e-payment (PayNow, Grab, Alipay).</li>
+                    <li>Estimated spend: RM 200–250 per person (food + activities). Bring at least RM 300–400 per person.</li>
+                    <li>ATMs available in Batu Pahat town center. Maybank, CIMB, Public Bank widely available.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- DEPARTURE CHECKLIST -->
+        <div class="section">
+            <h2>✅ Pre-Trip Checklist</h2>
+            <ul class="checklist">
+                <li><strong>Motorcycle Prep:</strong> CB350 oil check, tire pressure, lights, horn, fuel tank capacity. Service if overdue.</li>
+                <li><strong>Insurance & Documents:</strong> Verify motorcycle insurance covers Malaysia. Have passport, IC, international driving permit (if needed).</li>
+                <li><strong>Booking Confirmation:</strong> Katerina Hotel booked ✓. <strong>Banyan Palace massage (3–4 PM Mon) — CALL TODAY +60 13-570 0883.</strong></li>
+                <li><strong>Offline Maps:</strong> Download Google Maps offline for Batu Pahat region. Screenshot key routes.</li>
+                <li><strong>Cash & Contingency:</strong> Carry MYR 400–500. Have credit/debit card as backup. Emergency contact numbers saved.</li>
+                <li><strong>Weather Prep:</strong> Light rain jacket or poncho. Sunscreen. Helmet comfort (test fit before ride).</li>
+                <li><strong>Girlfriend Comfort:</strong> Pillion seat cushion (if needed). Backrest or grab handles checked. Helmet fit confirmed.</li>
+                <li><strong>Fuel Stations:</strong> Plan fuel stops en route. CB350 tank ~15L; refuel halfway or in Ipoh.</li>
+                <li><strong>Phone Charging:</strong> Car/bike charger. Portable power bank (30,000 mAh+). SIM card data plan or roaming enabled.</li>
+                <li><strong>Venue Contacts Saved:</strong> Ah See (+60 7-448 4646), FilmNeverDie (+60 14-619 7916), 9% Coffee (+60 11-2161 5501), Banyan Palace (+60 13-570 0883), Katerina Hotel (+60 7-433 7111).</li>
+            </ul>
+        </div>
+
+        <!-- DNA FOOTER -->
+        <div class="dna-footer">
+            <h3>🧭 Travel DNA Updates — Confirm These Preferences Lock In</h3>
+            <p style="margin-bottom: 1rem;">Based on this interaction, I'm updating your Travel Profile:</p>
+            <ul>
+                <li><strong>Overlapping trip elimination:</strong> Batu Pahat (Nov 6–8) **replaces** Muar (Nov 7–10) in your 2026–2027 pipeline. No longer two competing Johor motorcycle trips.</li>
+                <li><strong>Interactive visual map + day-toggle architecture:</strong> Trip documents now include Leaflet-rendered maps, sequential venue pins, day-by-day toggle tables, and venue clustering by GPS coordinates. No more narrative-only itineraries.</li>
+                <li><strong>Spa/massage as trip anchor on motorcycle tours:</strong> Recovery day (Mon 8 Nov) treated as structural commitment, not optional. 60-min Thai massage locks departure time and afternoon pacing.</li>
+                <li><strong>Linear routing non-negotiable:</strong> Zero backtracking between Sat/Sun/Mon activities. Venues pre-screened for geographic clustering (North cluster Sun, South cluster Mon). No crisscrossing.</li>
+                <li><strong>4 PM departure windows as standard:</strong> For motorcycle return trips, target 4 PM Batu Pahat departure (= 6 PM Singapore arrival, buffer for dinner/wind-down). Builds in post-activity rest rather than rushing.</li>
+            </ul>
+            <p style="margin-top: 1.5rem; font-size: 0.95rem; font-style: italic;">Confirm these lock in, or correct any assumptions before finalizing your booking with Banyan Palace.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>🏍️ Batu Pahat Escape | CB350 Motorcycle Trip | 6–8 November 2026</p>
+        <p style="margin-top: 0.5rem; color: #95a5a6;">Built with precision for zero-friction travel. Ride safe. Eat well. Return home.</p>
+    </footer>
+
+    <script>
+        // Initialize map
+        if (typeof L !== 'undefined') {
+            const map = L.map('map').setView([1.851, 102.928], 14);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Venue data with markers
+            const venues = [
+                { name: 'Katerina Hotel', lat: 1.853732, lng: 102.93561749999999, color: '#667eea', icon: '🏨', day: 'all' },
+                { name: 'Ah See Wan Tan Mee', lat: 1.850374, lng: 102.9274171, color: '#764ba2', icon: '🍜', day: 'sun' },
+                { name: 'JomBatu', lat: 1.8504142, lng: 102.9271225, color: '#f39c12', icon: '🎨', day: 'sun' },
+                { name: 'FilmNeverDie.Asia', lat: 1.8505333, lng: 102.9274282, color: '#f39c12', icon: '📷', day: 'sun' },
+                { name: 'Mistra Coffee', lat: 1.8506137999999999, lng: 102.92674430000001, color: '#764ba2', icon: '☕', day: 'sun' },
+                { name: '9% Coffee', lat: 1.8505268, lng: 102.9279385, color: '#764ba2', icon: '☕', day: 'sun' },
+                { name: 'Sama Sama Cuisine', lat: 1.8505312999999997, lng: 102.9280689, color: '#764ba2', icon: '🍽️', day: 'sun' },
+                { name: 'Kedai Makan Soon Lai', lat: 1.8491988, lng: 102.9276409, color: '#764ba2', icon: '🍜', day: 'mon' },
+                { name: 'Da Bei Shui Kopitiam', lat: 1.8584615999999998, lng: 102.92903869999999, color: '#764ba2', icon: '🥤', day: 'mon' },
+                { name: 'Louvre Brewer', lat: 1.8553372, lng: 102.9315769, color: '#764ba2', icon: '☕', day: 'mon' },
+                { name: 'Banyan Palace', lat: 1.8580515000000002, lng: 102.9291203, color: '#e74c3c', icon: '💆', day: 'mon' }
+            ];
+
+            venues.forEach((venue, idx) => {
+                const marker = L.circleMarker([venue.lat, venue.lng], {
+                    radius: 8,
+                    fillColor: venue.color,
+                    color: '#fff',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map);
+
+                marker.bindPopup(`<strong>${venue.icon} ${venue.name}</strong>`);
+            });
+        } else {
+            document.getElementById('map').innerHTML = '<p style="padding: 2rem; text-align: center; color: #7f8c8d;">Map unavailable. Leaflet library failed to load.</p>';
+        }
+
+        // Day toggle functionality
+        function toggleDay(dayIndex) {
+            const days = ['day0', 'day1', 'day2'];
+            const buttons = document.querySelectorAll('.day-toggle');
+
+            days.forEach((day, idx) => {
+                const element = document.getElementById(day);
+                if (element) {
+                    element.classList.remove('active');
+                }
+                if (buttons[idx]) {
+                    buttons[idx].classList.remove('active');
+                }
+            });
+
+            document.getElementById(days[dayIndex]).classList.add('active');
+            buttons[dayIndex].classList.add('active');
+        }
+    </script>
+    <script src="scripts/pull-to-refresh.js" defer></script>
+</body>
+</html>
