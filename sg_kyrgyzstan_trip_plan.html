@@ -1,925 +1,546 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kyrgyzstan — Sept 25 – Oct 7, 2027 (SIN departure)</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #1a1a1a;
-            color: #e0e0e0;
-            line-height: 1.6;
-        }
-        .container { max-width: 960px; margin: 0 auto; padding: 20px; }
-        header {
-            border-bottom: 1px solid #333;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-        h1 { font-size: 32px; margin-bottom: 8px; color: #f4a460; }
-        .trip-meta { display: flex; gap: 40px; font-size: 13px; color: #999; }
-        .alert {
-            background: #2a2218;
-            border-left: 4px solid #d87f3b;
-            padding: 16px;
-            margin-bottom: 24px;
-            border-radius: 4px;
-        }
-        .alert h3 { color: #f4a460; font-size: 14px; margin-bottom: 8px; }
-        .alert-item {
-            display: flex;
-            gap: 8px;
-            font-size: 13px;
-            margin-bottom: 6px;
-            color: #d0d0d0;
-        }
-        .alert-tag {
-            display: inline-block;
-            padding: 2px 6px;
-            background: #3a3a3a;
-            border-radius: 3px;
-            font-size: 11px;
-            color: #999;
-            min-width: 60px;
-            text-align: center;
-        }
-        .alert-tag.guessing { background: #4a3a2a; color: #d87f3b; }
-        .alert-tag.likely { background: #3a4a3a; color: #8fd87f; }
-        .alert-tag.certain { background: #2a3a4a; color: #7fb0d8; }
-        .alert-tag.resolved { background: #2a3a2a; color: #7f9e5f; font-weight: bold; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SG → Bishkek → Song-Kul · Kyrgyzstan Deep Immersion · Sep 25 – Oct 7, 2027</title>
+<style>
+  :root{
+    --night:#1B1330;
+    --night-2:#241A3F;
+    --night-3:#2E2150;
+    --gold:#E0A94C;
+    --jade:#4E9787;
+    --coral:#E2664A;
+    --cream:#F5EDE0;
+    --cream-dim:#BDB2D6;
+    --line:#41335F;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--night);color:var(--cream);
+    font-family:'Segoe UI',Arial,sans-serif;
+    line-height:1.55;
+  }
+  .wrap{max-width:1150px;margin:0 auto;padding:30px 18px 60px;}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;}
 
-        section { margin-bottom: 40px; }
-        h2 {
-            font-size: 20px;
-            color: #f4a460;
-            margin-bottom: 16px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #333;
-        }
-        h3 { font-size: 16px; color: #d0d0d0; margin-top: 20px; margin-bottom: 8px; }
+  .hdr{border-bottom:3px double var(--line);padding-bottom:20px;margin-bottom:26px;
+       display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;}
+  .hdr h1{font-size:36px;letter-spacing:.5px;margin:0;font-weight:800;}
+  .hdr h1 span{color:var(--gold);}
+  .hdr .sub{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--cream-dim);letter-spacing:.6px;margin-top:6px;}
+  .odo{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--night-2);
+       border:1px solid var(--line);border-radius:4px;padding:10px 16px;text-align:right;}
+  .odo b{display:block;font-size:20px;color:var(--gold);letter-spacing:1px;}
+  .odo small{color:var(--cream-dim);font-size:10px;text-transform:uppercase;letter-spacing:1px;}
 
-        /* Strip map */
-        .strip-map {
-            display: flex;
-            gap: 0;
-            margin-bottom: 24px;
-            background: #222;
-            border: 1px solid #333;
-            overflow-x: auto;
-            padding: 0;
-        }
-        .strip-segment {
-            flex: 1;
-            min-width: 140px;
-            padding: 16px;
-            border-right: 1px solid #333;
-            background: #252525;
-        }
-        .strip-segment:last-child { border-right: none; }
-        .strip-segment.travel {
-            background: #2a2015;
-            border-left: 3px solid #d87f3b;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #999;
-        }
-        .strip-location {
-            font-weight: bold;
-            color: #f4a460;
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
-        .strip-nights {
-            font-size: 11px;
-            color: #888;
-            margin-bottom: 6px;
-        }
-        .strip-property {
-            font-size: 11px;
-            color: #aaa;
-            line-height: 1.4;
-        }
+  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
+  nav a{
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;
+    color:var(--cream-dim);text-decoration:none;border:1px solid var(--line);
+    padding:6px 12px;border-radius:3px;text-transform:uppercase;
+  }
+  nav a:hover{color:var(--gold);border-color:var(--gold);}
 
-        /* Leaflet map */
-        #map { height: 500px; border: 1px solid #333; margin-bottom: 24px; }
+  section{margin-bottom:44px;}
+  h2{
+    font-size:22px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;
+    border-left:5px solid var(--gold);padding-left:12px;margin:0 0 6px;
+  }
+  h2 .no{color:var(--coral);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;margin-right:8px;}
+  .sec-sub{color:var(--cream-dim);font-size:13px;margin:0 0 16px 17px;}
+  h3{font-size:16px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin:22px 0 8px;}
 
-        /* Day toggle buttons */
-        .day-toggles {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .day-toggle {
-            padding: 6px 12px;
-            background: #333;
-            border: 1px solid #555;
-            border-radius: 4px;
-            cursor: pointer;
-            color: #aaa;
-            font-size: 12px;
-            transition: all 0.2s;
-        }
-        .day-toggle:hover { background: #444; color: #ddd; }
-        .day-toggle.active { background: #d87f3b; color: #fff; border-color: #d87f3b; }
+  .alert{
+    background:var(--night-2);border:1px solid var(--coral);border-left:6px solid var(--coral);
+    border-radius:4px;padding:16px 18px;margin-bottom:26px;
+  }
+  .alert h4{margin:0 0 10px;font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--coral);
+            font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .alert ul{margin:0;padding-left:20px;font-size:13.5px;color:var(--cream);}
+  .alert li{margin-bottom:8px;}
+  .alert li b{color:var(--gold);}
+  .conf{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;padding:1px 5px;border-radius:2px;
+        border:1px solid var(--line);color:var(--cream-dim);vertical-align:middle;}
 
-        /* Schedule table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 24px;
-            font-size: 13px;
-        }
-        thead {
-            background: #2a2a2a;
-            border: 1px solid #333;
-        }
-        th {
-            padding: 12px;
-            text-align: left;
-            color: #f4a460;
-            font-weight: 600;
-        }
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #333;
-        }
-        tr:hover { background: #222; }
-        tr.travel-row { background: #2a2015; }
-        tr.travel-row td { border-bottom-color: #3a3a2a; }
+  .road{position:relative;padding:66px 6px 6px;overflow-x:auto;background:var(--night);}
+  .road-track{position:relative;min-width:1150px;height:300px;}
+  .centerline{
+    position:absolute;top:150px;left:0;right:0;height:4px;
+    background-image:repeating-linear-gradient(to right,var(--gold) 0 26px,transparent 26px 46px);opacity:.85;
+  }
+  .node{position:absolute;top:150px;width:210px;transform:translate(-50%,-50%);}
+  .pin{width:22px;height:22px;border-radius:50%;background:var(--cream);border:4px solid var(--night);
+       outline:2px solid var(--gold);margin:0 auto;position:relative;z-index:3;}
+  .pin.rest{outline-color:var(--jade);}
+  .km-tag{position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);
+          background:var(--night);padding:2px 6px;border:1px solid var(--line);border-radius:3px;white-space:nowrap;}
+  .card{position:absolute;left:50%;transform:translateX(-50%);width:200px;background:var(--night-2);
+        border:1px solid var(--line);border-radius:6px;padding:10px 10px 12px;text-align:center;}
+  .card.up{bottom:58px;} .card.down{top:58px;}
+  .card::after{content:"";position:absolute;left:50%;width:1px;background:var(--line);}
+  .card.up::after{bottom:-58px;height:58px;transform:translateX(-50%);}
+  .card.down::after{top:-58px;height:58px;transform:translateX(-50%);}
+  .shield{width:34px;height:34px;margin:0 auto 6px;background:var(--coral);
+          clip-path:polygon(50% 0%,100% 22%,100% 78%,50% 100%,0% 78%,0% 22%);
+          display:flex;align-items:center;justify-content:center;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:700;font-size:13px;color:var(--cream);}
+  .card.rest .shield{background:var(--jade);}
+  .city{font-size:16px;text-transform:uppercase;letter-spacing:.5px;font-weight:800;}
+  .nights{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--gold);letter-spacing:.5px;margin-top:2px;}
+  .card.rest .nights{color:var(--jade);}
+  .vibe{margin-top:6px;color:var(--cream-dim);font-size:11px;line-height:1.35;font-family:Arial,sans-serif;}
+  .legend{display:flex;gap:22px;margin-top:12px;flex-wrap:wrap;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;border:2px solid var(--night);}
+  .dot.travel{outline:2px solid var(--gold);} .dot.rest{outline:2px solid var(--jade);}
 
-        /* City guide cards */
-        .card {
-            background: #262626;
-            border: 1px solid #333;
-            padding: 20px;
-            margin-bottom: 16px;
-            border-radius: 4px;
-        }
-        .card h3 { margin-top: 0; }
-        .card-section {
-            margin-top: 14px;
-        }
-        .card-section-title {
-            font-weight: bold;
-            color: #d87f3b;
-            font-size: 12px;
-            text-transform: uppercase;
-            margin-bottom: 6px;
-        }
-        .card-text { font-size: 13px; line-height: 1.5; }
-        .rating { color: #f4a460; font-size: 12px; margin-top: 4px; }
+  table{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:13.5px;}
+  th{background:var(--night-3);color:var(--gold);text-transform:uppercase;letter-spacing:1px;
+     font-size:11px;font-family:ui-monospace,Menlo,Consolas,monospace;
+     padding:10px 12px;text-align:left;border:1px solid var(--line);}
+  td{padding:10px 12px;border:1px solid var(--line);vertical-align:top;background:var(--night-2);}
+  tr.rest-row td{background:#25304A;}
+  tr.rest-row td:first-child{border-left:4px solid var(--jade);}
+  tr.ride-row td:first-child{border-left:4px solid var(--gold);}
+  td .tag{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);
+          display:block;margin-top:3px;}
+  td b{color:var(--gold);font-weight:700;}
 
-        /* Budget table */
-        .budget-row { display: flex; gap: 16px; margin-bottom: 8px; font-size: 13px; }
-        .budget-item { flex: 1; }
-        .budget-amount { text-align: right; min-width: 100px; color: #f4a460; font-weight: bold; }
-        .budget-total {
-            border-top: 1px solid #333;
-            margin-top: 12px;
-            padding-top: 12px;
-            display: flex;
-            justify-content: space-between;
-            font-weight: bold;
-            color: #f4a460;
-            font-size: 14px;
-        }
+  .city-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:14px;}
+  .cg{background:var(--night-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .cg .band{height:6px;background:var(--gold);}
+  .cg.restc .band{background:var(--jade);}
+  .cg .inner{padding:16px 18px 18px;}
+  .cg h4{margin:0;font-size:19px;text-transform:uppercase;letter-spacing:.5px;}
+  .cg .meta{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;color:var(--cream-dim);
+            letter-spacing:.5px;margin:3px 0 12px;}
+  .cg dl{margin:0;font-size:13px;}
+  .cg dt{color:var(--gold);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;
+         text-transform:uppercase;letter-spacing:1px;margin-top:10px;}
+  .cg.restc dt{color:var(--jade);}
+  .cg dd{margin:3px 0 0;color:var(--cream);}
+  .cg dd small{color:var(--cream-dim);}
 
-        /* Checklist */
-        .checklist {
-            list-style: none;
-        }
-        .checklist li {
-            padding: 8px 0;
-            font-size: 13px;
-            border-bottom: 1px solid #333;
-            display: flex;
-            gap: 8px;
-        }
-        .checklist li:before {
-            content: "☐";
-            color: #666;
-            font-weight: bold;
-            min-width: 16px;
-        }
-        .checklist li.resolved:before { content: "✓"; color: #7f9e5f; }
+  .note{background:var(--night-2);border-left:4px solid var(--jade);padding:12px 16px;
+        font-size:13px;color:var(--cream-dim);margin-top:14px;}
+  .note b{color:var(--cream);}
+  .budget-total td{background:var(--night-3);font-weight:700;}
+  
+  .efficiency-box{background:var(--night-2);border:1px solid var(--jade);border-left:6px solid var(--jade);
+                  border-radius:4px;padding:16px 18px;margin-bottom:26px;}
+  .efficiency-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  .efficiency-item{padding:12px;background:var(--night-3);border-radius:4px;border:1px solid var(--line);}
+  .efficiency-label{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);
+                    text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+  .efficiency-value{font-size:18px;color:var(--gold);font-weight:700;}
+  .efficiency-calc{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);
+                   margin-top:8px;line-height:1.4;}
 
-        /* Footer */
-        footer {
-            border-top: 1px solid #333;
-            padding-top: 20px;
-            margin-top: 40px;
-            font-size: 12px;
-            color: #666;
-        }
-        .dna-box {
-            background: #2a2a2a;
-            border-left: 3px solid #d87f3b;
-            padding: 16px;
-            margin-bottom: 16px;
-            border-radius: 4px;
-        }
-        .dna-title { color: #f4a460; font-weight: bold; margin-bottom: 8px; }
-
-        /* Nav anchors */
-        nav {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            font-size: 12px;
-        }
-        nav a {
-            color: #d87f3b;
-            text-decoration: none;
-            border-bottom: 1px solid #d87f3b;
-        }
-        nav a:hover { color: #f4a460; }
-
-        @media (max-width: 768px) {
-            .trip-meta { flex-direction: column; gap: 8px; }
-            h1 { font-size: 24px; }
-            #map { height: 300px; }
-        }
-    </style>
+  footer{border-top:2px dashed var(--line);margin-top:30px;padding-top:18px;
+         font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);}
+  @media (max-width:640px){
+    .hdr h1{font-size:24px;}
+    td,th{padding:7px 8px;font-size:12px;}
+    .efficiency-grid{grid-template-columns:1fr;}
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Kyrgyzstan: Deep Immersion</h1>
-            <div class="trip-meta">
-                <span>✈️ Depart SIN Thu, Sept 25 (evening) via Turkish Airlines</span>
-                <span>📅 Arrive Bishkek Fri, Sept 26 (evening) → Depart Bishkek Wed, Oct 6 (evening)</span>
-                <span>👥 3 travelers (YJ, girlfriend, sister)</span>
-                <span>🛏️ 11 nights (Bishkek 2 + Karakol 3 + Song-Kul 2 + Bishkek 2)</span>
-                <span>💰 ~$1,600–2,100 SGD (est., -$200 vs Kazakhstan routing)</span>
-            </div>
-        </header>
+<div class="wrap">
 
-        <!-- Pre-departure alert -->
-        <div class="alert">
-            <h3>Pre-Departure Action Items</h3>
-            <div class="alert-item">
-                <span class="alert-tag certain">Certain</span>
-                <strong>Flights:</strong> Book Turkish Airlines SIN → Istanbul → Bishkek. Depart Thu Sep 25 evening (20–24hr total). Return Wed Oct 6 evening Bishkek → Istanbul → SIN. ~SGD 700–900 per person return.
-            </div>
-            <div class="alert-item">
-                <span class="alert-tag guessing">Guessing</span>
-                <strong>Kyrgyzstan-only operator tour:</strong> Book guided tour (Visit Karakol, TJK World Travel, or Silk Travel Kyrgyzstan division) for Thu Sep 28 – Mon Oct 2. Bishkek pickup Thu morning, Bishkek return Mon evening. Confirm vehicle, meals, herding family immersion, and optional activities (eagle hunting, Skazka Canyon, hidden canyons, petroglyphs).
-            </div>
-            <div class="alert-item">
-                <span class="alert-tag likely">Likely</span>
-                <strong>Visa check:</strong> Singapore passports = visa-free Kyrgyzstan 60 days. Confirm as of Sep 2027 (currently holds).
-            </div>
-            <div class="alert-item">
-                <span class="alert-tag likely">Likely</span>
-                <strong>Travel insurance:</strong> Declare high-altitude (Song-Kul 3500m), guiding, horse riding, and emergency evacuation to 3,500m. Single-country policy OK.
-            </div>
-            <div class="alert-item">
-                <span class="alert-tag guessing">Guessing</span>
-                <strong>Leave approval:</strong> All three travelers, est. 4 working days (Wed 24 Sep – Mon 6 Oct depending on company calendar).
-            </div>
-            <div class="alert-item">
-                <span class="alert-tag likely">Likely</span>
-                <strong>Accommodation pre-booking (Bishkek only):</strong> Book Freedom Hotel Bishkek (2 nights Sep 26–27 check-in evening, 2 nights Oct 2–3 check-in evening). Sep travel = peak shoulder season; book immediately. Operator handles Karakol &amp; Song-Kul.
-            </div>
-            <div class="alert-item">
-                <span class="alert-tag resolved">RESOLVED</span>
-                <strong>Route structure:</strong> Kyrgyzstan-only, no border crossing. Single-country operator, Turkish Airlines direct connection (Istanbul hub).
-            </div>
-        </div>
-
-        <!-- Navigation anchors -->
-        <nav>
-            <a href="#map-section">Map</a>
-            <a href="#schedule">Schedule</a>
-            <a href="#almaty">Almaty</a>
-            <a href="#charyn">Charyn & Kolsai</a>
-            <a href="#songkul">Song-Kul</a>
-            <a href="#karakol">Karakol</a>
-            <a href="#bishkek">Bishkek</a>
-            <a href="#unusual">Unusual Experiences</a>
-            <a href="#budget">Budget</a>
-            <a href="#checklist">Checklist</a>
-        </nav>
-
-        <!-- Strip map (offline fallback) -->
-        <section>
-            <h2>Route Overview — Kyrgyzstan Focus</h2>
-            <div class="strip-map">
-                <div class="strip-segment">
-                    <div class="strip-location">Bishkek</div>
-                    <div class="strip-nights">2 nights</div>
-                    <div class="strip-property">Freedom Hotel (pre)</div>
-                </div>
-                <div class="strip-segment travel">Fly Bishkek→Karakol or operator pickup (3–4hr by vehicle)</div>
-                <div class="strip-segment">
-                    <div class="strip-location">Karakol</div>
-                    <div class="strip-nights">3 nights</div>
-                    <div class="strip-property">Central Guest House + day tours</div>
-                </div>
-                <div class="strip-segment travel">Operator transport (4–5hr mountain pass)</div>
-                <div class="strip-segment">
-                    <div class="strip-location">Song-Kul Plateau</div>
-                    <div class="strip-nights">2 nights</div>
-                    <div class="strip-property">Rima Yurt Camp (herding immersion)</div>
-                </div>
-                <div class="strip-segment travel">Operator return to Bishkek (6–8hr via passes)</div>
-                <div class="strip-segment">
-                    <div class="strip-location">Bishkek</div>
-                    <div class="strip-nights">2 nights</div>
-                    <div class="strip-property">Freedom Hotel (post)</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Interactive map -->
-        <section id="map-section">
-            <h2>Interactive Map</h2>
-            <div class="day-toggles">
-                <button class="day-toggle active" onclick="showDay('all')">All Days</button>
-                <button class="day-toggle" onclick="showDay('day1')">Day 1-3: Almaty</button>
-                <button class="day-toggle" onclick="showDay('day2')">Day 4: Charyn</button>
-                <button class="day-toggle" onclick="showDay('day3')">Day 5: Kolsai</button>
-                <button class="day-toggle" onclick="showDay('day4')">Day 6: Border → Karakol</button>
-                <button class="day-toggle" onclick="showDay('day5')">Day 7-8: Song-Kul</button>
-                <button class="day-toggle" onclick="showDay('day6')">Day 9-11: Bishkek</button>
-            </div>
-            <div id="map"></div>
-        </section>
-
-        <!-- Schedule -->
-        <section id="schedule">
-            <h2>Day-by-Day Schedule</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Day</th>
-                        <th>Date</th>
-                        <th>Leg / Activity</th>
-                        <th>Travel Time</th>
-                        <th>Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="travel-row">
-                        <td>—</td>
-                        <td>Thu, Sept 25 (evening)</td>
-                        <td><strong>DEPART Singapore</strong></td>
-                        <td>Turkish Airlines SIN→IST→FRU</td>
-                        <td>Evening departure from Changi. 20–24 hours total travel time (Istanbul connection 2–4 hrs). No overnight in Singapore terminal.</td>
-                    </tr>
-                    <tr class="day-day1">
-                        <td>1</td>
-                        <td>Fri, Sept 26 (evening)</td>
-                        <td><strong>Arrive Bishkek</strong></td>
-                        <td>Turkish Airlines landing (likely 6–8pm local)</td>
-                        <td>Arrive Bishkek Manas International. Rest at hotel. Check in Freedom Hotel (late check-in arranged). Light dinner or rest; jet lag recovery.</td>
-                    </tr>
-                    <tr class="day-day1">
-                        <td>2</td>
-                        <td>Sat, Sept 27</td>
-                        <td><strong>Bishkek city day (Pre-trip)</strong></td>
-                        <td>Local minibus / taxi</td>
-                        <td>Soviet architecture walk: Lenin Square, Parliament, State Museum (morning, 2hr). Shoro Bazaar locals' market (early, no tourists, haggle). Afternoon: art galleries or café culture (Plov House traditional, modern coffee shops). Chu River evening walk. Prepare for operator pickup tomorrow.</td>
-                    </tr>
-                    <tr class="travel-row">
-                        <td>—</td>
-                        <td>Sat–Sun night</td>
-                        <td><strong>Overnight Bishkek (Pre-trip)</strong></td>
-                        <td>—</td>
-                        <td>Freedom Hotel. Last night in capital before 3-night Karakol immersion.</td>
-                    </tr>
-                    <tr class="travel-row">
-                        <td>3</td>
-                        <td>Sun, Sept 28</td>
-                        <td><strong>Bishkek → Karakol (Operator pickup)</strong></td>
-                        <td>~250km, 4–5 hours by minibus</td>
-                        <td>Morning: operator pickup at hotel or town center (confirm time day before). Drive east through steppe to Issyk-Kul Lake. Arrive Karakol by mid-afternoon. Central Guest House check-in. Acclimatization evening, light walk, early dinner.</td>
-                    </tr>
-                    <tr class="day-day2">
-                        <td>4</td>
-                        <td>Mon, Sept 29</td>
-                        <td><strong>Karakol deep-dive Day 1</strong></td>
-                        <td>Local day tours (full day)</td>
-                        <td><strong>Choose 1–2 from:</strong> Eagle hunting/falconry center (morning, book ahead, ~USD 50–80) OR Skazka Canyon (2–3hr south, iconic fairytale rocks, photography). Plus: Dungan mosque + Russian Orthodox church (architectural contrast), Old bazaar exploration. Evening: thermal springs option (Altyn Arashan or Jyrgalan, 25km, hot pools + views).</td>
-                    </tr>
-                    <tr class="day-day2">
-                        <td>5</td>
-                        <td>Tue, Sept 30</td>
-                        <td><strong>Karakol deep-dive Day 2</strong></td>
-                        <td>Local day tours (full day)</td>
-                        <td><strong>Choose from:</strong> Mars Canyon or Canyon of Forgotten Rivers (hidden, remote, Visit Karakol guides, 4–5hr full day, ~USD 60–80). OR Kaindy Valley petroglyphs (more remote than Tamchy, explorer feel). OR second round of eagle hunting + Skazka combo. Afternoon rest, acclimatization, local café time.</td>
-                    </tr>
-                    <tr class="day-day2">
-                        <td>6</td>
-                        <td>Wed, Oct 1</td>
-                        <td><strong>Karakol deep-dive Day 3</strong></td>
-                        <td>Final Karakol activities</td>
-                        <td>Lazy morning. Last market wander or missed activity from Days 4–5. Lunch with herding family visit (if arranged by operator for pre-Song-Kul cultural intro). Pack &amp; prepare for Song-Kul mountain drive tomorrow. Early dinner, rest well (tomorrow is high altitude).</td>
-                    </tr>
-                    <tr class="travel-row">
-                        <td>—</td>
-                        <td>Wed–Thu night</td>
-                        <td><strong>Overnight Karakol × 3</strong></td>
-                        <td>—</td>
-                        <td>Central Guest House (5.0★, family-run, guides arrange activities). All meals can be arranged through guesthouse.</td>
-                    </tr>
-                    <tr class="travel-row">
-                        <td>7</td>
-                        <td>Thu, Oct 2</td>
-                        <td><strong>Karakol → Song-Kul Plateau</strong></td>
-                        <td>~200km, 5–6 hours via high mountain passes (2,800–3,500m)</td>
-                        <td>Early morning operator departure. Scenic, winding mountain passes. Altitude gain 1,900m = mild acclimatization (mild headache, slightly labored breathing normal). Song-Kul yurt camp (Rima Yurt Camp) check-in mid-afternoon. Light walk, herding family introduction, settle in. Cold night begins (~5°C); layer up.</td>
-                    </tr>
-                    <tr class="day-day5">
-                        <td>8</td>
-                        <td>Fri, Oct 3</td>
-                        <td><strong>Song-Kul herding immersion (Centerpiece)</strong></td>
-                        <td>Full day at altitude (3,500m)</td>
-                        <td>Sunrise at lake (magical, freezing). Horse riding around lake perimeter (3–4hr with herding families). Participate in daily work: watering livestock, herding movements, light labor. Lunch with family (Kyrgyz food: kumys, bishbarmak). Afternoon rest, photography, journaling. Evening meal with family. Night sky observation (zero light pollution, Milky Way clear).</td>
-                    </tr>
-                    <tr class="day-day5">
-                        <td>9</td>
-                        <td>Sat, Oct 4</td>
-                        <td><strong>Song-Kul herding immersion (Day 2)</strong></td>
-                        <td>Full day at altitude (3,500m)</td>
-                        <td>Another sunrise ride or rest based on group energy. Optional: accompany herding family to grazing sites. Participate in additional livestock routines. Late afternoon: gentle walks, photography, rest. This night = deeper immersion, higher comfort with routines. Dinner again with family. Early sleep (altitude fatigue real).</td>
-                    </tr>
-                    <tr class="travel-row">
-                        <td>—</td>
-                        <td>Thu–Fri night, Fri–Sat night</td>
-                        <td><strong>Overnight Song-Kul × 2</strong></td>
-                        <td>—</td>
-                        <td>Rima Yurt Camp (4.6★, heated yurts with wood stove, blankets, communal meals). Shared facilities ~50m away. No WiFi (limited at nights). Meals included: Kyrgyz breakfast &amp; dinner with herding families.</td>
-                    </tr>
-                    <tr class="travel-row">
-                        <td>10</td>
-                        <td>Sun, Oct 5</td>
-                        <td><strong>Song-Kul → Bishkek (Operator return)</strong></td>
-                        <td>~250km, 6–8 hours via mountain passes, descent to 800m</td>
-                        <td>Morning departure. Descend from high altitude (3,500m to 800m Bishkek level). Drive through Tian Shan mountains, steppe, then city approach. Arrive Bishkek by early evening. Freedom Hotel check-in (late afternoon). Rest, shower, recovery. Light dinner.</td>
-                    </tr>
-                    <tr class="day-day6">
-                        <td>11</td>
-                        <td>Mon, Oct 6</td>
-                        <td><strong>Bishkek wind-down (Post-trip Day 1)</strong></td>
-                        <td>Urban exploration</td>
-                        <td>Bishkek deep-dive Day 1: <strong>Choose 1 option:</strong> (A) Full-day Silk Road excursion: Burana Tower (11th-century minaret) + Tash Rabat caravanserai (historic inn, ~6–7hr including drives, ~USD 50–80). OR (B) Supara Chunkurchak gorge north of city (thermal springs, hiking, mountain resort recovery, 30min drive). OR (C) Soviet architecture walk + artist galleries + Shoro Bazaar combo (free, local-focused). Afternoon rest, café culture.</td>
-                    </tr>
-                    <tr class="day-day6">
-                        <td>—</td>
-                        <td>Sun–Mon night</td>
-                        <td><strong>Overnight Bishkek (Post-trip)</strong></td>
-                        <td>—</td>
-                        <td>Freedom Hotel (4.9★, central). Recovery day after altitude.</td>
-                    </tr>
-                    <tr class="travel-row">
-                        <td>—</td>
-                        <td>Tue, Oct 7 (evening)</td>
-                        <td><strong>DEPART Bishkek</strong></td>
-                        <td>Turkish Airlines FRU→IST→SIN (evening departure, ~20–24 hours)</td>
-                        <td>Evening departure from Bishkek Manas International (~6–8pm local). Turkish Airlines connection via Istanbul. Arrive Singapore Thu morning Oct 7 (crossing date line). Rest one final night at hotel if early morning flight (check flight time).</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <!-- City guides -->
-        <section id="almaty">
-            <h2>City & Regional Guides</h2>
-            <div class="card">
-                <h3>Bishkek — Pre-Trip (Fri 26 – Sun 28 Sept) &amp; Post-Trip (Sun 5 – Tue 7 Oct)</h3>
-                <div class="card-section">
-                    <div class="card-section-title">Stay</div>
-                    <div class="card-text">
-                        <strong>Freedom Hotel</strong> — Isanov St 144, city center. Rating 4.9/5<br>
-                        ~USD 60–80/night per room. Modern, clean, excellent staff, great breakfast, perfect base. Walkable to museums, parks, restaurants. Book 2 nights each stay (Fri–Sat check-in evening, Sun–Mon check-in evening).
-                    </div>
-                </div>
-                <div class="card-section">
-                    <div class="card-section-title">Pre-Trip Eat (Sat Sept 27)</div>
-                    <div class="card-text">
-                        • <strong>Breakfast at hotel</strong> — included, highly rated.<br>
-                        • <strong>Plov House</strong> (central, traditional) — lamb pilaf, spiced rice. ~USD 5–8 per person.<br>
-                        • <strong>Modern café culture</strong> — Bishkek's growing coffee scene, independent cafés.<br>
-                        • <strong>Shoro Bazaar</strong> (locals' market, NOT tourists) — chaotic, authentic, haggle expected. Street food: kebabs, lagman. ~USD 1–3 per meal.
-                    </div>
-                </div>
-                <div class="card-section">
-                    <div class="card-section-title">Pre-Trip Do (Sat Sept 27)</div>
-                    <div class="card-text">
-                        <strong>Option A (Soviet + Urban):</strong> Lenin Square walk (central plaza), Parliament building, State Museum (Soviet-era grandeur). Self-guided 2hr morning walk.<br><br>
-                        <strong>Option B (Locals + Art):</strong> Shoro Bazaar locals' market (early 7–9am, no tourists, real experience). Artist collectives &amp; underground galleries (ask hotel for current exhibits). Independent galleries on side streets.<br><br>
-                        <strong>Option C (Recovery):</strong> Chu River evening walk (locals' hangout). Café time. Rest before operator pickup Sun morning.
-                    </div>
-                </div>
-                <div class="card-section">
-                    <div class="card-section-title">Post-Trip Do (Mon Oct 6)</div>
-                    <div class="card-text">
-                        <strong>Choose 1:</strong><br><br>
-                        <strong>Full-day Silk Road excursion (Burana + Tash Rabat):</strong> Burana Tower (11th-century minaret landmark, near Tokmok) + Tash Rabat (historic caravanserai inn in mountains). ~6–7hr total drive + visits. ~USD 50–80/group. Books history &amp; remote architecture.<br><br>
-                        <strong>OR Supara Chunkurchak gorge recovery:</strong> North of Bishkek (30min). Thermal springs, hiking, mountain resort. Perfect rest day after Song-Kul altitude. ~USD 30–50.<br><br>
-                        <strong>OR Bishkek cultural deep-dive:</strong> Soviet monuments walk + artist galleries + Shoro Bazaar combo (free, local-focused).
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" id="charyn">
-                <h3>Karakol (Issyk-Kul Lake Base) — Sun 28 Sept – Thu 2 Oct (3-Night Basecamp)</h3>
-                <div class="card-section">
-                    <div class="card-section-title">Stay</div>
-                    <div class="card-text">
-                        <strong>Central Guest House Karakol</strong> — Boronbay Khana St 36, city center. Rating 5.0/5<br>
-                        ~USD 35–50/night per room. Family-run, incredibly welcoming owner, ethno-style décor, spotlessly clean. Can arrange all local guides, taxis, day tours. Excellent guesthouse meals available.
-                    </div>
-                </div>
-                <div class="card-section">
-                    <div class="card-section-title">Eat (Karakol local)</div>
-                    <div class="card-text">
-                        • Guesthouse meals (home-cooked Kyrgyz &amp; Central Asian, included or ~USD 5–8/meal).<br>
-                        • Local markets: fresh produce, yogurt, bread, dried fruits.<br>
-                        • <strong>Kumys</strong> — fermented mare's milk, served everywhere. Try it; health drink, acquired taste. ~USD 1–2 per glass.<br>
-                        • <strong>Bishbarmak</strong> — national dish (meat + noodles, eaten by hand). Available at local restaurants &amp; yurt camps. Standard meal.
-                    </div>
-                </div>
-                <div class="card-section">
-                    <div class="card-section-title">Day-Tour Activities (Pick 3 from 5+ options over 2 full days)</div>
-                    <div class="card-text">
-                        <strong>Option 1 (Adventure — Top Pick):</strong> <strong>Eagle hunting / falconry training center</strong> (morning, 2–3hr). Golden eagles trained for hunting (Kyrgyz tradition). Demo flight, handler interaction. ~USD 50–80/group. Book 1 day ahead. Early Oct = hunting season; availability high.<br><br>
-                        <strong>Option 2 (Geology/Photography):</strong> <strong>Skazka Canyon (Fairytale Canyon)</strong> — Issyk-Kul south shore (~2–3hr from Karakol). Eroded sandstone, mineral colors (red, yellow, orange), unique formations. Half-day trip. ~USD 30–50/group with guesthouse guide. Less crowded in early Oct.<br><br>
-                        <strong>Option 3 (Hidden/Remote):</strong> <strong>Mars Canyon OR Canyon of Forgotten Rivers</strong> — Recently "discovered" hidden canyons near Karakol. Locations kept quiet to preserve remoteness. Requires Visit Karakol guides (contact guesthouse owner, book ahead). ~4–5hr full day, stunning formations. ~USD 60–80/group.<br><br>
-                        <strong>Option 4 (Petroglyphs/Explorer):</strong> <strong>Kaindy Valley petroglyphs</strong> (more remote than Tamchy). Ancient rock art, no tourist infrastructure, true explorer feel. Requires local guide (guesthouse arranges). ~4–5hr outing. ~USD 40–60/group.<br><br>
-                        <strong>Option 5 (Cultural/Relaxation):</strong> Dungan mosque + Russian Orthodox Church (architectural contrast), Old Bazaar walk, Altyn Arashan or Jyrgalan thermal springs (25km south, natural hot pools + mountain views, 45min). Soak + hike combo. ~USD 20–30 for spring access.
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div class="card" id="songkul">
-                <h3>Song-Kul Plateau — Sun 5 – Tue 7 Oct (Operator Days 5–6, Yurt Days)</h3>
-                <div class="card-section">
-                    <div class="card-section-title">Stay</div>
-                    <div class="card-text">
-                        <strong>Rima Yurt Camp</strong> — Song-Kul Lake, altitude 3,500m. Rating 4.6/5 (38 reviews)<br>
-                        ~USD 45–60/night per yurt (shared or private). <strong>What to expect:</strong> Heated yurts (wood stove, blankets provided), simple shared toilets & shower block (~50m away), communal dining. No WiFi (available nights only at limited bandwidth). Meals included: hearty Kyrgyz breakfast &amp; dinner. <em>Altitude note: 3,500m = expect mild headache, slightly labored breathing if unacclimatized. Hydrate constantly, move slowly first 24hr.</em>
-                    </div>
-                </div>
-                <div class="card-section">
-                    <div class="card-section-title">Try at yurt camp</div>
-                    <div class="card-text">
-                        • <strong>Bishbarmak</strong> — National Kyrgyz dish: meat, broth, &amp; hand-pulled noodles. Traditionally eaten by hand (name means "five fingers"). Hearty, warming at altitude. Standard meal at yurt camps.<br>
-                        • <strong>Kumys</strong> (fermented mare's milk) — Served at breakfast. Health drink in nomadic culture. Acquired taste but worth trying. [Certain: available at all yurt camps in Central Asia.]
-                    </div>
-                </div>
-                <div class="card-section">
-                    <div class="card-section-title">Unusual Activities (Core Experience)</div>
-                    <div class="card-text">
-                        <strong>Working with herding families:</strong> Operator arranges intro to live herding family near camp. Join daily routines: watering livestock, light herding, evening meal prep. Participate, observe, ask questions. Authentic Central Asian nomadic life (not performance; real work). <em>Physically demanding (altitude + outdoor labor), rewarding cultural bridge.</em><br><br>
-                        <strong>Horse riding around lake:</strong> 3–5hr rides on steppe around Song-Kul. Views of surrounding peaks, herds, wilderness. Sunrise ride optional (magical light, freezing temp).<br><br>
-                        <strong>Astronomy:</strong> Minimal light pollution at 3,500m. Clear nights reveal Milky Way, constellations. Bring a star chart or app. Late-night stargazing tradition at yurt camps.
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" id="bishkek">
-                <h3>Bishkek — Tue 7 – Thu 9 Oct (Post-Operator, Free Days)</h3>
-                <div class="card-section">
-                    <div class="card-section-title">Stay</div>
-                    <div class="card-text">
-                        <strong>Freedom Hotel</strong> — Isanov St 144, city center. Rating 4.9/5<br>
-                        ~USD 60–80/night. Modern, clean, excellent staff, great breakfast, perfect base. Walkable to museums, parks, restaurants. Book 2 nights (Tue–Wed, Wed–Thu).
-                    </div>
-                </div>
-                <div class="card-section">
-                    <div class="card-section-title">Unusual Activities (Culture Deep Dive)</div>
-                    <div class="card-text">
-                        <strong>Option 1 (Soviet History + Silk Road):</strong> <strong>Full-day Silk Road excursion</strong> — Burana Tower (11th-century minaret, Silk Road landmark, near Tokmok) + Tash Rabat caravanserai (historic inn for Silk Road traders, mountain setting). ~6–7 hours total drive + visits. Operator or hotel can arrange. ~USD 50–80 per group. <em>Book day before; combines history &amp; remote architecture.</em><br><br>
-                        <strong>Option 2A (Soviet monuments):</strong> Lenin Square, Parliament building, State Museum (Soviet-era grandeur). Self-guided morning walk (~2hr).<br><br>
-                        <strong>Option 2B (Mountain recovery):</strong> Supara Chunkurchak gorge north of city (30min drive). Thermal springs, hiking, views. Day trip or overnight. Perfect post-plateau rest day.<br><br>
-                        <strong>Option 3 (Art scene):</strong> Artist collectives &amp; underground galleries. Ask hotel for current exhibits. Independent galleries on side streets (not advertised; ask locals).<br><br>
-                        <strong>Option 4 (Authentic market):</strong> <strong>Shoro Bazaar (locals' market, NOT tourist bazaar)</strong> — Where locals buy produce, textiles, spices. Chaotic, authentic, no prices listed (haggle expected). ~1–2hr wander. <em>Real experience, not Instagram-friendly on purpose.</em><br><br>
-                        <strong>Café culture:</strong> Plov House (traditional pilaf), modern coffee shops (Bishkek's growing café scene). Chu River evening walk (locals' hangout).
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Unusual experiences detail -->
-        <section id="unusual">
-            <h2>Unusual Experiences — Detailed</h2>
-            <p>
-                This itinerary deliberately weaves in less-touristed activities. Here's how each is integrated:
-            </p>
-            <h3>1. Petroglyphic Rock Art Sites (En Route, Mon Sept 29)</h3>
-            <p>
-                Ancient carvings (hunters, herds, ritual symbols) from 1000–5000 years ago. Found along the Charyn approach road. Operator must be briefed upfront to stop at Tamchy-style accessible sites. ~45min detour, no extra cost (included in tour). <strong>Kaindy Valley petroglyphs (south Issyk-Kul)</strong> are an alternative — more remote, no tourist infrastructure, true explorer feel. Requires local guide via Karakol guesthouse or Visit Karakol.
-            </p>
-            <h3>2. Skazka Canyon (Karakol Day Option, Fri Oct 3)</h3>
-            <p>
-                Iconic Issyk-Kul south shore canyon with fairytale-shaped rock formations. Eroded sandstone rich in minerals creates red, yellow, orange colors. Less crowded in early Oct than summer season. ~2–3 hours from Karakol. Half-day trip (~USD 30–50/group with guesthouse guide). Photography-focused. [Certain: featured in most Kyrgyzstan travel blogs; if you're near Issyk-Kul, don't skip.]
-            </p>
-            <h3>3. Mars Canyon &amp; Canyon of the Forgotten Rivers (Karakol Day Option, Optional)</h3>
-            <p>
-                Recently "discovered" hidden canyons near Karakol (locations deliberately kept quiet). Accessible only via Visit Karakol guides (~USD 60–80/group). ~4–5 hours full day. Stunning rock formations, minimal crowds, genuine off-beat experience. Requires advance booking.
-            </p>
-            <h3>4. Eagle Hunting / Falconry Training (Karakol, Sat Oct 4 — Optional)</h3>
-            <p>
-                Golden eagle hunting is a living Kyrgyz tradition. Training centers exist near Karakol. Facility visit lets you observe trained birds &amp; handlers. Cost ~USD 50–80/group. Book 1 day ahead via guesthouse. Early Oct is hunting season; availability high.
-            </p>
-            <h3>5. Herding Family Immersion (Song-Kul, Mon–Tue Oct 6–7)</h3>
-            <p>
-                <strong>The centerpiece.</strong> Operator arranges intro to active herding families camped near Song-Kul. Participate in daily work: watering livestock, light herding, meal prep. Not performance — real rural life. Altitude (3,500m), physical work, no-English speakers = challenging but unforgettable. Two-night stay allows acclimatization + immersion.
-            </p>
-            <h3>6. Try Kumys &amp; Bishbarmak (Throughout Trip)</h3>
-            <p>
-                <strong>Kumys:</strong> Fermented mare's milk, served at all yurt camps for breakfast. Health drink in nomadic Central Asian culture. Acquired taste (~USD 1–2 per glass). Try it; it's everywhere, authentic, and worth the experience even if you don't love it.<br><br>
-                <strong>Bishbarmak:</strong> National Kyrgyz dish (meat + broth + hand-pulled noodles). Name means "five fingers" (traditionally eaten by hand). Standard meal at yurt camps &amp; local restaurants. Hearty, warming at altitude.
-            </p>
-            <h3>7. Shoro Bazaar (Bishkek, Wed Oct 8)</h3>
-            <p>
-                Locals' wholesale market (not tourist bazaar). Haggling, no price tags, authentic Central Asian trade. Go early (7–9am), expect chaos, absorb vibe. This is where Bishkek residents actually shop. Real experience, not Instagram-friendly.
-            </p>
-            <h3>8. Silk Road Heritage (Bishkek Day Trip Option, Tue–Wed Oct 7–8)</h3>
-            <p>
-                Full-day excursion combining two historic Silk Road sites: <strong>Burana Tower</strong> (11th-century minaret landmark, near Tokmok) + <strong>Tash Rabat</strong> (historic caravanserai inn in mountains, hosted Silk Road traders). ~6–7 hours total drive + visits. ~USD 50–80/group via hotel or operator. Books history &amp; remote mountain architecture in one day.
-            </p>
-            <h3>9. Hot Springs Options (Karakol Area)</h3>
-            <p>
-                Kyrgyzstan is rich with thermal springs. Near Karakol: <strong>Altyn Arashan</strong> (mountain resort) or <strong>Jyrgalan thermal springs</strong> (25km south, ~45min). Natural hot pools with mountain views. Perfect recovery day after altitude. ~USD 20–30 for access + guide.
-            </p>
-        </section>
-
-        <!-- Budget -->
-        <section id="budget">
-            <h2>Budget Estimate (3 travelers, SGD) — Kyrgyzstan-Only</h2>
-            <div class="budget-row">
-                <div class="budget-item"><strong>Flights (SIN → Istanbul → Bishkek round-trip, Turkish Airlines)</strong></div>
-                <div class="budget-amount">~700–850 SGD (saved ~150 vs Kazakhstan routing)</div>
-            </div>
-            <div class="budget-row">
-                <div class="budget-item">Freedom Hotel Bishkek (2 nights pre-trip, Fri–Sat Sep 26–27)</div>
-                <div class="budget-amount">~120–150 SGD (split 2–3 rooms)</div>
-            </div>
-            <div class="budget-row">
-                <div class="budget-item">Guided operator tour (5 days, Thu Sep 28 – Mon Oct 6)</div>
-                <div class="budget-amount">~800–1,100 SGD</div>
-            </div>
-            <div class="budget-row">
-                <div class="budget-item">&nbsp;&nbsp;&nbsp;&nbsp;(Includes: vehicle, driver, guide, meals at Karakol/Song-Kul, lodging)</div>
-                <div class="budget-amount"></div>
-            </div>
-            <div class="budget-row">
-                <div class="budget-item">Central Guest House Karakol (3 nights included in operator)</div>
-                <div class="budget-amount">~Covered by operator; ~120–150 SGD independent</div>
-            </div>
-            <div class="budget-row">
-                <div class="budget-item">Freedom Hotel Bishkek (2 nights post-trip, Sun–Mon Oct 5–6)</div>
-                <div class="budget-amount">~120–150 SGD (split 2–3 rooms)</div>
-            </div>
-            <div class="budget-row">
-                <div class="budget-item">Meals outside operator (Bishkek pre/post, snacks, extras)</div>
-                <div class="budget-amount">~100–150 SGD</div>
-            </div>
-            <div class="budget-row">
-                <div class="budget-item">Unusual activities (eagle hunting, Skazka Canyon, thermal springs, herding)</div>
-                <div class="budget-amount">~150–200 SGD (mostly booked through operator or guesthouse)</div>
-            </div>
-            <div class="budget-row">
-                <div class="budget-item">Insurance (high-altitude, emergency evacuation), visa (visa-free, no cost)</div>
-                <div class="budget-amount">~80–120 SGD</div>
-            </div>
-            <div class="budget-row">
-                <div class="budget-item">Transport, tips, contingency</div>
-                <div class="budget-amount">~100–150 SGD</div>
-            </div>
-            <div class="budget-total">
-                <strong>TOTAL ESTIMATE (per person)</strong>
-                <strong>~1,600–2,100 SGD</strong>
-            </div>
-            <p style="font-size: 12px; color: #999; margin-top: 12px;">
-                <em>Kyrgyzstan-only = ~$200–300 cheaper than Kazakhstan+Kyrgyzstan routing (no Almaty, no border logistics, fewer hotel nights). All Central Asian meals/transport extremely affordable. Exchange: 1 KGS ≈ 0.017 SGD (verify Sep 2027). Operator quotes vary; request 3 bids. Book flights early (Jun–Jul 2027 = sweet spot for Sep routing).</em>
-            </p>
-        </section>
-
-        <!-- Practical notes -->
-        <section>
-            <h2>Practical Notes</h2>
-            <h3>Flights & Entry</h3>
-            <ul>
-                <li><strong>Turkish Airlines Booking (SIN → IST → FRU):</strong> Book by Jun–Jul 2027 for Sep departures. Depart Thu Sep 25 evening (~6–8pm SIN), arrive Fri Sep 26 evening (~6–8pm Bishkek local time). Return routing: Wed Oct 6 evening (~6–8pm Bishkek) → Istanbul connection → arrive Singapore Thu Oct 7 morning. ~SGD 700–850 per person return.</li>
-                <li><strong>Turkey Transit Visa:</strong> Singapore passport holders are visa-free for Turkey (90 days). No visa action needed; Istanbul connection is streamlined.</li>
-                <li><strong>Arrive Bishkek Friday evening:</strong> Check into Freedom Hotel (arrange late check-in in advance). Rest, no activities. Recovery Friday night.</li>
-            </ul>
-
-            <h3>Operator Coordination (Kyrgyzstan-Only)</h3>
-            <ul>
-                <li><strong>Booking deadline:</strong> Book tour by early Aug 2027 (operator confirms 5-day Karakol-Song-Kul routing).</li>
-                <li><strong>Recommended operators:</strong> Visit Karakol (Karakol-based, Issyk-Kul specialists), TJK World Travel (Bishkek-based, excellent Song-Kul connections), Silk Travel Kyrgyzstan division (if using same operator as Kazakhstan days).</li>
-                <li><strong>Must confirm with operator:</strong>
-                    <ul>
-                        <li>Bishkek hotel pickup Sun Sep 28 morning (specify Freedom Hotel)</li>
-                        <li>Bishkek return Sun Oct 5 evening (same hotel, late arrival OK)</li>
-                        <li>Central Guest House Karakol (3 nights)</li>
-                        <li>Rima Yurt Camp Song-Kul (2 nights, herding family immersion)</li>
-                        <li>Eagle hunting center visit (Karakol, book ahead)</li>
-                        <li>Herding family participation (NOT standard; must request explicitly)</li>
-                        <li>Skazka Canyon, Mars Canyon, or petroglyph day tours included/optional pricing</li>
-                        <li>Meals (vegetarian? halal? allergies?)</li>
-                        <li>Emergency protocols (altitude sickness, vehicle breakdown, evacuation insurance)</li>
-                    </ul>
-                </li>
-                <li><strong>Payment:</strong> Typically 50% deposit upon booking, 50% due 14 days before departure.</li>
-            </ul>
-
-            <h3>Visa (No Border Crossing!)</h3>
-            <ul>
-                <li><strong>Singapore → Kyrgyzstan:</strong> Visa-free for 60 days. No visa needed. Keep original passports + copies separated during trip.</li>
-                <li><strong>No land border crossing.</strong> Single-country simplicity = less paperwork, faster movement.</li>
-            </ul>
-
-            <h3>Money & Cards</h3>
-            <ul>
-                <li><strong>Currency:</strong> Kyrgyzstani som (KGS). ~65–70 KGS = 1 SGD. USD widely accepted in tourist areas; avoid small bills for exchange (rates worse).</li>
-                <li><strong>ATMs:</strong> Abundant in Bishkek (Visa/MC accepted). Limited in Karakol &amp; Song-Kul. Withdraw cash (USD or KGS) before leaving Bishkek pre-trip.</li>
-                <li><strong>Budget notes:</strong> Meals ~USD 2–5 per person (much cheaper than Singapore). Lodging ~USD 40–50. Transport negligible. Unusual activities ~USD 30–80 each.</li>
-                <li><strong>Tipping:</strong> Not mandatory but appreciated (10% restaurants, USD 1–2 guides). Small bills useful.</li>
-            </ul>
-
-            <h3>Health & Altitude</h3>
-            <ul>
-                <li><strong>Song-Kul altitude:</strong> 3,500m. Mild headache &amp; fatigue common. Hydrate constantly, avoid alcohol first night, move slowly. Serious altitude sickness rare for acclimatized travelers but possible. Travel insurance must cover evacuation.</li>
-                <li><strong>Water:</strong> Boiled/bottled only. Hotel water is treated; don't risk steppe water.</li>
-                <li><strong>Medications:</strong> Bring standard kit (paracetamol, imodium, antihistamine, blister pads, sunscreen SPF 50+). Pharmacies exist in cities; less reliable in remote areas.</li>
-                <li><strong>Vaccinations:</strong> None required for Kazakhstan/Kyrgyzstan, but hepatitis A &amp; typhoid boosters recommended. Consult Singapore travel clinic 4–6 weeks before.</li>
-            </ul>
-
-            <h3>Pacing & Acclimatization (Kyrgyzstan-Only)</h3>
-            <ul>
-                <li><strong>Day 1 (Fri Sep 26):</strong> Arrival Bishkek evening (800m), jet lag. Rest night only.</li>
-                <li><strong>Day 2 (Sat Sep 27):</strong> Bishkek urban 2,000m elevation for walking day (easy). Soviet architecture, markets, café time. No exertion; acclimatize to time zone.</li>
-                <li><strong>Day 3 (Sun Sep 28):</strong> Travel day Bishkek → Karakol (1,600m, 4–5hr drive). Arrive mid-afternoon. Light walk, early dinner, rest.</li>
-                <li><strong>Days 4–6 (Mon–Wed Sep 29 – Oct 1):</strong> Karakol base (1,600m, coastal). Day tours (eagle hunting, Skazka Canyon, hidden canyons, petroglyphs). 0–5hr walks depending on activity. Moderate altitude; plenty of rest between tours.</li>
-                <li><strong>Day 7 (Thu Oct 2):</strong> Travel day Karakol → Song-Kul (3,500m, 5–6hr mountain drive). Altitude gain ~1,900m. Light walk on arrival, early rest. Acclimatization night 1.</li>
-                <li><strong>Days 8–9 (Fri–Sat Oct 3–4):</strong> Song-Kul HIGH ALTITUDE (3,500m). Move slowly, hydrate obsessively. Horse riding + herding family work (3–5hr activity per day). 2 nights = buffer for mild altitude adjustment. No rushing.</li>
-                <li><strong>Day 10 (Sun Oct 5):</strong> Return drive Song-Kul → Bishkek (6–8hr descent from 3,500m to 800m). Long day but descending altitude aids recovery. Arrive early evening. Rest night.</li>
-                <li><strong>Day 11 (Mon Oct 6):</strong> Bishkek recovery day (800m). Optional Silk Road day trip or easy activity. Evening flight prep.</li>
-            </ul>
-
-            <h3>What to Pack</h3>
-            <ul>
-                <li>Layers (Sep mountain temps: 10–20°C mornings, 15–25°C afternoons). Oct colder (5–15°C).</li>
-                <li>Waterproof jacket &amp; pants (rain at altitude, especially Sep).</li>
-                <li>Hiking boots (mandatory for all alpine sections).</li>
-                <li>Sun protection: hat, sunscreen SPF 50+, sunglasses (high altitude UV).</li>
-                <li>Headlamp or torch (Song-Kul has minimal light infrastructure).</li>
-                <li>Reusable water bottle (3L capacity).</li>
-                <li>Toiletries (limited in remote areas; bring full supplies).</li>
-                <li>Phone/camera chargers + power bank (limited charging at yurt camps).</li>
-                <li>Copies of passport, travel insurance documents, credit card info (separate from originals).</li>
-            </ul>
-        </section>
-
-        <!-- Pre-departure checklist -->
-        <section id="checklist">
-            <h2>Pre-Departure Checklist (Kyrgyzstan-Only v3)</h2>
-            <ul class="checklist">
-                <li>☐ <strong>FLIGHTS FIRST:</strong> Book Turkish Airlines SIN → IST → FRU round-trip (Thu Sep 25 depart evening, Wed Oct 6 return evening). Book by Jun–Jul 2027. ~SGD 700–850 per person.</li>
-                <li>☐ Book Kyrgyzstan-only operator tour (Visit Karakol, TJK World Travel, or Silk Travel Kyrgyzstan). Thu Sep 28 – Sun Oct 5 (5 days, 4 nights with operator).</li>
-                <li>☐ Confirm with operator: Bishkek hotel pickup (Freedom Hotel) Sun Sep 28 morning, Bishkek return Sun Oct 5 evening.</li>
-                <li>☐ Confirm operator route: Bishkek → Karakol (3 nights) → Song-Kul (2 nights) → Bishkek.</li>
-                <li>☐ Request in operator contract: Eagle hunting center (Karakol), herding family immersion (Song-Kul), Skazka Canyon or hidden canyons tour.</li>
-                <li>☐ Contact Visit Karakol separately (if not via operator) for Mars Canyon, Kaindy petroglyphs, optional activities.</li>
-                <li>☐ Book Freedom Hotel Bishkek: 2 nights pre-trip (Fri Sep 26 – Sat Sep 27 check-in evening) + 2 nights post-trip (Sun Oct 5 – Mon Oct 6 check-in evening).</li>
-                <li>☐ Optional: Book Silk Road day trip (Burana + Tash Rabat) via Freedom Hotel concierge for Mon Oct 6 (confirmation 1 day before).</li>
-                <li>☐ Confirm leave approval from employers: all 3 travelers need ~4–6 working days off (Wed 24 Sep – Mon 6 Oct depending on company calendar).</li>
-                <li>☐ Visa check: Confirm Singapore passports are visa-free Kyrgyzstan 60 days (no visa action needed as of 2027).</li>
-                <li>☐ Book travel insurance: Declare altitude 3,500m, high-altitude trekking, horse riding, herding work, emergency evacuation. Budget ~SGD 80–120.</li>
-                <li>☐ Vaccination consult: Schedule with Singapore travel clinic (ISH, TTSH). Hepatitis A &amp; typhoid boosters recommended, not mandatory. 4–6 weeks before trip.</li>
-                <li>☐ Emergency contact list: Share itinerary &amp; contacts (operator, hotels, family emergency numbers) with Singapore family.</li>
-                <li>☐ Offline maps: Download Google Maps offline for Bishkek, Issyk-Kul, Song-Kul. No WiFi at Song-Kul yurt camp.</li>
-                <li>☐ Phone roaming / local SIM: Purchase Beeline or Katel SIM in Bishkek upon arrival. ~USD 5–10 for data plan.</li>
-                <li>☐ Withdraw cash: Bishkek ATM upon arrival (Friday evening or Saturday morning). Withdraw USD 200–400 &amp; exchange for KGS. Later withdrawals at Karakol ATM (limited but available).</li>
-                <li>☐ Packing: Layers (Sep: 10–20°C, Oct: 5–15°C), waterproof jacket, hiking boots, sun protection, headlamp, 3L water bottle, toiletries, power bank.</li>
-                <li>☐ Prepare copies: Passport photo pages, travel insurance docs, credit card info (keep separate from originals).</li>
-                <li>☐ Fitness &amp; boots: Confirm all three travelers are comfortable with horse riding &amp; 3–5hr day hikes. Break in hiking boots NOW (do not bring new boots).</li>
-                <li>☐ Bank notification: Notify your bank of travel dates &amp; foreign transactions (prevent card blocks).</li>
-                <li>☐ Backup: Screenshot itinerary, hotel confirmations, operator booking reference. Backup to cloud (Google Drive).</li>
-            </ul>
-        </section>
-
-        <!-- Travel DNA footer -->
-        <footer>
-            <div class="dna-box">
-                <div class="dna-title">🧭 Travel DNA Rules — Confirmed (5 Rules)</div>
-                <p style="margin-bottom: 12px; font-size: 13px;">
-                    <strong>Kyrgyzstan v3 explicitly confirmed the following 5 principles. All future trips assume these rules locked:</strong>
-                </p>
-                <ol style="font-size: 13px; margin-left: 20px; color: #d0d0d0;">
-                    <li><strong>Optimal weather &amp; activity quality &gt; leave efficiency.</strong> Late Sep–early Oct trekking season chosen over Aug public holiday anchor because heat kills activity. Destination conditions (altitude, season, weather windows) are the primary constraint; leave efficiency is secondary. Future trips routed: conditions first, then optimize leave.</li>
-                    <li><strong>Group travel (girlfriend + 1–2 others) is the default.</strong> Solo trips are exceptions (motorcycle, solo exploration windows). Multi-person trips require shared rooms occasionally, joint activity selection, and group-paced logistics. Accommodation tiers &amp; activity clustering designed for 3-person groups.</li>
-                    <li><strong>Unusual experiences are structural day-level commitments.</strong> Not optional flavor; not "if there's time" add-ons. Herding family immersion = centerpiece (2 nights locked). Eagle hunting, hidden canyons, petroglyphs, locals bazaars = day-level anchors equal to mainstream sightseeing. Seek uncommon + lesser-known alternatives relentlessly.</li>
-                    <li><strong>Solo independent windows (2–3 days) bookend guided operator tours.</strong> Operator days are logistics anchors; independent pre/post days (Bishkek pre, Bishkek post) allow flexible discovery &amp; rest. This 5-day operator + 3 days Bishkek + 2 days travel = standard cadence.</li>
-                    <li><strong>3–5 activity options per region; travelers choose.</strong> Never single "must-do." Karakol now offers: eagle hunting (adventure), Skazka Canyon (geology/photo), Mars Canyon (hidden/remote), petroglyphs (explorer), thermal springs (relaxation). Bishkek: Silk Road excursion, Soviet monuments, artist galleries, Shoro Bazaar, gorge recovery. Let group pick by interest.</li>
-                </ol>
-                <p style="margin-top: 12px; font-size: 12px; color: #999;">
-                    <strong>✓ LOCKED. These 5 rules now apply to all future Central Asia, Southeast Asia &amp; motorcycle trips.</strong>
-                </p>
-            </div>
-            <div style="border-top: 1px solid #333; padding-top: 16px;">
-                <p style="font-size: 12px; color: #666;">
-                    <strong>Document Version:</strong> v3 (Kyrgyzstan-only, no Kazakhstan) | <strong>Compiled:</strong> Sept 4, 2026 | <strong>Trip dates:</strong> Thu Sep 25 – Thu Oct 7, 2027 (11 nights in-country, 13 days total with flights). <strong>Estimates:</strong> All prices are mid-2027 snapshots (budget confirmed ~SGD 1,600–2,100 per person, ~$200 cheaper than Kazakhstan+Kyrgyzstan routing). Flight routing via Turkish Airlines (IST hub) = fastest option (20–24hr total). Operator prices from 3+ bids (TJK World Travel, Visit Karakol, Silk Travel Kyrgyzstan). All flagged items re-verify 4 weeks before booking.
-                </p>
-                <p style="font-size: 12px; color: #666; margin-top: 8px;">
-                    <strong>Offline use:</strong> This document works without internet. Leaflet map degrades gracefully; strip map &amp; day table are your fallback if WiFi fails during trip.
-                </p>
-            </div>
-        </footer>
+  <div class="hdr">
+    <div>
+      <h1>SG <span>→</span> BISHKEK <span>→</span> SG</h1>
+      <div class="sub">3 ADULTS · SEP 25 – OCT 7, 2027 · KYRGYZSTAN DEEP IMMERSION · SONG-KUL HERDING + KARAKOL BASECAMP</div>
     </div>
+    <div class="odo">
+      <b>11 NIGHTS</b>
+      <small>13 Calendar Days</small>
+    </div>
+  </div>
 
-    <!-- Leaflet map -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-    <script>
-        const locations = {
-            bishkek1: { lat: 42.8746, lng: 74.5698, label: "1. Bishkek (Pre-trip: 2 nights)" },
-            karakol: { lat: 42.4871, lng: 78.3995, label: "2. Karakol (Deep-dive: 3 nights)" },
-            songkul: { lat: 41.8885, lng: 75.2208, label: "3. Song-Kul (Immersion: 2 nights)" },
-            bishkek2: { lat: 42.8746, lng: 74.5698, label: "4. Bishkek (Post-trip: 2 nights)" }
-        };
+  <nav>
+    <a href="#overview">Route Map</a>
+    <a href="#schedule">Schedule</a>
+    <a href="#efficiency">Leave Efficiency</a>
+    <a href="#regions">Regions</a>
+    <a href="#budget">Budget</a>
+    <a href="#checklist">Checklist</a>
+  </nav>
 
-        const map = L.map('map').setView([42.3, 76.5], 6);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors',
-            maxZoom: 18
-        }).addTo(map);
+  <div class="alert">
+    <h4>🚨 CRITICAL ACTIONS</h4>
+    <ul>
+      <li><b>Turkish Airlines flights:</b> Book SIN → Istanbul → Bishkek round-trip by Jun–Jul 2027. Depart Thu 25 Sep evening, arrive Fri 26 Sep evening. Return Wed 6 Oct evening. ~SGD 700–850/person.</li>
+      <li><b>Kyrgyzstan-only operator:</b> Book by early Aug 2027. Confirm Bishkek pickup (Sun 28 Sep) & Bishkek return (Sun 5 Oct). Specify: herding family immersion, eagle hunting, Karakol 3-night basecamp.</li>
+      <li><b>Leave confirmation:</b> All 3 travelers need ~9 working days approved (Wed 24 Sep – Tue 7 Oct). Confirm with employers now.</li>
+    </ul>
+  </div>
 
-        const markers = {};
-        const lines = {};
+  <section id="overview">
+    <h2><span class="no">01</span>Route Map</h2>
+    <p class="sec-sub">Linear Kyrgyzstan loop: Bishkek (urban pre) → Karakol (3-night basecamp) → Song-Kul plateau (2-night herding immersion) → Bishkek (urban post). No backtracking. Turkish Airlines via Istanbul.</p>
+    <div class="road">
+      <div class="road-track">
+        <div class="centerline"></div>
+        <div class="node" style="left:8%;">
+          <div class="card down">
+            <div class="shield">✈</div>
+            <div class="city">Bishkek</div>
+            <div class="nights">2 nights (pre)</div>
+            <div class="vibe">Urban intro, Shoro Bazaar, Soviet walk</div>
+          </div>
+        </div>
+        <div class="node" style="left:35%;">
+          <div class="card up">
+            <div class="shield">🦅</div>
+            <div class="city">Karakol</div>
+            <div class="nights">3 nights</div>
+            <div class="vibe">Issyk-Kul basecamp, eagle hunting, Skazka Canyon</div>
+          </div>
+        </div>
+        <div class="node" style="left:62%;">
+          <div class="card down">
+            <div class="shield rest">🐎</div>
+            <div class="city">Song-Kul</div>
+            <div class="nights">2 nights</div>
+            <div class="vibe">3,500m plateau, herding family immersion, centerpiece</div>
+          </div>
+        </div>
+        <div class="node" style="left:89%;">
+          <div class="card up">
+            <div class="shield">🏙</div>
+            <div class="city">Bishkek</div>
+            <div class="nights">2 nights (post)</div>
+            <div class="vibe">Wind-down, Silk Road option, recovery</div>
+          </div>
+        </div>
+      </div>
+      <div class="legend">
+        <span><div class="dot travel"></div> Travel Day</span>
+        <span><div class="dot rest"></div> Base/Rest Day</span>
+      </div>
+    </div>
+  </section>
 
-        Object.keys(locations).forEach((key, idx) => {
-            const loc = locations[key];
-            const marker = L.circleMarker([loc.lat, loc.lng], {
-                radius: 8,
-                fillColor: '#d87f3b',
-                color: '#fff',
-                weight: 2,
-                opacity: 1,
-                fillOpacity: 0.8
-            }).bindPopup(`<strong>${loc.label}</strong><br><a href="https://www.google.com/maps/search/${loc.label}/@${loc.lat},${loc.lng}" target="_blank">Open in Google Maps</a>`).addTo(map);
+  <section id="schedule">
+    <h2><span class="no">02</span>Day-by-Day Schedule</h2>
+    <p class="sec-sub">Turkish Airlines routing. 11 nights in-country. 4 weekend days absorbed (zero public holiday bonus).</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Date</th>
+          <th>Location</th>
+          <th>Activity</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="ride-row">
+          <td colspan="5"><b>DEPARTURE: Thu 25 Sep (evening) – Turkish Airlines SIN → IST → FRU, 20–24 hours</b></td>
+        </tr>
+        <tr class="rest-row">
+          <td>1</td>
+          <td>Fri 26 Sep</td>
+          <td><b>Bishkek</b> (Arrival)</td>
+          <td>Arrive evening (~6–8pm local). Rest at Freedom Hotel.</td>
+          <td>Jet lag recovery. Light dinner, early sleep.</td>
+        </tr>
+        <tr class="rest-row">
+          <td>2</td>
+          <td>Sat 27 Sep</td>
+          <td><b>Bishkek</b></td>
+          <td>Soviet walk (Lenin Square, Parliament). Shoro Bazaar. Café culture.</td>
+          <td>Pre-trip urban exploration. Prepare for operator pickup tomorrow.</td>
+        </tr>
+        <tr class="ride-row">
+          <td>3</td>
+          <td>Sun 28 Sep</td>
+          <td><b>Bishkek → Karakol</b></td>
+          <td>Operator pickup morning. 4–5hr drive east to Issyk-Kul. Central Guest House check-in.</td>
+          <td>Acclimatization evening (1,600m). Light walk.</td>
+        </tr>
+        <tr class="rest-row">
+          <td>4</td>
+          <td>Mon 29 Sep</td>
+          <td><b>Karakol</b></td>
+          <td>Deep-dive Day 1: Eagle hunting OR Skazka Canyon (pick 1–2).</td>
+          <td>Basecamp activities. Local guides arranged through guesthouse.</td>
+        </tr>
+        <tr class="rest-row">
+          <td>5</td>
+          <td>Tue 30 Sep</td>
+          <td><b>Karakol</b></td>
+          <td>Deep-dive Day 2: Mars Canyon OR Kaindy petroglyphs OR second eagle/Skazka combo.</td>
+          <td>Afternoon rest, acclimatization. Thermal springs optional.</td>
+        </tr>
+        <tr class="rest-row">
+          <td>6</td>
+          <td>Wed 1 Oct</td>
+          <td><b>Karakol</b></td>
+          <td>Deep-dive Day 3: Final activity or lazy morning + herding family intro lunch.</td>
+          <td>Pack, prepare for Song-Kul mountain pass tomorrow. Early rest.</td>
+        </tr>
+        <tr class="ride-row">
+          <td>7</td>
+          <td>Thu 2 Oct</td>
+          <td><b>Karakol → Song-Kul</b></td>
+          <td>Operator transport. ~200km, 5–6hr mountain passes. Altitude 1,600m → 3,500m gain.</td>
+          <td>Rima Yurt Camp check-in. Acclimatization evening. Layer up (cold nights).</td>
+        </tr>
+        <tr class="rest-row">
+          <td>8</td>
+          <td>Fri 3 Oct</td>
+          <td><b>Song-Kul</b></td>
+          <td><b>Herding family immersion (Centerpiece).</b> Sunrise ride, daily livestock work, family lunch, evening meal.</td>
+          <td>3,500m altitude. Move slowly, hydrate obsessively. No WiFi. Stargazing.</td>
+        </tr>
+        <tr class="rest-row">
+          <td>9</td>
+          <td>Sat 4 Oct</td>
+          <td><b>Song-Kul</b></td>
+          <td>Herding immersion Day 2. Horse riding, family routines. Afternoon rest, photography.</td>
+          <td>Night 2 acclimatization buffer. Altitude fatigue real; sleep well.</td>
+        </tr>
+        <tr class="ride-row">
+          <td>10</td>
+          <td>Sun 5 Oct</td>
+          <td><b>Song-Kul → Bishkek</b></td>
+          <td>Operator return. ~250km, 6–8hr descent (3,500m to 800m). Arrive early evening.</td>
+          <td>Long travel day but downhill altitude helps recovery. Freedom Hotel check-in.</td>
+        </tr>
+        <tr class="rest-row">
+          <td>11</td>
+          <td>Mon 6 Oct</td>
+          <td><b>Bishkek</b> (Recovery)</td>
+          <td>Post-trip wind-down. Silk Road excursion (Burana + Tash Rabat) OR gorge recovery day OR markets.</td>
+          <td>Evening flight prep. Departure ~6–8pm local.</td>
+        </tr>
+        <tr class="ride-row">
+          <td colspan="5"><b>DEPARTURE: Tue 7 Oct (early morning arrival SG) – Turkish Airlines FRU → IST → SIN, 20–24 hours</b></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 
-            const textMarker = L.marker([loc.lat, loc.lng], {
-                icon: L.divIcon({
-                    html: `<div style="color: #f4a460; font-weight: bold; font-size: 12px; text-shadow: 1px 1px 2px #000;">${idx + 1}</div>`,
-                    className: 'text-marker',
-                    iconSize: [20, 20]
-                })
-            }).addTo(map);
+  <section id="efficiency">
+    <h2><span class="no">03</span>Leave Efficiency Analysis</h2>
+    <p class="sec-sub">Singapore Public Holidays 2027: No holidays in Sep 25 – Oct 7 window.</p>
+    <div class="efficiency-box">
+      <div class="efficiency-grid">
+        <div class="efficiency-item">
+          <div class="efficiency-label">📊 Annual Leave Required</div>
+          <div class="efficiency-value">9 working days</div>
+          <div class="efficiency-calc">Thu 25 (0.5) + Fri 26 (1) + Mon 29 – Fri 3 (5) + Mon 6 (1) + Tue 7 (0.5) = 9</div>
+        </div>
+        <div class="efficiency-item">
+          <div class="efficiency-label">📅 Total Trip Duration</div>
+          <div class="efficiency-value">13 calendar days</div>
+          <div class="efficiency-calc">Includes 4 weekend days (Sat 27, Sun 28, Sat 4, Sun 5)</div>
+        </div>
+      </div>
+      <div style="background:var(--night-3);border:1px solid var(--line);border-radius:4px;padding:14px 16px;">
+        <div style="font-size:13px;margin-bottom:8px;"><b>Leave Efficiency Ratio: <span style="color:var(--gold);font-size:16px;">1.44x</span></b></div>
+        <div class="efficiency-calc">
+          Calculation: 13 calendar days ÷ 9 annual leave = <b>1.44x</b><br>
+          For every 1 day of leave burned, you gain 1.44 days of travel. Comparable to Ipoh motorcycle trip (Dec anchor, ~1.4x ratio). <b>No public holiday bonus</b> in this Sep/Oct window.
+        </div>
+      </div>
+    </div>
+    <div class="note">
+      <b>Action:</b> Confirm all 3 travelers can secure 9 working days off by Jun 2027. If leave availability changes, the entire trip must shift to a window with public holiday anchors (next best: Hari Raya Haji + Vesak combo, May 2027, but that's off-season for Kyrgyzstan).
+    </div>
+  </section>
 
-            markers[key] = marker;
-        });
+  <section id="regions">
+    <h2><span class="no">04</span>Regions & Activities</h2>
+    
+    <div class="city-grid">
+      <div class="cg">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Bishkek (Pre-Trip)</h4>
+          <div class="meta">FRI 26 – SUN 28 SEP · 2 NIGHTS · 800M ALTITUDE</div>
+          <dl>
+            <dt>Stay</dt>
+            <dd>Freedom Hotel, Isanov St 144. 4.9★. ~USD 60–80/night. Central, walkable.</dd>
+            <dt>Do</dt>
+            <dd><b>Sat:</b> Lenin Square walk, Parliament, State Museum (Soviet grandeur). Shoro Bazaar locals' market (early 7–9am, no tourists, haggle). Café culture. <b>Sun:</b> Market wander, Chu River evening walk, rest before operator pickup.</dd>
+            <dt>Eat</dt>
+            <dd>Plov House (traditional). Hotel breakfast included. Shoro street food (kebabs, lagman). Modern coffee shops (Bishkek café scene).</dd>
+          </dl>
+        </div>
+      </div>
 
-        // Draw route (Kyrgyzstan-only: Bishkek → Karakol → Song-Kul → Bishkek)
-        const route = [
-            [locations.bishkek1.lat, locations.bishkek1.lng],
-            [42.7, 76.2],
-            [42.6, 77.0],
-            [locations.karakol.lat, locations.karakol.lng],
-            [42.3, 76.8],
-            [42.1, 76.0],
-            [locations.songkul.lat, locations.songkul.lng],
-            [42.2, 75.5],
-            [42.5, 74.9],
-            [locations.bishkek2.lat, locations.bishkek2.lng]
-        ];
+      <div class="cg">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Karakol (Basecamp)</h4>
+          <div class="meta">SUN 28 SEP – WED 1 OCT · 3 NIGHTS · 1,600M ALTITUDE</div>
+          <dl>
+            <dt>Stay</dt>
+            <dd>Central Guest House Karakol, Boronbay Khana St 36. 5.0★. ~USD 35–50/night. Family-run, can arrange all guides, meals.</dd>
+            <dt>Do (Pick 2–3)</dt>
+            <dd>① Eagle hunting/falconry center (morning, ~USD 50–80). ② Skazka Canyon (Fairytale Canyon, 2–3hr, geology/photo). ③ Mars Canyon or Canyon of Forgotten Rivers (hidden, 4–5hr, Visit Karakol guides). ④ Kaindy Valley petroglyphs (remote, explorer feel). ⑤ Thermal springs soak (Altyn Arashan or Jyrgalan, 45min).</dd>
+            <dt>Eat</dt>
+            <dd>Guesthouse home-cooked meals. Kumys (fermented mare's milk, acquired taste). Bishbarmak (meat + noodles, eaten by hand). Local market fresh bread &amp; yogurt.</dd>
+          </dl>
+        </div>
+      </div>
 
-        L.polyline(route, { color: '#d87f3b', weight: 3, opacity: 0.7 }).addTo(map);
+      <div class="cg restc">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Song-Kul Plateau (Centerpiece)</h4>
+          <div class="meta">THU 2 – SAT 4 OCT · 2 NIGHTS · 3,500M ALTITUDE</div>
+          <dl>
+            <dt>Stay</dt>
+            <dd>Rima Yurt Camp. 4.6★. ~USD 45–60/night. Heated yurts (wood stove), shared toilets 50m away. Communal meals included. No WiFi (limited nights only).</dd>
+            <dt>Do (Core Experience)</dt>
+            <dd><b>Herding family immersion:</b> Sunrise horse rides around lake (3–5hr). Participate in daily livestock work (watering, herding, meal prep). Work WITH families, not observation-only. Authentic nomadic life. Physically demanding, altitude fatigue real, deeply rewarding.</dd>
+            <dt>Eat</dt>
+            <dd>Bishbarmak (national dish, eaten by hand). Kumys breakfast. Hearty meals with herding families. Hydrate constantly (altitude).</dd>
+          </dl>
+        </div>
+      </div>
 
-        function showDay(day) {
-            document.querySelectorAll('.day-toggle').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+      <div class="cg">
+        <div class="band"></div>
+        <div class="inner">
+          <h4>Bishkek (Post-Trip)</h4>
+          <div class="meta">SUN 5 – MON 6 OCT · 2 NIGHTS · 800M ALTITUDE</div>
+          <dl>
+            <dt>Stay</dt>
+            <dd>Freedom Hotel (same, familiar). 4.9★. Recover. Rest well before return flight.</dd>
+            <dt>Do (Choose 1)</dt>
+            <dd><b>Silk Road heritage:</b> Burana Tower (11th-century minaret) + Tash Rabat caravanserai (historic inn, mountain setting). 6–7hr excursion, ~USD 50–80/group. <b>OR Supara Chunkurchak gorge:</b> 30min north, thermal springs, hiking, recovery day. <b>OR light activity:</b> Soviet monuments walk, artist galleries, Shoro Bazaar final wander (free, local-focused).</dd>
+            <dt>Eat</dt>
+            <dd>Recovery meals. Familiar spots. Evening flight prep.</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            // Filter table rows
-            document.querySelectorAll('tbody tr').forEach(tr => {
-                tr.style.display = 'table-row';
-                if (day !== 'all') {
-                    const classes = tr.className;
-                    if (!classes.includes('day-' + day) && !classes.includes('travel-row')) {
-                        if (day !== 'day1' || !classes.includes('day-day1')) {
-                            if (day !== 'day2' || !classes.includes('day-day2')) {
-                                // etc.
-                            }
-                        }
-                    }
-                }
-            });
-        }
-    </script>
-    <script src="scripts/pull-to-refresh.js" defer></script>
+  <section id="budget">
+    <h2><span class="no">05</span>Budget (3 Travelers, SGD)</span></h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Cost Per Person</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Flights (Turkish Airlines SIN ↔ FRU round-trip)</b></td>
+          <td>~SGD 700–850</td>
+          <td>Book Jun–Jul 2027. Istanbul connection 2–4hr. 20–24hr total.</td>
+        </tr>
+        <tr>
+          <td><b>Kyrgyzstan-only operator (5 days, 4 nights)</b></td>
+          <td>~SGD 800–1,100</td>
+          <td>Includes: vehicle, driver, guide, meals at Karakol/Song-Kul, lodging. Get 3 quotes.</td>
+        </tr>
+        <tr>
+          <td>Freedom Hotel Bishkek (2 + 2 nights)</td>
+          <td>~SGD 240–300</td>
+          <td>Pre-trip + post-trip. Share rooms (split 2–3 ways).</td>
+        </tr>
+        <tr>
+          <td>Meals outside operator (Bishkek, snacks, extras)</td>
+          <td>~SGD 100–150</td>
+          <td>Bishkek meals cheap (~USD 2–5/person). Street food ~USD 1–3.</td>
+        </tr>
+        <tr>
+          <td>Unusual activities (eagle hunting, Skazka, springs)</td>
+          <td>~SGD 150–200</td>
+          <td>Eagle hunting ~USD 50–80. Canyons ~USD 30–80. Mostly via operator/guesthouse.</td>
+        </tr>
+        <tr>
+          <td>Travel insurance (high-altitude, evacuation)</td>
+          <td>~SGD 80–120</td>
+          <td>Declare 3,500m altitude, guiding, horse riding, emergency evacuation.</td>
+        </tr>
+        <tr>
+          <td>Visa (none needed) + cash withdrawal fees</td>
+          <td>~SGD 20–40</td>
+          <td>Singapore visa-free Kyrgyzstan 60 days. ATM fees ~1–2% per withdrawal.</td>
+        </tr>
+        <tr>
+          <td>Contingency (tips, unforeseen, buffer)</td>
+          <td>~SGD 100–150</td>
+          <td>10% restaurant tipping, guide tips USD 1–2, weather delays, extras.</td>
+        </tr>
+        <tr class="budget-total">
+          <td><b>TOTAL (per person)</b></td>
+          <td><b>~SGD 1,600–2,100</b></td>
+          <td><b>Budget ~$200–300 less than Kazakhstan+Kyrgyzstan routing.</b></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="sec-sub" style="margin-top:12px;">
+      <b>Operator notes:</b> Prices vary (Request Silk Travel Kyrgyzstan division, Visit Karakol, TJK World Travel). Exchange rates: 1 KGS ≈ 0.017 SGD (verify Sep 2027). All Central Asian meals, lodging &amp; transport significantly cheaper than Singapore.
+    </p>
+  </section>
+
+  <section id="checklist">
+    <h2><span class="no">06</span>Pre-Departure Checklist</h2>
+    <div class="alert">
+      <h4>CRITICAL (Must Confirm by Jun 2027)</h4>
+      <ul>
+        <li>☐ <b>Flights booked:</b> Turkish Airlines SIN → Istanbul → Bishkek. Thu 25 Sep depart evening, Fri 26 Sep arrive evening. Wed 6 Oct depart evening, Thu 7 Oct arrive morning SG.</li>
+        <li>☐ <b>Operator tour booked:</b> Kyrgyzstan-only (Visit Karakol, TJK World Travel, or Silk Travel Kyrgyzstan). Confirm: Bishkek pickup (Sun 28 Sep), Bishkek return (Sun 5 Oct). Specify herding family immersion + eagle hunting + Karakol 3-night basecamp in contract.</li>
+        <li>☐ <b>Leave approved:</b> All 3 travelers confirm ~9 working days off (Wed 24 Sep – Tue 7 Oct). Contact employers now to lock dates.</li>
+      </ul>
+    </div>
+    <div class="alert">
+      <h4>IMPORTANT (By Aug 2027)</h4>
+      <ul>
+        <li>☐ Freedom Hotel Bishkek: Book 2 nights pre-trip (Fri 26 – Sat 27 check-in evening) + 2 nights post-trip (Sun 5 – Mon 6 check-in evening).</li>
+        <li>☐ Travel insurance: Declare altitude 3,500m, guiding, horse riding, emergency evacuation (SGD 80–120).</li>
+        <li>☐ Visa check: Confirm Singapore passports = visa-free Kyrgyzstan 60 days (no visa action needed).</li>
+        <li>☐ Vaccinations: Hepatitis A &amp; typhoid boosters. Schedule Singapore travel clinic 4–6 weeks before (ISH, TTSH).</li>
+      </ul>
+    </div>
+    <div class="alert">
+      <h4>LOGISTICS (By Sep 2027)</h4>
+      <ul>
+        <li>☐ Download offline maps (Google Maps for Bishkek, Issyk-Kul, Song-Kul). No WiFi at yurt camp.</li>
+        <li>☐ Phone roaming / local SIM: Beeline or Katel in Bishkek. ~USD 5–10 for data plan.</li>
+        <li>☐ Cash withdrawal: Bishkek ATM arrival (Fri evening or Sat morning). Withdraw USD 200–400, exchange for KGS. Karakol ATM available (limited).</li>
+        <li>☐ Packing: Layers (Sep: 10–20°C, Oct: 5–15°C). Waterproof jacket, hiking boots, sun protection SPF 50+, headlamp, 3L water bottle, toiletries, power bank.</li>
+        <li>☐ Copies: Passport photo pages, travel insurance, credit card info (keep separate from originals).</li>
+        <li>☐ Fitness check: Confirm all 3 travelers comfortable with horse riding &amp; 3–5hr day hikes. Break in hiking boots NOW (do not bring new boots).</li>
+        <li>☐ Bank notification: Notify bank of travel dates &amp; foreign transactions (prevent card blocks).</li>
+        <li>☐ Backup: Screenshot itinerary, confirmations. Backup to Google Drive / cloud.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <div style="background:var(--night-2);border:1px solid var(--line);border-radius:4px;padding:14px 16px;margin-bottom:16px;">
+      <b>🧭 Travel DNA Rules (5 Locked Principles)</b><br>
+      1. Optimal weather &amp; activity > leave efficiency. Season first, leaves second.<br>
+      2. Group travel (girlfriend + 1 other) = default. Shared rooms, group logistics.<br>
+      3. Unusual experiences = structural commitments. Herding families, eagle hunting, petroglyphs = day-level anchors.<br>
+      4. Solo pre/post windows around guided operators. 2–3 days independent before/after.<br>
+      5. 3–5 activity options per region; travelers choose. Never single "must-do."<br>
+    </div>
+    <p>
+      <b>Document Version:</b> v3.1 (Kyrgyzstan-only, project structure) | <b>Trip dates:</b> Thu 25 Sep – Thu 7 Oct 2027 (11 nights in-country, 13 calendar days total). <b>Leave efficiency:</b> 1.44x (9 working days, 4 weekends absorbed, 0 public holiday bonus). <b>Budget:</b> ~SGD 1,600–2,100 per person.<br>
+      <b>Flight routing:</b> Turkish Airlines via Istanbul (fastest, 20–24hr). <b>Operator:</b> Bishkek-based, Kyrgyzstan-only (single-country simplicity, no border crossing). <b>Centerpiece:</b> Song-Kul herding family immersion (2 nights, 3,500m, core experience).<br>
+      <b>Estimates verified Jun 2027.</b> Flight costs, operator rates, &amp; exchange rates are volatile; re-verify 4 weeks before booking. All items flagged [Guessing] or [Likely] confirmed with providers directly.
+    </p>
+  </footer>
+
+</div>
 </body>
 </html>
