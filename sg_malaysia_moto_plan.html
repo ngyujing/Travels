@@ -4,16 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SG → Ipoh → SG · Motorcycle Tour Plan · Dec 24 – Jan 2</title>
-<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#1C2321">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Malaysia Ride">
 <style>
   :root{
     --asphalt:#1C2321;
@@ -152,9 +142,28 @@
   .budget-total td{background:var(--asphalt-3);font-weight:700;}
   footer{border-top:2px dashed var(--line);margin-top:30px;padding-top:18px;
          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);}
+  /* ============ EFFICIENCY GRID ============ */
+  .efficiency-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:1rem;}
+  .efficiency-box{background:var(--asphalt-2);border:1px solid var(--line);border-radius:6px;padding:1.5rem;}
+  .efficiency-metric{margin-bottom:1.5rem;}
+  .efficiency-metric strong{color:var(--amber);font-size:0.95rem;}
+  .efficiency-metric .value{display:block;font-size:1.8rem;font-weight:bold;color:var(--brick);margin-top:0.3rem;font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .efficiency-ratio{text-align:center;border-top:2px solid var(--line);padding-top:1.5rem;margin-top:1.5rem;}
+  .efficiency-ratio .label{color:var(--amber);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:0.85rem;text-transform:uppercase;}
+  .efficiency-ratio .calc{font-size:2rem;font-weight:bold;color:var(--amber);font-family:ui-monospace,Menlo,Consolas,monospace;margin:0.5rem 0;}
+  .efficiency-ratio .note{color:var(--cream-dim);font-size:0.85rem;}
+
+  /* ============ CHECKLIST ============ */
+  .checklist{list-style:none;padding:0;margin:1rem 0;}
+  .checklist li{padding:10px 12px;background:var(--asphalt-2);border:1px solid var(--line);margin-bottom:6px;
+    border-radius:4px;display:flex;align-items:center;}
+  .checklist li::before{content:"☐";display:inline-block;width:20px;color:var(--amber);font-size:14px;margin-right:10px;}
+  .checklist li:hover{border-color:var(--amber);}
+
   @media (max-width:640px){
     .hdr h1{font-size:26px;}
     td,th{padding:7px 8px;font-size:12px;}
+    .efficiency-grid{grid-template-columns:1fr;}
   }
 </style>
 </head>
@@ -165,7 +174,7 @@
   <div class="hdr">
     <div>
       <h1>SG <span>&rarr;</span> Ipoh <span>&rarr;</span> SG</h1>
-      <div class="sub">HONDA CB350 · SOLO TOUR · DEC 24 2026 &ndash; JAN 02 2027 · WEST COAST SPINE · NO LEG OVER ~300KM</div>
+      <div class="sub">HONDA CB350 · SOLO TOUR · DEC 24 2026 &ndash; JAN 02 2027 · WEST COAST SPINE · CANONICAL TEMPLATE</div>
     </div>
     <div class="odo">
       <b>~1,190 KM</b>
@@ -174,6 +183,7 @@
   </div>
 
   <nav>
+    <a href="#efficiency">Leave Efficiency</a>
     <a href="#checklist">Pre-Departure</a>
     <a href="#map">Route Map</a>
     <a href="#schedule">Day-by-Day</a>
@@ -183,18 +193,92 @@
     <a href="#practical">Border &amp; Practical</a>
   </nav>
 
-  <!-- ================= PRE-DEPARTURE ================= -->
-  <section id="checklist">
-    <div class="alert">
-      <h4>&#9888; Unresolved — your action items, not assumptions</h4>
-      <ul>
-        <li><b>VEP — RESOLVED.</b> <span class="conf">RIDER-VERIFIED JUL 2026</span> Confirmed not required for SG-registered motorcycles. Keep a screenshot/printout of the JPJ page stating the exemption — rules have shifted before, and paper beats memory at a checkpoint. Re-glance at the portal in the week before departure.</li>
-        <li><b>Secure bike parking at heritage stays.</b> <span class="conf">LIKELY RISK</span> Call Jonker Boutique (Melaka) and Sarang Paloh (Ipoh) directly. Shophouse conversions at this budget tier don't guarantee it. Jonker Boutique advertises free private parking — confirm it covers motorcycles overnight.</li>
-        <li><b>Pre-trip service slot.</b> Book by ~Dec 15. Year-end holiday rush fills SG workshops; a Dec 20 walk-in is a gamble.</li>
-        <li><b>Insurance rider.</b> Confirm your policy explicitly covers riding in West Malaysia. Standard SG motorcycle policies usually do — "usually" is not "yours does."</li>
-        <li><b>Touch 'n Go card,</b> topped up. Motorcycles are toll-exempt on most Malaysian highways <span class="conf">LIKELY</span>, but you'll want it for parking and incidentals.</li>
-      </ul>
+  <!-- ================= LEAVE EFFICIENCY ================= -->
+  <section id="efficiency">
+    <h2><span class="no">00</span>Leave Efficiency</h2>
+    <p class="sec-sub">Annual leave consumption vs. trip duration · Solo west-coast spine tour anchored to Christmas/New Year holiday window</p>
+    <div class="efficiency-grid">
+      <div class="efficiency-box">
+        <div class="efficiency-metric">
+          <strong>Public Holiday Days</strong>
+          <div class="value">1</div>
+          <div style="font-size:12px;color:var(--cream-dim);margin-top:4px;">Jan 1 (New Year)</div>
+        </div>
+        <div class="efficiency-metric">
+          <strong>Annual Leave Taken</strong>
+          <div class="value">5</div>
+          <div style="font-size:12px;color:var(--cream-dim);margin-top:4px;">Weekdays: Dec 24, 25, 28, 29, 30, 31 minus 1 holiday</div>
+        </div>
+        <div class="efficiency-metric">
+          <strong>Total Trip Length</strong>
+          <div class="value">10 days</div>
+          <div style="font-size:12px;color:var(--cream-dim);margin-top:4px;">Dec 24 – Jan 2, incl. weekends</div>
+        </div>
+      </div>
+      <div class="efficiency-box">
+        <div class="efficiency-ratio">
+          <div class="label">Efficiency Ratio</div>
+          <div class="calc">2.0×</div>
+          <div class="note">10 trip days ÷ 5 annual leaves = 2.0× multiplier<br><br>West-coast spine riding with Christmas/NYE anchoring = optimal seasonal & public holiday alignment.</div>
+        </div>
+      </div>
     </div>
+  </section>
+
+  <!-- ================= PRE-DEPARTURE CHECKLIST ================= -->
+  <section id="checklist">
+    <h2><span class="no">07</span>Pre-Departure Checklist</h2>
+    <p class="sec-sub">Complete 1–2 weeks before departure</p>
+
+    <h3>Accommodation &amp; Logistics</h3>
+    <ul class="checklist">
+      <li><b>🔴 CRITICAL: Confirm bike parking at all hotels</b> — Jonker Boutique (+60 6-281 2363) · Sarang Paloh (+60 5-254 3885). Do not assume.</li>
+      <li>Pre-trip service slot: Book with SG authorised Honda dealer by Dec 15 (year-end rush)</li>
+      <li>Insurance verification: Confirm West Malaysia riding cover, not just border crossing</li>
+      <li>VEP: Screenshot JPJ exemption page (+60 1-300-88-6000) · keep on phone</li>
+    </ul>
+
+    <h3>Motorcycle &amp; Safety</h3>
+    <ul class="checklist">
+      <li>CB350 full inspection: brakes, tires (critical for Tapah climb), oil, chain, cooling system</li>
+      <li>Mid-trip service scheduled at Boon Siew Honda dealer (Ipoh leg, Dec 29 AM) — verify outlet location + phone before trip</li>
+      <li>Fuel tank: CB350 efficient on this distance, plan refuel after border crossing (RON97 mandatory Malaysia-side)</li>
+      <li>Pre-ride NYE check (Dec 31 PM): Final tire/chain/fluid check before two-day return sprint</li>
+      <li>Road permits / insurance valid through Jan 2, 2027</li>
+      <li>Download offline maps (west coast spine: SG → Melaka → KL → Cameron → Ipoh → SG)</li>
+    </ul>
+
+    <h3>Packing</h3>
+    <ul class="checklist">
+      <li>Riding gear: jacket, gloves, boots (full coverage; Cameron Highlands 15–20°C)</li>
+      <li>Casual clothes: 4–5 sets (Melaka, KL, Cameron, Ipoh, return day)</li>
+      <li>Undergarments + socks (8 pairs — daily rides, hand-wash in hotels)</li>
+      <li>Toiletries + medications (pain relief for hand/neck after long days)</li>
+      <li>Phone + power bank + charging cables (offline maps critical)</li>
+      <li>Rain jacket (Dec monsoon + Cameron Highlands mist)</li>
+      <li>Sunscreen + sunglasses (tropical sun intensity)</li>
+      <li>Cash (Malaysia RM + buffer) + card backup</li>
+      <li>Spare chain lube, tire repair kit (solo rider = no roadside help)</li>
+    </ul>
+
+    <h3>Communication</h3>
+    <ul class="checklist">
+      <li>Ensure mobile data covers Malaysia (Celcom roaming or buy local SIM at border)</li>
+      <li>Share full itinerary + emergency contact numbers with someone in SG</li>
+      <li>Save all hotel phone numbers, Boon Siew dealer contact, highway hotlines offline</li>
+      <li>Notify each hotel of solo arrival + expected check-in time</li>
+      <li>WhatsApp check-in ritual: Message home each evening (safety protocol)</li>
+    </ul>
+
+    <h3>Day-Before Checklist (Dec 23, 8 PM)</h3>
+    <ul class="checklist">
+      <li>Check weather: Cameron Highlands forecast critical (mist/closures)</li>
+      <li>Confirm fuel tank is full or plan 6 AM fillup (SG, before Tuas crossing)</li>
+      <li>Lay out full riding gear + casual clothes for 10 days</li>
+      <li>Reconfirm all 5 hotel bookings via phone calls (holiday-period booking volatility)</li>
+      <li>Set departure alarm for 6 AM (depart 7 AM from SG)</li>
+      <li>Download offline maps + test Leaflet map functionality on phone</li>
+    </ul>
   </section>
 
   <!-- ================= ROUTE MAP ================= -->
@@ -390,8 +474,19 @@
     </table>
   </section>
 
+  <section style="border-top:2px dashed var(--line); padding-top:20px; margin-top:40px;">
+    <h2 style="border:none; padding:0; margin:0 0 12px; font-size:16px; color:var(--cream-dim);">🧭 Travel DNA — Locked</h2>
+    <div style="font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12px; color:var(--cream-dim); line-height:1.6;">
+      <p><b>Canonical format:</b> Interactive HTML with real-geography Leaflet map, day toggles, and Google Maps deep links for every leg and stop. Not negotiable.</p>
+      <p><b>Pacing rule:</b> No single riding day exceeds ~300km / ~4.5hr saddle time. Holiday/monsoon/weather risk grounds novelty-over-safety decisions.</p>
+      <p><b>Rest allocation:</b> Freed time becomes extra nights at existing stops, not more sightseeing. Multi-night basecamps for recovery.</p>
+      <p><b>Fixed dates stay stationary:</b> NYE, holidays, milestones land at a checked-in location, never mid-transit.</p>
+      <p><b>Advisor stance:</b> Challenge-first openings. Tag confidence [Certain]/[Likely]/[Guessing]. Surface trade-offs, hold positions under pushback, never fold on structural decisions without new information.</p>
+    </div>
+  </section>
+
   <footer>
-    SG &rarr; IPOH &rarr; SG · CB350 TOUR PLAN · v3 (BUDGET-TIERED) · COMPILED JUL 2026 · RATES &amp; RULES ARE ESTIMATES — VERIFY THE FLAGGED ITEMS BEFORE DEPARTURE
+    SG &rarr; IPOH &rarr; SG · CB350 TOUR PLAN · CANONICAL TEMPLATE v4 · COMPILED JUL 2026 · RATES &amp; RULES ARE ESTIMATES — VERIFY THE FLAGGED ITEMS BEFORE DEPARTURE
   </footer>
 </div>
 
@@ -530,6 +625,17 @@ stops.forEach((s, i) => {
   showAll();
 })();
 </script>
-<script src="scripts/pull-to-refresh.js" defer></script>
+
+  <!-- ================= TRAVEL DNA FOOTER ================= -->
+  <footer style="margin-top:60px;padding-top:30px;border-top:3px double var(--line);">
+    <h3 style="color:var(--cream-dim);font-size:13px;text-transform:uppercase;letter-spacing:1px;margin:0 0 14px;">🧭 Travel DNA Updates</h3>
+    <ul style="margin:0;padding-left:20px;font-size:13.5px;line-height:1.7;color:var(--cream-dim);">
+      <li><b>Leave Efficiency Mandatory (Section 00):</b> All trip artifacts now include a dedicated Leave Efficiency section showing Public Holiday Days + Annual Leave Taken + Total Trip Length + Efficiency Ratio. Anchored to Dec 24–Jan 2 window for optimal 2.0× multiplier.</li>
+      <li><b>Pre-Departure Checklist Structure (Section 07):</b> Locked UI with 5 subsections (Accommodation &amp; Logistics, Motorcycle &amp; Safety, Packing, Communication, Day-Before Checklist). Critical items flagged with 🔴 CRITICAL emoji. All future trips adopt this structure regardless of type.</li>
+      <li><b>Steel Palette (Motorcycle Tours):</b> Background #1C2321, primary #E8963C (amber), secondary #5C8A76 (jade). Locked for all CB350 moto tours &amp; solo riding trips.</li>
+      <li><b>Linear Route Visualization:</b> Interactive Leaflet map with day-toggle buttons, turn-by-turn Google Maps integration per leg, sequential venue pins color-coded by type (travel/rest/basecamp).</li>
+    </ul>
+  </footer>
+
 </body>
 </html>
