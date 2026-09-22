@@ -46,13 +46,15 @@
   .odo b{display:block;font-size:20px;color:var(--reef);letter-spacing:1px;}
   .odo small{color:var(--dim);font-size:10px;text-transform:uppercase;letter-spacing:1px;}
 
-  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
+  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;align-items:center;}
   nav a{
     font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;
     color:var(--dim);text-decoration:none;border:1px solid var(--line);
     padding:6px 12px;border-radius:3px;text-transform:uppercase;
   }
   nav a:hover{color:var(--coral);border-color:var(--coral);}
+  nav a.back-btn{color:var(--coral);border-color:var(--coral);margin-right:auto;}
+  nav a.back-btn:hover{background:var(--deep-2);}
 
   section{margin-bottom:44px;}
   h2{
@@ -163,6 +165,7 @@
   </div>
 
   <nav>
+    <a href="index.html" class="back-btn">← Back to All Trips</a>
     <a href="#checklist">Pre-Departure</a>
     <a href="#map">Trip Map</a>
     <a href="#schedule">Day-by-Day</a>

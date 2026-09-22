@@ -48,13 +48,15 @@
   .odo small{color:var(--cream-dim);font-size:10px;text-transform:uppercase;letter-spacing:1px;}
 
   /* ============ NAV ============ */
-  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
+  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;align-items:center;}
   nav a{
     font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;
     color:var(--cream-dim);text-decoration:none;border:1px solid var(--line);
     padding:6px 12px;border-radius:3px;text-transform:uppercase;
   }
   nav a:hover{color:var(--amber);border-color:var(--amber);}
+  nav a.back-btn{color:var(--amber);border-color:var(--amber);margin-right:auto;}
+  nav a.back-btn:hover{background:var(--asphalt-3);}
 
   /* ============ SECTIONS ============ */
   section{margin-bottom:44px;}
@@ -174,6 +176,7 @@
   </div>
 
   <nav>
+    <a href="index.html" class="back-btn">← Back to All Trips</a>
     <a href="#checklist">Pre-Departure</a>
     <a href="#map">Route Map</a>
     <a href="#schedule">Day-by-Day</a>
