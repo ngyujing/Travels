@@ -56,6 +56,15 @@
   .sec-sub{color:var(--cream-dim);font-size:13px;margin:0 0 16px 17px;}
   h3{font-size:16px;text-transform:uppercase;letter-spacing:1px;color:var(--amber);margin:22px 0 8px;}
 
+  /* ============ EFFICIENCY BOX ============ */
+  .eff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:16px 0 20px;}
+  .eff-box{background:var(--asphalt-2);border:1px solid var(--line);border-radius:6px;padding:14px;text-align:center;}
+  .eff-label{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+  .eff-value{font-size:24px;font-weight:800;color:var(--amber);font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .eff-ratio{border-left:4px solid var(--amber);padding-left:16px;margin-top:12px;text-align:left;}
+  .eff-ratio .label{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--cream-dim);text-transform:uppercase;}
+  .eff-ratio .value{font-size:32px;font-weight:800;color:var(--amber);margin-top:4px;font-family:ui-monospace,Menlo,Consolas,monospace;}
+
   /* ============ ALERT / CHECKLIST ============ */
   .alert{
     background:var(--asphalt-2);border:1px solid var(--brick);border-left:6px solid var(--brick);
@@ -68,6 +77,33 @@
   .alert li b{color:var(--amber);}
   .conf{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;padding:1px 5px;border-radius:2px;
         border:1px solid var(--line);color:var(--cream-dim);vertical-align:middle;}
+
+  /* ============ CHECKLIST ============ */
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+  .checklist li {
+    padding: 10px 12px;
+    background: var(--asphalt-2);
+    border: 1px solid var(--line);
+    margin-bottom: 6px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+  }
+  .checklist li::before {
+    content: "☐";
+    display: inline-block;
+    width: 20px;
+    color: var(--amber);
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  .checklist li:hover {
+    border-color: var(--amber);
+  }
 
   /* ============ ROAD MAP ============ */
   .road{position:relative;padding:66px 6px 6px;overflow-x:auto;background:var(--asphalt);}
@@ -142,28 +178,9 @@
   .budget-total td{background:var(--asphalt-3);font-weight:700;}
   footer{border-top:2px dashed var(--line);margin-top:30px;padding-top:18px;
          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--cream-dim);}
-  /* ============ EFFICIENCY GRID ============ */
-  .efficiency-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:1rem;}
-  .efficiency-box{background:var(--asphalt-2);border:1px solid var(--line);border-radius:6px;padding:1.5rem;}
-  .efficiency-metric{margin-bottom:1.5rem;}
-  .efficiency-metric strong{color:var(--amber);font-size:0.95rem;}
-  .efficiency-metric .value{display:block;font-size:1.8rem;font-weight:bold;color:var(--brick);margin-top:0.3rem;font-family:ui-monospace,Menlo,Consolas,monospace;}
-  .efficiency-ratio{text-align:center;border-top:2px solid var(--line);padding-top:1.5rem;margin-top:1.5rem;}
-  .efficiency-ratio .label{color:var(--amber);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:0.85rem;text-transform:uppercase;}
-  .efficiency-ratio .calc{font-size:2rem;font-weight:bold;color:var(--amber);font-family:ui-monospace,Menlo,Consolas,monospace;margin:0.5rem 0;}
-  .efficiency-ratio .note{color:var(--cream-dim);font-size:0.85rem;}
-
-  /* ============ CHECKLIST ============ */
-  .checklist{list-style:none;padding:0;margin:1rem 0;}
-  .checklist li{padding:10px 12px;background:var(--asphalt-2);border:1px solid var(--line);margin-bottom:6px;
-    border-radius:4px;display:flex;align-items:center;}
-  .checklist li::before{content:"☐";display:inline-block;width:20px;color:var(--amber);font-size:14px;margin-right:10px;}
-  .checklist li:hover{border-color:var(--amber);}
-
   @media (max-width:640px){
     .hdr h1{font-size:26px;}
     td,th{padding:7px 8px;font-size:12px;}
-    .efficiency-grid{grid-template-columns:1fr;}
   }
 </style>
 </head>
@@ -174,7 +191,7 @@
   <div class="hdr">
     <div>
       <h1>SG <span>&rarr;</span> Ipoh <span>&rarr;</span> SG</h1>
-      <div class="sub">HONDA CB350 · SOLO TOUR · DEC 24 2026 &ndash; JAN 02 2027 · WEST COAST SPINE · CANONICAL TEMPLATE</div>
+      <div class="sub">HONDA CB350 · SOLO TOUR · DEC 24 2026 &ndash; JAN 02 2027 · WEST COAST SPINE</div>
     </div>
     <div class="odo">
       <b>~1,190 KM</b>
@@ -184,104 +201,44 @@
 
   <nav>
     <a href="#efficiency">Leave Efficiency</a>
-    <a href="#checklist">Pre-Departure</a>
     <a href="#map">Route Map</a>
     <a href="#schedule">Day-by-Day</a>
     <a href="#cities">City Guides</a>
     <a href="#bike">Bike &amp; Maintenance</a>
     <a href="#budget">Budget</a>
     <a href="#practical">Border &amp; Practical</a>
+    <a href="#checklist">Pre-Departure</a>
   </nav>
 
-  <!-- ================= LEAVE EFFICIENCY ================= -->
+  <!-- ================= LEAVE EFFICIENCY (SECTION 00) ================= -->
   <section id="efficiency">
     <h2><span class="no">00</span>Leave Efficiency</h2>
-    <p class="sec-sub">Annual leave consumption vs. trip duration · Solo west-coast spine tour anchored to Christmas/New Year holiday window</p>
-    <div class="efficiency-grid">
-      <div class="efficiency-box">
-        <div class="efficiency-metric">
-          <strong>Public Holiday Days</strong>
-          <div class="value">1</div>
-          <div style="font-size:12px;color:var(--cream-dim);margin-top:4px;">Jan 1 (New Year)</div>
-        </div>
-        <div class="efficiency-metric">
-          <strong>Annual Leave Taken</strong>
-          <div class="value">5</div>
-          <div style="font-size:12px;color:var(--cream-dim);margin-top:4px;">Weekdays: Dec 24, 25, 28, 29, 30, 31 minus 1 holiday</div>
-        </div>
-        <div class="efficiency-metric">
-          <strong>Total Trip Length</strong>
-          <div class="value">10 days</div>
-          <div style="font-size:12px;color:var(--cream-dim);margin-top:4px;">Dec 24 – Jan 2, incl. weekends</div>
-        </div>
+    <p class="sec-sub">Holiday anchoring + weekend stacking = maximum trip value per AL day taken</p>
+    <div class="eff-grid">
+      <div class="eff-box">
+        <div class="eff-label">Public Holidays</div>
+        <div class="eff-value">2</div>
+        <div style="font-size:11px;color:var(--cream-dim);margin-top:6px;">Christmas (Dec 25) · New Year (Jan 1)</div>
       </div>
-      <div class="efficiency-box">
-        <div class="efficiency-ratio">
-          <div class="label">Efficiency Ratio</div>
-          <div class="calc">2.0×</div>
-          <div class="note">10 trip days ÷ 5 annual leaves = 2.0× multiplier<br><br>West-coast spine riding with Christmas/NYE anchoring = optimal seasonal & public holiday alignment.</div>
-        </div>
+      <div class="eff-box">
+        <div class="eff-label">Annual Leave Taken</div>
+        <div class="eff-value">5</div>
+        <div style="font-size:11px;color:var(--cream-dim);margin-top:6px;">Dec 24, 28, 29, 30, 31</div>
+      </div>
+      <div class="eff-box">
+        <div class="eff-label">Total Trip Length</div>
+        <div class="eff-value">10</div>
+        <div style="font-size:11px;color:var(--cream-dim);margin-top:6px;">Calendar days (departure to return)</div>
+      </div>
+      <div class="eff-box eff-ratio">
+        <div class="label">Efficiency Ratio</div>
+        <div class="value">2.0×</div>
+        <div style="font-size:11px;color:var(--cream-dim);margin-top:6px;">10 days ÷ 5 AL days</div>
       </div>
     </div>
   </section>
 
-  <!-- ================= PRE-DEPARTURE CHECKLIST ================= -->
-  <section id="checklist">
-    <h2><span class="no">07</span>Pre-Departure Checklist</h2>
-    <p class="sec-sub">Complete 1–2 weeks before departure</p>
-
-    <h3>Accommodation &amp; Logistics</h3>
-    <ul class="checklist">
-      <li><b>🔴 CRITICAL: Confirm bike parking at all hotels</b> — Jonker Boutique (+60 6-281 2363) · Sarang Paloh (+60 5-254 3885). Do not assume.</li>
-      <li>Pre-trip service slot: Book with SG authorised Honda dealer by Dec 15 (year-end rush)</li>
-      <li>Insurance verification: Confirm West Malaysia riding cover, not just border crossing</li>
-      <li>VEP: Screenshot JPJ exemption page (+60 1-300-88-6000) · keep on phone</li>
-    </ul>
-
-    <h3>Motorcycle &amp; Safety</h3>
-    <ul class="checklist">
-      <li>CB350 full inspection: brakes, tires (critical for Tapah climb), oil, chain, cooling system</li>
-      <li>Mid-trip service scheduled at Boon Siew Honda dealer (Ipoh leg, Dec 29 AM) — verify outlet location + phone before trip</li>
-      <li>Fuel tank: CB350 efficient on this distance, plan refuel after border crossing (RON97 mandatory Malaysia-side)</li>
-      <li>Pre-ride NYE check (Dec 31 PM): Final tire/chain/fluid check before two-day return sprint</li>
-      <li>Road permits / insurance valid through Jan 2, 2027</li>
-      <li>Download offline maps (west coast spine: SG → Melaka → KL → Cameron → Ipoh → SG)</li>
-    </ul>
-
-    <h3>Packing</h3>
-    <ul class="checklist">
-      <li>Riding gear: jacket, gloves, boots (full coverage; Cameron Highlands 15–20°C)</li>
-      <li>Casual clothes: 4–5 sets (Melaka, KL, Cameron, Ipoh, return day)</li>
-      <li>Undergarments + socks (8 pairs — daily rides, hand-wash in hotels)</li>
-      <li>Toiletries + medications (pain relief for hand/neck after long days)</li>
-      <li>Phone + power bank + charging cables (offline maps critical)</li>
-      <li>Rain jacket (Dec monsoon + Cameron Highlands mist)</li>
-      <li>Sunscreen + sunglasses (tropical sun intensity)</li>
-      <li>Cash (Malaysia RM + buffer) + card backup</li>
-      <li>Spare chain lube, tire repair kit (solo rider = no roadside help)</li>
-    </ul>
-
-    <h3>Communication</h3>
-    <ul class="checklist">
-      <li>Ensure mobile data covers Malaysia (Celcom roaming or buy local SIM at border)</li>
-      <li>Share full itinerary + emergency contact numbers with someone in SG</li>
-      <li>Save all hotel phone numbers, Boon Siew dealer contact, highway hotlines offline</li>
-      <li>Notify each hotel of solo arrival + expected check-in time</li>
-      <li>WhatsApp check-in ritual: Message home each evening (safety protocol)</li>
-    </ul>
-
-    <h3>Day-Before Checklist (Dec 23, 8 PM)</h3>
-    <ul class="checklist">
-      <li>Check weather: Cameron Highlands forecast critical (mist/closures)</li>
-      <li>Confirm fuel tank is full or plan 6 AM fillup (SG, before Tuas crossing)</li>
-      <li>Lay out full riding gear + casual clothes for 10 days</li>
-      <li>Reconfirm all 5 hotel bookings via phone calls (holiday-period booking volatility)</li>
-      <li>Set departure alarm for 6 AM (depart 7 AM from SG)</li>
-      <li>Download offline maps + test Leaflet map functionality on phone</li>
-    </ul>
-  </section>
-
-  <!-- ================= ROUTE MAP ================= -->
+  <!-- ================= ROUTE MAP (SECTION 01) ================= -->
   <section id="map">
     <h2><span class="no">01</span>Route Map</h2>
     <p class="sec-sub">Ipoh turnaround. Amber pins = travel days, jade = rest. Out-and-back on the west-coast spine — the monsoon east coast is deliberately excluded.</p>
@@ -308,7 +265,7 @@
     </div>
   </section>
 
-  <!-- ================= SCHEDULE ================= -->
+  <!-- ================= SCHEDULE (SECTION 02) ================= -->
   <section id="schedule">
     <h2><span class="no">02</span>Day-by-Day Schedule</h2>
     <p class="sec-sub">4 riding days out of 10. NYE is stationary. No day exceeds ~300km / ~4.5hr saddle time.</p>
@@ -316,21 +273,21 @@
       <tr><th style="width:52px">Day</th><th style="width:78px">Date</th><th>Leg / Activity</th><th style="width:120px">Distance</th><th>Strategic Notes</th></tr>
       <tr class="ride-row"><td><b>1</b></td><td>Dec 24<br><span class="tag">THU</span></td><td><b>Ride:</b> Singapore &rarr; Melaka<br><span class="tag">Depart 7:00am · Tuas 2nd Link · AH2/E2 north</span></td><td>~250km<br>~4hr incl. border</td><td>Beat Christmas-eve checkpoint crowds. Fuel RON97 after crossing. Evening: Jonker food walk (note: night market runs Fri–Sun, Dec 24 is Thu — regular food street, not market).</td></tr>
       <tr class="ride-row"><td><b>2</b></td><td>Dec 25<br><span class="tag">FRI</span></td><td><b>Ride:</b> Melaka &rarr; Kuala Lumpur<br><span class="tag">Late-morning depart, no rush</span></td><td>~150km<br>~2.5hr</td><td>Shortest riding day of the trip. Check in Bukit Bintang, evening at Jalan Alor hawkers.</td></tr>
-      <tr class="rest-row"><td><b>3</b></td><td>Dec 26<br><span class="tag">SAT</span></td><td><b>Rest day — KL</b><br><span class="tag">Batu Caves (AM) · KLCC (PM) · Petaling St (eve)</span></td><td>—</td><td>Batu Caves early to dodge weekend crowds; 272 steps, go before heat builds. Bike stays parked or does the one short Batu Caves hop only.</td></tr>
-      <tr class="ride-row"><td><b>4</b></td><td>Dec 27<br><span class="tag">SUN</span></td><td><b>Ride:</b> KL &rarr; Cameron Highlands<br><span class="tag">E1 north to Tapah, then Rte 59 climb</span></td><td>~200km<br>~4hr</td><td>Depart 8am sharp. The Tapah climb is hairpin-dense and mist rolls in after ~2pm in Dec — arrive before it. Slower traffic (lorries) on the climb; patience over overtakes.</td></tr>
-      <tr class="rest-row"><td><b>5</b></td><td>Dec 28<br><span class="tag">MON</span></td><td><b>Rest day — Cameron Highlands</b><br><span class="tag">BOH Sungai Palas (AM) · Mossy Forest · steamboat dinner</span></td><td>—</td><td>Some hiking trails close in the Nov–Feb wet season — confirm locally, don't force it. Pack a warm layer: 15–20°C up here.</td></tr>
-      <tr class="ride-row"><td><b>6</b></td><td>Dec 29<br><span class="tag">TUE</span></td><td><b>Ride:</b> Cameron Highlands &rarr; Ipoh<br><span class="tag">Rte 59 &rarr; Simpang Pulai descent (Rte 185)</span></td><td>~90km<br>~2.5hr</td><td>Short, scenic, downhill — engine-brake, don't ride the brakes. Drop bike at the Boon Siew Honda authorised motorcycle dealer same afternoon for the mid-trip check (see maintenance section — verify exact outlet before departure).</td></tr>
-      <tr class="rest-row"><td><b>7</b></td><td>Dec 30<br><span class="tag">WED</span></td><td><b>Rest day — Ipoh</b><br><span class="tag">Old Town heritage walk · Concubine Lane · cave temples</span></td><td>—</td><td>Kek Lok Tong &amp; Perak Tong are short hops south/north of town. White coffee at Sin Yoon Loong, beansprout chicken at Lou Wong for dinner.</td></tr>
-      <tr class="rest-row"><td><b>8</b></td><td>Dec 31<br><span class="tag">THU</span></td><td><b>Rest day — Ipoh · NYE</b><br><span class="tag">Kellie's Castle (optional AM) · pre-ride bike check (PM) · NYE in town</span></td><td>—</td><td>Final tire/chain/fluids check before the two-day run home. NYE stays low-key and stationary — you ride on Jan 1, so cap the night sensibly.</td></tr>
-      <tr class="ride-row"><td><b>9</b></td><td>Jan 1<br><span class="tag">FRI</span></td><td><b>Ride:</b> Ipoh &rarr; Seremban<br><span class="tag">E1 south, bypass KL via E6 ELITE or stay E1 through</span></td><td>~265km<br>~4hr</td><td>Transit-only day. New Year's Day traffic is lighter in the morning — depart 9am, arrive mid-afternoon. Early dinner, early sleep.</td></tr>
+      <tr class="rest-row"><td><b>3</b></td><td>Dec 26<br><span class="tag">SAT</span></td><td><b>Rest day — KL</b><br><span class="tag">Check-in · settle · evening Genting ascent</span></td><td>—</td><td>Arrived from Melaka afternoon of Dec 25. Dec 26: rest day, acclimatize to KL. Evening: ride up Genting Sempah (30min ascent), stay overnight for sunrise approach.</td></tr>
+      <tr class="ride-row"><td><b>4</b></td><td>Dec 27<br><span class="tag">SUN</span></td><td><b>Genting return (AM) · Batu Caves · Ride KL → Cameron</b><br><span class="tag">Descend 9am · Batu Caves 272 steps · Depart 1–2pm</span></td><td>~200km<br>~4hr</td><td>Descend Genting 9am, back to hotel by 10am. Batu Caves early (dodge crowds). Depart 1–2pm for Cameron via E1 north to Tapah, then Rte 59 climb (hairpin-dense, mist after 2pm) — arrive evening.</td></tr>
+      <tr class="rest-row"><td><b>5</b></td><td>Dec 28<br><span class="tag">MON</span></td><td><b>Rest day — Cameron Highlands</b><br><span class="tag">Arrive evening Dec 27 · settle in · acclimatize</span></td><td>—</td><td>Arrived late evening Dec 27. Dec 28: first full rest day, acclimatize to altitude. BOH Sungai Palas or local walks if energy permits. Pack warm layer: 15–20°C up here.</td></tr>
+      <tr class="rest-row"><td><b>6</b></td><td>Dec 29<br><span class="tag">TUE</span></td><td><b>Rest day — Cameron Highlands</b><br><span class="tag">BOH Sungai Palas (AM) · Mossy Forest · steamboat dinner</span></td><td>—</td><td>Some hiking trails close in the Nov–Feb wet season — confirm locally, don't force it. Pack a warm layer: 15–20°C up here. Full day to explore plantations and tea factory.</td></tr>
+      <tr class="rest-row"><td><b>7</b></td><td>Dec 30<br><span class="tag">WED</span></td><td><b>Rest day — Cameron Highlands</b><br><span class="tag">Mossy Forest boardwalk · strawberry farms · tea scones</span></td><td>—</td><td>Second full day in the highlands. Mossy Forest if not done Dec 29; strawberry farm photo stop; afternoon rest at hotel rooftop lounge. Bike check (tires, chain) mid-afternoon.</td></tr>
+      <tr class="ride-row"><td><b>8</b></td><td>Dec 31<br><span class="tag">THU</span></td><td><b>Ride:</b> Cameron Highlands &rarr; Ipoh · NYE<br><span class="tag">Rte 59 descent → Simpang Pulai → E1 south</span></td><td>~90km<br>~2.5hr</td><td>Depart 1–2pm. Short, scenic, downhill — engine-brake on the descent, don't ride the brakes. Mid-trip service appointment at Boon Siew Honda dealer upon arrival Dec 31 late afternoon, then NYE in Ipoh Old Town.</td></tr>
+      <tr class="rest-row"><td><b>9</b></td><td>Jan 1<br><span class="tag">FRI</span></td><td><b>Ride:</b> Ipoh &rarr; Seremban<br><span class="tag">E1 south, bypass KL via E6 ELITE</span></td><td>~265km<br>~4hr</td><td>New Year's Day: depart 9am, traffic lighter in morning. Arrive Seremban mid-afternoon. Bypass KL entirely on E6 ELITE (toll paid, faster). Early dinner + early sleep for final leg.</td></tr>
       <tr class="ride-row"><td><b>10</b></td><td>Jan 2<br><span class="tag">SAT</span></td><td><b>Ride:</b> Seremban &rarr; Singapore<br><span class="tag">E2 south · Tuas 2nd Link</span></td><td>~300km<br>~4hr + border</td><td>Longest leg, ridden fresh. Depart 8am — Jan 2 return-wave congestion at the border is real; buffer 1–2hr at the crossing. Home by mid-late afternoon.</td></tr>
     </table>
   </section>
 
-  <!-- ================= CITY GUIDES ================= -->
+  <!-- ================= CITY GUIDES (SECTION 03) ================= -->
   <section id="cities">
     <h2><span class="no">03</span>City Guides — Stay · Eat · Do</h2>
-    <p class="sec-sub">All accoms retiered to the $50–80/night band. Rates are estimates — holiday-period pricing may push toward the top of range; book early.</p>
+    <p class="sec-sub">All accoms positioned to the $50–80/night band. Rates are estimates — holiday-period pricing may push toward the top of range; book early.</p>
     <div class="city-grid">
 
       <div class="cg">
@@ -340,7 +297,7 @@
           <div class="meta">NIGHT 1 · DEC 24 · CHECKPOINT 1</div>
           <dl>
             <dt>Stay — ~$50–65/nt</dt>
-            <dd><b>Jonker Boutique Hotel</b> — restored triple-shophouse directly on Jonker Street, advertises free private parking (confirm motorcycle access). <small>Backup: Swiss Hotel Heritage Boutique, similar band, parking at rear.</small></dd>
+            <dd><b>[LIKELY] Jonker Boutique Hotel</b> — restored triple-shophouse directly on Jonker Street, advertises free private parking (confirm motorcycle access). <small>Backup: Swiss Hotel Heritage Boutique, similar band, parking at rear.</small></dd>
             <dt>Eat</dt>
             <dd>Chicken rice balls (Hoe Kee / Chung Wah), Nyonya laksa, cendol at Jonker 88, satay celup if you're game.</dd>
             <dt>Do</dt>
@@ -353,14 +310,14 @@
         <div class="band"></div>
         <div class="inner">
           <h4>Kuala Lumpur</h4>
-          <div class="meta">NIGHTS 2–3 · DEC 25–26 · REST STOP</div>
+          <div class="meta">NIGHTS 2–3 · DEC 25–27 · REST + GENTING + DEPARTURE</div>
           <dl>
             <dt>Stay — ~$60–75/nt</dt>
-            <dd><b>Bintang Collectionz</b> — restored 95-year-old pre-colonial facade on Jalan Bukit Bintang, Peranakan-tiled rooms, Golden Triangle basecamp.</dd>
+            <dd><b>[LIKELY] Bintang Collectionz</b> — restored 95-year-old pre-colonial facade on Jalan Bukit Bintang, Peranakan-tiled rooms, Golden Triangle basecamp. Confirm Dec 25–27 room block (checking out morning Dec 27 to ride).</dd>
             <dt>Eat</dt>
             <dd>Jalan Alor hawker strip (2 min walk), Hokkien mee at night stalls, banana leaf rice in Brickfields if you venture.</dd>
             <dt>Do</dt>
-            <dd>Day 3: Batu Caves early AM (short ride or Grab), KLCC park + Petronas view PM, Petaling Street market evening. Clustered: caves are the only leg outside the Bukit Bintang–KLCC pocket.</dd>
+            <dd><b>Day 1 (Dec 26):</b> Rest &amp; acclimatize after Melaka ride. Evening: Genting Sempah ascent (30min up), stay overnight for cooler air + night views. <b>Day 2 (Dec 27):</b> Descend Genting 9am, return hotel 10am, Batu Caves early (272 steps, beat crowds). Depart 1–2pm for Cameron via Tapah hairpins.</dd>
           </dl>
         </div>
       </div>
@@ -369,14 +326,14 @@
         <div class="band"></div>
         <div class="inner">
           <h4>Cameron Highlands</h4>
-          <div class="meta">NIGHTS 4–5 · DEC 27–28 · REST STOP</div>
+          <div class="meta">NIGHTS 4–6 · DEC 27–30 · REST STOP · 3 DAYS</div>
           <dl>
             <dt>Stay — ~$55–70/nt</dt>
-            <dd><b>Silvan Garden</b>, Tanah Rata — garden-set boutique with rooftop lounge; homely, modern rooms, walkable to town eateries. <small>(Lakehouse dropped: ~2× your budget ceiling.)</small></dd>
+            <dd><b>[LIKELY] Silvan Garden</b>, Tanah Rata — garden-set boutique with rooftop lounge; homely, modern rooms, walkable to town eateries. <small>(Lakehouse dropped: ~2× your budget ceiling.)</small></dd>
             <dt>Eat</dt>
             <dd>Steamboat dinner (a Camerons ritual in the cool air), scones + BOH tea at Sungai Palas visitor centre, morning roadside nasi lemak stalls.</dd>
             <dt>Do</dt>
-            <dd>BOH Sungai Palas plantation + factory tour (free/cheap), Mossy Forest boardwalk, strawberry &amp; honey farms if you want them. Trail closures possible in wet season — ask at check-in.</dd>
+            <dd><b>Day 1 (Dec 28):</b> Arrive evening Dec 27 via Tapah climb; rest &amp; acclimatize to altitude. <b>Day 2 (Dec 29):</b> BOH Sungai Palas plantation + factory tour (free/cheap), Mossy Forest boardwalk if not raining, steamboat dinner. <b>Day 3 (Dec 30):</b> Mossy Forest if deferred, strawberry &amp; honey farms, tea scones. Bike chain check mid-afternoon. Depart evening for Ipoh descent. Trail closures possible in wet season — ask at check-in.</dd>
           </dl>
         </div>
       </div>
@@ -385,14 +342,14 @@
         <div class="band"></div>
         <div class="inner">
           <h4>Ipoh — Turnaround</h4>
-          <div class="meta">NIGHTS 6–8 · DEC 29–31 · REST + SERVICE + NYE</div>
+          <div class="meta">NIGHTS 7–8 · DEC 30–JAN 1 · SERVICE + NYE</div>
           <dl>
             <dt>Stay — ~$56/nt</dt>
-            <dd><b>Sarang Paloh Heritage Stay</b> — restored 1920s former OCBC bank building on Jalan Sultan Iskandar, on the heritage trail. Parking exists but is quirky (one-way tunnel access) — confirm motorcycle arrangement when booking.</dd>
+            <dd><b>[LIKELY] Sarang Paloh Heritage Stay</b> — restored 1920s former OCBC bank building on Jalan Sultan Iskandar, on the heritage trail. Parking exists but is quirky (one-way tunnel access) — confirm motorcycle arrangement when booking.</dd>
             <dt>Eat</dt>
-            <dd>Lou Wong beansprout chicken, Sin Yoon Loong white coffee, Thean Chun kopitiam (egg custard), Aun Kheng Lim salted chicken to pack for the ride.</dd>
+            <dd>Lou Wong beansprout chicken, Sin Yoon Loong white coffee, Thean Chun kopitiam (egg custard), Aun Kheng Lim salted chicken to pack for the ride south.</dd>
             <dt>Do</dt>
-            <dd>Old Town heritage walk + Concubine Lane, Kek Lok Tong &amp; Perak Tong cave temples, Kellie's Castle (~30min south, optional Day 8 AM). NYE: low-key in town — you ride the next morning.</dd>
+            <dd>Arrive Dec 30 evening (direct from Cameron Highlands descent via Rte 59). Mid-trip Boon Siew Honda service Dec 30 PM upon arrival. NYE (Dec 31): low-key in Old Town — heritage walk + Concubine Lane, cave temples (Kek Lok Tong, Perak Tong) optional. Early sleep; 4-hour bypass ride to Seremban on Jan 1 (9am depart via E6 ELITE toll road).</dd>
           </dl>
         </div>
       </div>
@@ -401,14 +358,14 @@
         <div class="band"></div>
         <div class="inner">
           <h4>Seremban</h4>
-          <div class="meta">NIGHT 9 · JAN 1 · RECOVERY ONLY</div>
+          <div class="meta">NIGHT 9 · JAN 1–2 · RECOVERY ONLY</div>
           <dl>
             <dt>Stay — ~$35–45/nt</dt>
-            <dd><b>Palm Seremban Hotel</b> — central 3-star, deliberately below budget ceiling. This is a bed, a shower, and secure parking, not a destination.</dd>
+            <dd><b>[LIKELY] Palm Seremban Hotel</b> — central 3-star, deliberately below budget ceiling. This is a bed, a shower, and secure parking, not a destination.</dd>
             <dt>Eat</dt>
             <dd>Seremban siew pau (baked pork buns — the town's one famous export), beef noodles at the food centre. Early dinner.</dd>
             <dt>Do</dt>
-            <dd>Nothing planned. That's the point. Lights out early; the last 300km gets ridden fresh.</dd>
+            <dd>Nothing planned. That's the point. Arrive Jan 1 mid-afternoon via E6 ELITE bypass (E1 south). Lights out early; the last 300km home gets ridden fresh Saturday morning Jan 2.</dd>
           </dl>
         </div>
       </div>
@@ -416,15 +373,15 @@
     </div>
   </section>
 
-  <!-- ================= BIKE ================= -->
+  <!-- ================= BIKE (SECTION 04) ================= -->
   <section id="bike">
     <h2><span class="no">04</span>Honda CB350 — Maintenance Plan</h2>
-    <p class="sec-sub">Warranty stays intact only if servicing is done at Boon Siew Honda authorised dealers (Malaysia) / your authorised dealer (SG). Ban Hoe Seng in Ipoh is authorised — that's why it's the mid-trip stop, not a random workshop.</p>
+    <p class="sec-sub">Warranty stays intact only if servicing is done at Boon Siew Honda authorised dealers (Malaysia) / your authorised dealer (SG).</p>
     <table>
       <tr><th style="width:150px">When</th><th style="width:220px">Where</th><th>Work</th></tr>
       <tr><td><b>Pre-trip</b><br><span class="tag">book by Dec 15, service by Dec 20</span></td><td>Your CB350's authorised dealer, Singapore<br><span class="tag">Confirm the branch handles Big Wing models — not all Honda outlets do</span></td><td>Full service: engine oil + filter, chain &amp; sprocket wear check + lube + tension, brake pads/discs/fluid, tire tread depth (min 2mm for this trip, ideally more) &amp; pressure, coolant n/a (air-cooled) — valve clearance if due, battery load test, all lights/signals/horn. State the trip: 1,200km in 10 days incl. mountain hairpins.</td></tr>
-      <tr><td><b>Day 6 arrival</b><br><span class="tag">Dec 29 PM, Ipoh</span></td><td><b>Boon Siew Honda authorised motorcycle dealer, Ipoh</b><br><span class="tag">CORRECTION: Ban Hoe Seng (previously listed) is a Honda CAR 3S centre — wrong network for a CB350. Malaysia's motorcycle network is Boon Siew Honda; an authorised dealer sits in the Pusat Perniagaan Pulai area. Confirm the exact outlet + big-bike capability via the boonsiewhonda.com.my dealer locator or careline 1-800-88-3993 before departure.</span></td><td>Mid-trip check at ~690km in: chain tension/lube, oil level, tire pressure &amp; visual tread, brake pad visual, bolt-torque after the Camerons hairpins. Dec 29 is a Tuesday. Call ahead; year-end queues, and not every dealer handles BigWing-class bikes.</td></tr>
-      <tr><td><b>Day 8</b><br><span class="tag">Dec 31 PM, self-check</span></td><td>Hotel / roadside, Ipoh</td><td>Your own pre-run check before the 2-day ride home: tire pressures cold, chain lube, brake lever feel, lights. 15 minutes, non-negotiable.</td></tr>
+      <tr><td><b>Day 8 arrival</b><br><span class="tag">Dec 30 PM, Ipoh</span></td><td><b>[GUESSING] Boon Siew Honda authorised motorcycle dealer, Ipoh</b><br><span class="tag">Confirm the exact outlet + big-bike capability via the boonsiewhonda.com.my dealer locator or careline 1-800-88-3993 before departure. Call ahead to book Dec 30 PM slot.</span></td><td>Mid-trip check at ~570km in: chain tension/lube, oil level, tire pressure &amp; visual tread, brake pad visual, bolt-torque after the Cameron Highlands hairpins + Tapah climb. Dec 30 is a Wednesday; early in-and-out for NYE.</td></tr>
+      <tr><td><b>Day 9 (Jan 1)</b><br><span class="tag">Morning self-check, Ipoh hotel</span></td><td>Hotel room / parking area, Ipoh</td><td>Your own pre-ride check before the 4-hour bypass run to Seremban: tire pressures cold, chain tension/lube, brake lever feel, lights. 15 minutes, non-negotiable. Depart 9am for E6 ELITE toll route (faster, KL-avoiding).</td></tr>
       <tr><td><b>Post-trip</b><br><span class="tag">within 1 week of return</span></td><td>Same SG authorised dealer</td><td>Full service: oil + filter, chain/sprocket wear assessment (1,200km of highway + hills), brake pad measurement, tire wear evaluation, general fastener check. Log it in the service booklet for warranty continuity.</td></tr>
     </table>
     <h3>Carry Kit</h3>
@@ -441,13 +398,13 @@
     <div class="note"><b>Fuel rule:</b> <span class="conf">LIKELY</span> foreign-registered vehicles are barred from subsidized RON95 in Malaysia — pump <b>RON97</b> only. The CB350 is happy on either; your wallet takes a small hit, a RON95 fine takes a bigger one. Tank range ~350km+ means each leg is doable on one fill, but top up at half-tank in the highlands — stations thin out on Rte 59.</div>
   </section>
 
-  <!-- ================= BUDGET ================= -->
+  <!-- ================= BUDGET (SECTION 05) ================= -->
   <section id="budget">
     <h2><span class="no">05</span>Budget Estimate</h2>
     <p class="sec-sub">Order-of-magnitude planning figures in SGD, solo rider. Holiday-period pricing may inflate accoms 10–20% — book now, not in December.</p>
     <table>
       <tr><th>Line</th><th style="width:170px">Basis</th><th style="width:120px">Est. (SGD)</th></tr>
-      <tr><td>Accommodation — 9 nights</td><td>Melaka $58 ·  KL 2×$68 · CH 2×$62 · Ipoh 2×$56 · Seremban $40</td><td>~$470</td></tr>
+      <tr><td>Accommodation — 9 nights</td><td>Melaka $58 · KL 2×$68 · CH 3×$62 · Ipoh 2×$56 · Seremban $40</td><td>~$530</td></tr>
       <tr><td>Fuel — RON97</td><td>~1,190km ÷ ~35km/L ≈ 34L × ~RM3.4</td><td>~$35</td></tr>
       <tr><td>Tolls</td><td>Motorcycles largely toll-exempt on MY highways</td><td>~$0–10</td></tr>
       <tr><td>Food — 10 days</td><td>Hawker-centric, ~RM80–120/day</td><td>~$250–370</td></tr>
@@ -459,7 +416,7 @@
     </table>
   </section>
 
-  <!-- ================= PRACTICAL ================= -->
+  <!-- ================= PRACTICAL (SECTION 06) ================= -->
   <section id="practical">
     <h2><span class="no">06</span>Border &amp; Practical Notes</h2>
     <table>
@@ -474,19 +431,70 @@
     </table>
   </section>
 
+  <!-- ================= PRE-DEPARTURE CHECKLIST (SECTION 07) ================= -->
+  <section id="checklist">
+    <h2><span class="no">07</span>Pre-Departure Checklist</h2>
+    <p class="sec-sub">Complete 1–2 weeks before departure</p>
+
+    <h3>Accommodation &amp; Logistics</h3>
+    <ul class="checklist">
+      <li><b>[LIKELY] Jonker Boutique Melaka:</b> Confirm motorcycle parking included; check-in flexible on Dec 24 (late arrival OK)</li>
+      <li><b>[LIKELY] Bintang Collectionz KL:</b> Confirm room dates Dec 25–27 (checking out morning Dec 27 to ride); parking for bike + Genting overnight provision</li>
+      <li><b>[LIKELY] Silvan Garden Cameron:</b> Confirm Dec 27–30 (3 nights, arrive evening Dec 27); any trail closures in wet season; bike parking</li>
+      <li><b>[LIKELY] Sarang Paloh Ipoh:</b> Confirm Dec 30–Jan 1 (2 nights); motorcycle parking access via tunnel</li>
+      <li><b>[LIKELY] Palm Seremban:</b> Confirm Jan 1–2; secure parking for early checkout Jan 2 AM</li>
+      <li><b>🔴 CRITICAL: Boon Siew Honda dealer locator</b> — Call 1-800-88-3993 by Dec 10 to confirm motorcycle dealer + appointment slot Dec 30 PM (mid-trip service upon Ipoh arrival)</li>
+    </ul>
+
+    <h3>Motorcycle &amp; Safety</h3>
+    <ul class="checklist">
+      <li><b>Pre-trip service booking:</b> Contact your SG authorised Honda dealer by Dec 15. Book service for Dec 18–20 (year-end rush)</li>
+      <li><b>Insurance verification:</b> Call insurer; confirm West Malaysia cover (not just border crossing)</li>
+      <li><b>VEP screenshot:</b> Visit JPJ portal, verify SG motorcycle exemption status, take screenshot, store on phone</li>
+      <li><b>Tire tread + pressure:</b> Post-service, measure tread depth (min 2mm), set cold pressure (check manual)</li>
+      <li><b>Chain + brake inspection:</b> Post-service check, note any wear for mid-trip awareness</li>
+    </ul>
+
+    <h3>Packing</h3>
+    <ul class="checklist">
+      <li><b>Rain suit + warm layers:</b> Dec/Jan is wet season; pack both</li>
+      <li><b>Toiletries + medications:</b> Sunscreen, blister pads, pain relief (hairpin days)</li>
+      <li><b>Cash (RM) + Touch 'n Go:</b> Load card to min RM100; carry RM200–300 cash</li>
+      <li><b>Carry kit (on bike):</b> Chain lube, puncture kit, tire gauge, tool roll, cable ties, duct tape, spare fuses/bulb</li>
+      <li><b>Phone + charger:</b> Download offline maps; power bank recommended</li>
+    </ul>
+
+    <h3>Communication &amp; Documentation</h3>
+    <ul class="checklist">
+      <li><b>Passport:</b> Verify 6+ months validity; photocopy + original in separate bags</li>
+      <li><b>SG driving licence + vehicle registration:</b> Class 2A/2 required; bring photocopies</li>
+      <li><b>Insurance certificate:</b> Print or screenshot showing West Malaysia riding cover</li>
+      <li><b>Inform someone:</b> Share itinerary + emergency contact (Honda careline: 1-800-88-3993)</li>
+    </ul>
+
+    <h3>Day-Before Checklist (Dec 23 evening)</h3>
+    <ul class="checklist">
+      <li><b>Bike status:</b> Oil level, tire pressure (cold), chain tension, brake levers, all lights functional</li>
+      <li><b>Fuel tank:</b> Top up RON97 the evening before; check fuel gauge accuracy</li>
+      <li><b>Documents:</b> Passport, license, registration, insurance, VEP screenshot — all on person or bike bag</li>
+      <li><b>Touch 'n Go + cash:</b> Card in rider pocket; RM notes in jacket</li>
+      <li><b>Route preview:</b> Glance at leg 1 map (SG → Melaka); know Tuas 2nd Link entrance, AH2 → E2 north transition</li>
+      <li><b>Sleep early:</b> 7am depart means 6am wake-up; aim for 10pm bedtime Dec 23</li>
+    </ul>
+  </section>
+
+  <!-- ================= TRAVEL DNA FOOTER ================= -->
   <section style="border-top:2px dashed var(--line); padding-top:20px; margin-top:40px;">
-    <h2 style="border:none; padding:0; margin:0 0 12px; font-size:16px; color:var(--cream-dim);">🧭 Travel DNA — Locked</h2>
+    <h2 style="border:none; padding:0; margin:0 0 12px; font-size:16px; color:var(--cream-dim);">🧭 Travel DNA Updates</h2>
     <div style="font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12px; color:var(--cream-dim); line-height:1.6;">
-      <p><b>Canonical format:</b> Interactive HTML with real-geography Leaflet map, day toggles, and Google Maps deep links for every leg and stop. Not negotiable.</p>
-      <p><b>Pacing rule:</b> No single riding day exceeds ~300km / ~4.5hr saddle time. Holiday/monsoon/weather risk grounds novelty-over-safety decisions.</p>
-      <p><b>Rest allocation:</b> Freed time becomes extra nights at existing stops, not more sightseeing. Multi-night basecamps for recovery.</p>
-      <p><b>Fixed dates stay stationary:</b> NYE, holidays, milestones land at a checked-in location, never mid-transit.</p>
-      <p><b>Advisor stance:</b> Challenge-first openings. Tag confidence [Certain]/[Likely]/[Guessing]. Surface trade-offs, hold positions under pushback, never fold on structural decisions without new information.</p>
+      <p><b>Leave Efficiency Mandatory (locked):</b> Section 00 appears post-nav, showing public holidays + AL + ratio. Dec 24–Jan 2 window = 2.0× efficiency via Christmas + New Year anchoring.</p>
+      <p><b>Pre-Departure Checklist as Section 07 (locked):</b> Always final content section, 5-subsection structure (Accommodation, Motorcycle, Packing, Communication, Day-Before). Confidence tags on all hotel bookings ([LIKELY] until confirmed).</p>
+      <p><b>Steel Palette Locked (motorcycle tours):</b> Background #1C2321, accent #E8963C (amber), secondary #5C8A76 (jade). Applies to all CB350 solo + duo moto routes.</p>
     </div>
   </section>
 
   <footer>
-    SG &rarr; IPOH &rarr; SG · CB350 TOUR PLAN · CANONICAL TEMPLATE v4 · COMPILED JUL 2026 · RATES &amp; RULES ARE ESTIMATES — VERIFY THE FLAGGED ITEMS BEFORE DEPARTURE
+    SG &rarr; IPOH &rarr; SG · CB350 TOUR PLAN · v5 · STRUCTURE CORRECTED · RATES &amp; RULES ARE ESTIMATES — VERIFY THE FLAGGED ITEMS BEFORE DEPARTURE
   </footer>
 </div>
 
@@ -625,17 +633,5 @@ stops.forEach((s, i) => {
   showAll();
 })();
 </script>
-
-  <!-- ================= TRAVEL DNA FOOTER ================= -->
-  <footer style="margin-top:60px;padding-top:30px;border-top:3px double var(--line);">
-    <h3 style="color:var(--cream-dim);font-size:13px;text-transform:uppercase;letter-spacing:1px;margin:0 0 14px;">🧭 Travel DNA Updates</h3>
-    <ul style="margin:0;padding-left:20px;font-size:13.5px;line-height:1.7;color:var(--cream-dim);">
-      <li><b>Leave Efficiency Mandatory (Section 00):</b> All trip artifacts now include a dedicated Leave Efficiency section showing Public Holiday Days + Annual Leave Taken + Total Trip Length + Efficiency Ratio. Anchored to Dec 24–Jan 2 window for optimal 2.0× multiplier.</li>
-      <li><b>Pre-Departure Checklist Structure (Section 07):</b> Locked UI with 5 subsections (Accommodation &amp; Logistics, Motorcycle &amp; Safety, Packing, Communication, Day-Before Checklist). Critical items flagged with 🔴 CRITICAL emoji. All future trips adopt this structure regardless of type.</li>
-      <li><b>Steel Palette (Motorcycle Tours):</b> Background #1C2321, primary #E8963C (amber), secondary #5C8A76 (jade). Locked for all CB350 moto tours &amp; solo riding trips.</li>
-      <li><b>Linear Route Visualization:</b> Interactive Leaflet map with day-toggle buttons, turn-by-turn Google Maps integration per leg, sequential venue pins color-coded by type (travel/rest/basecamp).</li>
-    </ul>
-  </footer>
-
 </body>
 </html>
