@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SG → Kota Kinabalu → SG · Mount Kinabalu Summit · Dec 24, 2027 – Jan 2, 2028</title>
+<title>SG → Kota Kinabalu → SG · Mount Kinabalu Summit · May 14-18, 2027</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
@@ -39,13 +39,15 @@
   .odo small{color:var(--dim);font-size:10px;text-transform:uppercase;letter-spacing:1px;}
   .odo.eff{display:inline-block;margin-bottom:8px;margin-right:8px;}
 
-  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;}
+  nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;align-items:center;}
   nav a{
     font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;
     color:var(--dim);text-decoration:none;border:1px solid var(--line);
     padding:6px 12px;border-radius:3px;text-transform:uppercase;
   }
   nav a:hover{color:var(--peak);border-color:var(--peak);}
+  nav a.back-btn{color:var(--peak);border-color:var(--peak);margin-right:auto;}
+  nav a.back-btn:hover{background:var(--deep-2);}
 
   section{margin-bottom:44px;}
   h2{
@@ -131,7 +133,7 @@
         font-size:13px;color:var(--dim);margin-top:14px;}
   .note b{color:var(--foam);}
   .budget-total td{background:var(--deep-3);font-weight:700;color:var(--peak);}
-
+  
   .eff-box{background:var(--deep-2);border:1px solid var(--summit);border-radius:6px;padding:16px 18px;margin:16px 0;}
   .eff-box th{color:var(--summit);}
   .eff-box tr.eff-total td{background:var(--deep-3);font-weight:700;color:var(--summit);font-family:ui-monospace,Menlo,Consolas,monospace;}
@@ -165,15 +167,15 @@
   <div class="hdr">
     <div>
       <h1>SG <span>→</span> Kota Kinabalu <span>→</span> SG</h1>
-      <div class="sub">4-PERSON GROUP · DEC 24 2027 – JAN 2 2028 · MOUNT KINABALU SUMMIT · 10 DAYS · 6 ANNUAL LEAVE</div>
+      <div class="sub">4-PERSON GROUP · MAY 14-18 2027 · MOUNT KINABALU SUMMIT · 5 DAYS · 3 ANNUAL LEAVE</div>
     </div>
     <div>
       <div class="odo eff">
-        <b>10 DAYS</b>
+        <b>5 DAYS</b>
         <small>Away</small>
       </div>
       <div class="odo eff">
-        <b>6 LEAVES</b>
+        <b>3 LEAVES</b>
         <small>Annual</small>
       </div>
       <div class="odo eff">
@@ -184,8 +186,10 @@
   </div>
 
   <nav>
+    <a href="index.html" class="back-btn">← Back to All Trips</a>
     <a href="#pre-flight">Pre-Flight</a>
     <a href="#leave-calc">Leave Calc</a>
+    <a href="#weather">Weather</a>
     <a href="#strip">Route</a>
     <a href="#map">Map</a>
     <a href="#itinerary">Day-by-Day</a>
@@ -201,9 +205,9 @@
       <h4>Critical Bookings & Fitness Gate</h4>
       <ul>
         <li><b>[URGENT]</b> All four climbers must formally confirm fitness + summit readiness. No hedging. <span class="conf">[Certain]</span></li>
-        <li><b>[URGENT]</b> Book Mount Kinabalu Parks 2D/1N package at mountkinabalu.com — LIMITED SLOTS Dec 24–Jan 2. <span class="conf">[Certain]</span></li>
-        <li><b>[URGENT]</b> Book SIN-KK flights (AirAsia, Malindo, Malaysia Airlines) — Dec 24 AM / Jan 2 PM. <span class="conf">[Certain]</span></li>
-        <li><b>[URGENT]</b> Reserve Kota Kinabalu mid-range hotel (Promenade or Novotel, 5 nights). Spa on-site required. <span class="conf">[Certain]</span></li>
+        <li><b>[URGENT]</b> Book Mount Kinabalu Parks 2D/1N package at mountkinabalu.com — May 15–16 slots. <span class="conf">[Certain]</span></li>
+        <li><b>[URGENT]</b> Book SIN-KK flights (AirAsia, Malindo, Malaysia Airlines) — May 14 AM / May 18 PM (3–4 PM preferred). <span class="conf">[Certain]</span></li>
+        <li><b>[URGENT]</b> Reserve Kota Kinabalu mid-range hotel (Promenade or Novotel, 2 nights). Spa on-site required. <span class="conf">[Certain]</span></li>
         <li>Verify travel insurance: high-altitude climbing coverage up to 4,500m + evacuation. <span class="conf">[Likely]</span></li>
         <li>Check Malaysian visa requirements (SG passport = typically 90-day visa-free). <span class="conf">[Guessing]</span></li>
         <li>Begin fitness training NOW: 6 weeks cardio + stair climbing. Test fitness at wk 4. <span class="conf">[Certain]</span></li>
@@ -213,7 +217,7 @@
 
   <section id="leave-calc">
     <h2><span class="no">1.</span>Leave Efficiency Calculation</h2>
-    <p class="sec-sub">10 days away on 6 annual leaves = 1.67x efficiency ratio. Outperforms Chinese New Year (1.4x) and all other 2027 holiday windows.</p>
+    <p class="sec-sub">5 days away on 3 annual leaves = 1.67x efficiency ratio. Compressed May weekend-anchor window. Weekend + 3 weekday leaves optimize for pre-monsoon weather window.</p>
     <div class="eff-box">
       <table>
         <thead>
@@ -226,64 +230,34 @@
         </thead>
         <tbody>
           <tr class="climb-row">
-            <td><b>Dec 24</b></td>
+            <td><b>May 14</b></td>
             <td>Fri</td>
             <td>LEAVE</td>
-            <td>Depart SG (morning) → Arrive KK</td>
-          </tr>
-          <tr>
-            <td><b>Dec 25</b></td>
-            <td>Sat</td>
-            <td>HOLIDAY</td>
-            <td>Christmas Day (public holiday)</td>
+            <td>Depart SG (morning) → Arrive KK + Park prep</td>
           </tr>
           <tr class="rest-row">
-            <td><b>Dec 26</b></td>
-            <td>Sun</td>
+            <td><b>May 15</b></td>
+            <td>Sat</td>
             <td>WEEKEND</td>
-            <td>Acclimatize in KK</td>
-          </tr>
-          <tr class="climb-row">
-            <td><b>Dec 27</b></td>
-            <td>Mon</td>
-            <td>LEAVE</td>
-            <td>Drive to Park HQ, prep</td>
-          </tr>
-          <tr class="climb-row">
-            <td><b>Dec 28</b></td>
-            <td>Tue</td>
-            <td>LEAVE</td>
             <td>Summit Day 1 (climb to Laban Rata)</td>
           </tr>
-          <tr class="climb-row">
-            <td><b>Dec 29</b></td>
-            <td>Wed</td>
-            <td>LEAVE</td>
-            <td>Summit Day 2 (push + descent)</td>
-          </tr>
-          <tr class="climb-row">
-            <td><b>Dec 30</b></td>
-            <td>Thu</td>
-            <td>LEAVE</td>
-            <td>Return KK, deep massage</td>
-          </tr>
-          <tr class="climb-row">
-            <td><b>Dec 31</b></td>
-            <td>Fri</td>
-            <td>LEAVE</td>
-            <td>Recovery + NYE in KK</td>
-          </tr>
-          <tr>
-            <td><b>Jan 1</b></td>
-            <td>Sat</td>
-            <td>HOLIDAY</td>
-            <td>New Year's Day (public holiday)</td>
-          </tr>
           <tr class="rest-row">
-            <td><b>Jan 2</b></td>
+            <td><b>May 16</b></td>
             <td>Sun</td>
             <td>WEEKEND</td>
-            <td>Return KK → SG (evening)</td>
+            <td>Summit Day 2 (peak push + descent)</td>
+          </tr>
+          <tr class="climb-row">
+            <td><b>May 17</b></td>
+            <td>Mon</td>
+            <td>LEAVE</td>
+            <td>Return KK, deep massage + recovery</td>
+          </tr>
+          <tr class="climb-row">
+            <td><b>May 18</b></td>
+            <td>Tue</td>
+            <td>LEAVE</td>
+            <td>Light recovery → Return KK → SG (evening)</td>
           </tr>
         </tbody>
       </table>
@@ -299,37 +273,51 @@
       <tbody>
         <tr>
           <td><b>Total Trip Days</b></td>
-          <td class="mono">10</td>
-          <td>Dec 24 – Jan 2</td>
+          <td class="mono">5</td>
+          <td>May 14–18</td>
         </tr>
         <tr>
           <td><b>Public Holidays Captured</b></td>
-          <td class="mono">2</td>
-          <td>Dec 25 + Jan 1</td>
+          <td class="mono">0</td>
+          <td>None in May 14–18 window</td>
         </tr>
         <tr>
           <td><b>Weekends Captured</b></td>
           <td class="mono">2</td>
-          <td>Dec 26 (Sun) + Jan 2 (Sun)</td>
+          <td>May 15 (Sat) + May 16 (Sun)</td>
         </tr>
         <tr class="eff-total">
           <td><b>Annual Leave Days</b></td>
-          <td class="mono">6</td>
-          <td>Dec 24, 27, 28, 29, 30, 31</td>
+          <td class="mono">3</td>
+          <td>May 14 (Fri), May 17 (Mon), May 18 (Tue)</td>
         </tr>
         <tr class="eff-total">
           <td><b>Leave Efficiency Ratio</b></td>
           <td class="mono">1.67x</td>
-          <td>10 days ÷ 6 leaves</td>
+          <td>5 days ÷ 3 leaves</td>
         </tr>
       </tbody>
     </table>
-    <p class="note"><b>Decision rationale:</b> December outperforms all 2027 holiday windows. Chinese New Year (Feb 3–4) yields only 1.4x efficiency despite similar holiday structure. This window saves 1 annual leave day while gaining 3+ travel days.</p>
+    <p class="note"><b>Decision rationale:</b> May window optimizes for pre-Southwest Monsoon conditions (stable, drier, good visibility). Avoids Dec holiday chaos + avoids Jun–Sep monsoon rains.</p>
+  </section>
+
+  <section id="weather">
+    <h2><span class="no">1.5</span>Seasonal & Climate Context</h2>
+    <p class="sec-sub">Why May 14–18 beats December for this window.</p>
+
+    <h3>Sabah Weather Patterns</h3>
+    <p><b>May (Pre-Southwest Monsoon):</b> Relatively dry season. Rainfall ~80–120 mm (lighter than Jun–Sep). <b>Temperature:</b> Kota Kinabalu 26–32°C (warm, humid); Laban Rata 10–15°C; Summit –5 to 0°C. <b>Visibility:</b> Generally excellent (morning summits see 50+ km across Brunei + South China Sea). <b>Wind:</b> Light to moderate (avoids monsoon gusts). <b>Humidity:</b> 75–85% year-round (manage with moisture-wicking layers).</p>
+
+    <h3>Comparison: December vs. May</h3>
+    <p><b>December (original):</b> Cool, dry, but peak holiday chaos (all parks congested, flights overbooked, hotel rates spike 40–60%). Leaves taken at premium. <b>May (revised):</b> Warmer, pre-monsoon stability, shoulder season (lighter park traffic). Fewer holiday conflicts. <b>Risk trade-off:</b> May has slightly higher humidity (comfort issue, not summit risk). Neither month sees sustained rain during Kinabalu summit window.</p>
+
+    <h3>Fitness Impact</h3>
+    <p><b>Temperature tolerance:</b> May warmth at basecamp = easier recovery but higher dehydration risk. Bring extra electrolytes. <b>Summit ascent:</b> No material difference between Dec/May at altitude (both require windbreaker + thermal layers). <b>Post-summit soreness:</b> Warmer May weather may ease massage recovery (vs. Dec cold).</p>
   </section>
 
   <section id="strip">
     <h2><span class="no">2.</span>Strip Map: Linear Route</h2>
-    <p class="sec-sub">No backtracking. Arrive, acclimatize, summit, recover, return. All bases are Kota Kinabalu except 2D/1N on mountain.</p>
+    <p class="sec-sub">Compressed 5-day arc. Depart Friday morning, summit Sat-Sun, recover Mon-Tue, return evening. Weekend anchors summit days. Single KK basecamp.</p>
     <div class="road">
       <div class="road-track">
         <div class="centerline"></div>
@@ -338,15 +326,15 @@
             <div class="shield">1</div>
             <div class="city">Singapore</div>
             <div class="nights">Depart</div>
-            <div class="vibe">SIN-KK flight, 3 hrs. Dec 24 morning.</div>
+            <div class="vibe">SIN-KK flight, 3 hrs. May 14 morning.</div>
           </div>
         </div>
         <div class="node" style="left:28%;">
           <div class="card up">
             <div class="shield rest">2</div>
-            <div class="city">Kota Kinabalu</div>
-            <div class="nights">Arrive</div>
-            <div class="vibe">Acclimatize Dec 25–26. Hotel base.</div>
+            <div class="city">Kinabalu Park</div>
+            <div class="nights">Summit</div>
+            <div class="vibe">Launch May 15. 4,101m peak Sat-Sun.</div>
           </div>
         </div>
         <div class="node" style="left:50%;">
@@ -354,7 +342,7 @@
             <div class="shield">3</div>
             <div class="city">Kinabalu Park</div>
             <div class="nights">2D/1N</div>
-            <div class="vibe">Summit Dec 28–29. 4,101m peak.</div>
+            <div class="vibe">May 15–16. Laban Rata rest house.</div>
           </div>
         </div>
         <div class="node" style="left:72%;">
@@ -362,7 +350,7 @@
             <div class="shield rest">4</div>
             <div class="city">Kota Kinabalu</div>
             <div class="nights">Recover</div>
-            <div class="vibe">Spa + rest Dec 30–Jan 1. 3 nights.</div>
+            <div class="vibe">Massage + rest May 17. 1 night.</div>
           </div>
         </div>
         <div class="node" style="left:92%;">
@@ -370,7 +358,7 @@
             <div class="shield">5</div>
             <div class="city">Singapore</div>
             <div class="nights">Return</div>
-            <div class="vibe">KK-SIN flight, Jan 2 evening.</div>
+            <div class="vibe">KK-SIN flight, May 18 evening.</div>
           </div>
         </div>
       </div>
@@ -399,7 +387,7 @@
 
   <section id="itinerary">
     <h2><span class="no">4.</span>Day-by-Day Itinerary</h2>
-    <p class="sec-sub">10 days: 2 transit, 2 acclimatize, 2 summit, 3 recover, 1 return.</p>
+    <p class="sec-sub">5 days: 1 transit + prep, 2 summit, 1 recover, 1 return. Compressed sprint using weekend anchor.</p>
     <table>
       <thead>
         <tr>
@@ -412,63 +400,33 @@
       <tbody>
         <tr class="climb-row">
           <td><b>1</b></td>
-          <td>Dec 24 (Fri)</td>
-          <td>Depart SG → Kota Kinabalu</td>
-          <td>Morning flight, ~3 hrs. Arrive 1–2 PM. Check hotel. Early dinner + 10-hr sleep. Hydrate heavily.</td>
-        </tr>
-        <tr class="rest-row">
-          <td><b>2</b></td>
-          <td>Dec 25 (Sat)</td>
-          <td>Acclimatize — Light Activity</td>
-          <td>Tanjung Aru Beach walk (flat, scenic). Warung breakfast. Afternoon rest. 9–10 hr sleep target.</td>
-        </tr>
-        <tr class="rest-row">
-          <td><b>3</b></td>
-          <td>Dec 26 (Sun)</td>
-          <td>Acclimatize — Very Light</td>
-          <td>Optional riverside walk. Spa 90 min (BOOK NOW). Hydrate 3L+. High-carb meals. Early bed.</td>
+          <td>May 14 (Fri)</td>
+          <td>SG → KK → Park HQ</td>
+          <td>Morning flight (~3 hrs). Arrive KK 1–2 PM. Drive straight to Kinabalu Park HQ (~90 min). Meet guide. Dinner 6 PM, bed 8 PM sharp.</td>
         </tr>
         <tr class="climb-row">
+          <td><b>2</b></td>
+          <td>May 15 (Sat)</td>
+          <td>Summit Day 1: Ascent to Laban Rata</td>
+          <td><b>3:00 AM dep.</b> 6–7 hrs climb. Arrive Laban Rata 10–11 AM (3,272m, ~10°C). Rest/hydrate heavily. AMS risk increases afternoon. Bed 6:30 PM.</td>
+        </tr>
+        <tr class="climb-row">
+          <td><b>3</b></td>
+          <td>May 16 (Sun)</td>
+          <td>Summit Day 2: Peak Push + Descent</td>
+          <td><b>2:30 AM dep.</b> 1.5–2 hrs to summit (4,101m, ~0°C). Sunrise ~6 AM. 2 hr rest + photos. Descent 2–3 hrs to HQ. Arrive afternoon. Return KK (~90 min).</td>
+        </tr>
+        <tr class="rest-row">
           <td><b>4</b></td>
-          <td>Dec 27 (Mon)</td>
-          <td>Drive KK → Kinabalu Park HQ</td>
-          <td>90 min drive. Arrive 1–2 PM. Meet guide + briefing. Dinner 6 PM. Bed 8 PM sharp (sleep night).</td>
+          <td>May 17 (Mon)</td>
+          <td>Recovery — Full Rest</td>
+          <td>Massive soreness. 2-hr deep tissue massage (PRIORITY, book now). High-protein meals. 11+ hr sleep target. Light walk only if energy permits.</td>
         </tr>
         <tr class="climb-row">
           <td><b>5</b></td>
-          <td>Dec 28 (Tue)</td>
-          <td>Summit Day 1: Ascent to Laban Rata</td>
-          <td><b>3:00 AM dep.</b> 6–7 hrs climb. Arrive Laban Rata 10–11 AM (3,272m, ~10°C). Rest/hydrate. Bed 6:30 PM.</td>
-        </tr>
-        <tr class="climb-row">
-          <td><b>6</b></td>
-          <td>Dec 29 (Wed)</td>
-          <td>Summit Day 2: Peak Push + Descent</td>
-          <td><b>2:30 AM dep.</b> 1.5–2 hrs to summit (4,101m, ~0°C). Sunrise 6:30 AM. 2 hr rest + photos. Descent 2–3 hrs to HQ.</td>
-        </tr>
-        <tr class="rest-row">
-          <td><b>7</b></td>
-          <td>Dec 30 (Thu)</td>
-          <td>Recovery — Full Rest</td>
-          <td>Return KK (~90 min). Massive soreness. 2-hr deep tissue massage (PRIORITY). High-protein meals. 11+ hr sleep.</td>
-        </tr>
-        <tr class="rest-row">
-          <td><b>8</b></td>
-          <td>Dec 31 (Fri)</td>
-          <td>Recovery — Active Rest (NYE)</td>
-          <td>Morning: Spa facial. Afternoon: slow market/waterfront walk. Seafood dinner + NYE with group. Bed by midnight.</td>
-        </tr>
-        <tr class="rest-row">
-          <td><b>9</b></td>
-          <td>Jan 1 (Sat)</td>
-          <td>Recovery — Light Leisure</td>
-          <td>Slow brunch. Light market shopping if energy permits. Seafood dinner. Early bed (flight tomorrow).</td>
-        </tr>
-        <tr class="climb-row">
-          <td><b>10</b></td>
-          <td>Jan 2 (Sun)</td>
-          <td>Kota Kinabalu → Singapore</td>
-          <td>Checkout morning. Lunch at airport. Evening flight 6–7 PM. Arrive SG 9–10 PM. Buffer before work Monday.</td>
+          <td>May 18 (Tue)</td>
+          <td>KK → Singapore</td>
+          <td>Checkout morning. Early lunch. Afternoon flight 3–4 PM (or evening 6–7 PM). Arrive SG 6–9 PM. Minimal buffer before work Wednesday.</td>
         </tr>
       </tbody>
     </table>
@@ -477,7 +435,7 @@
   <section id="kinabalu">
     <h2><span class="no">5.</span>Mount Kinabalu: The Climb</h2>
     <p class="sec-sub">Non-technical but grueling: 20 km, 2,000+ m elevation over 2 days. 40% less oxygen at summit.</p>
-
+    
     <h3>Fitness Gate [Certain]</h3>
     <p>All four must be capable of 6+ hours sustained climbing + high-altitude tolerance. Pre-training (6 wks): stair climbing, long-distance running, hill sprints. No hedging on fitness confirmation.</p>
 
@@ -496,8 +454,8 @@
 
   <section id="kkguide">
     <h2><span class="no">6.</span>Kota Kinabalu: Recovery Base</h2>
-    <p class="sec-sub">Single 5-night basecamp (Dec 24–26, Dec 30–Jan 1). Spa on-site mandatory. No multi-location moves.</p>
-
+    <p class="sec-sub">Compressed basecamp: arrival night (May 14) + 1 recovery night (May 17). 2 nights total. Spa on-site mandatory for post-summit recovery.</p>
+    
     <div class="city-grid">
       <div class="cg">
         <div class="band"></div>
@@ -508,7 +466,7 @@
             <dt>Address</dt>
             <dd>Bintang Empat Jalan Promenade, Kota Kinabalu</dd>
             <dt>Rate</dt>
-            <dd>SGD 70–90/night <small>(5 nights: ~SGD 350–450)</small></dd>
+            <dd>SGD 70–90/night <small>(2 nights: ~SGD 140–180)</small></dd>
             <dt>Why</dt>
             <dd><b>Spa on-site</b> (critical post-summit), waterfront, restaurant, central. Pool can be noisy; request higher floor.</dd>
             <dt>Google Rating</dt>
@@ -539,8 +497,8 @@
           <h4>Spa & Massage [URGENT]</h4>
           <div class="meta">POST-CLIMB RECOVERY</div>
           <dl>
-            <dt>Dec 30 Booking</dt>
-            <dd><b>2-hour deep tissue massage</b> (post-summit soreness peaks Day 2–3). On-site hotel spa or standalone.</dd>
+            <dt>May 17 Booking (CRITICAL)</dt>
+            <dd><b>2-hour deep tissue massage</b> (post-summit soreness peaks Mon morning). On-site hotel spa or standalone. Book NOW.</dd>
             <dt>Cost</dt>
             <dd>SGD 60–90 (book NOW via hotel)</dd>
             <dt>Fallback</dt>
@@ -555,12 +513,12 @@
     <p><b>Seafood (Tanjung Aru Beach):</b> Casual warung cluster, grilled fish + prawns, ~SGD 12–20 per dish. <b>Hinava</b> (raw fish salad, ginger + lime + shallot): demand at any warung. <b>Laksa Sabah</b> (spicy coconut broth): ~SGD 5–8 at kopitiam. <b>Sabah coffee:</b> Hit any kopitiam, ~SGD 2–3. Strong local coffee culture.</p>
 
     <h3>Do</h3>
-    <p><b>Dec 30–Jan 1: Recovery block only.</b> <b>Allowed:</b> Slow walks (waterfront, market 2–3 km/day), local food, spa, light shopping. <b>NOT allowed:</b> Water sports, island hopping, jungle treks. Too sore. <b>Optional:</b> Tanjung Aru Beach walk (flat, scenic, 3 km, 45 mins slow pace). Safe, no climbing. Clear-head activity if energy permits (no pressure).</p>
+    <p><b>May 17: Recovery day only.</b> <b>Allowed:</b> Slow walks (waterfront, market 1–2 km), local food, deep tissue massage (PRIORITY), light shopping. <b>NOT allowed:</b> Water sports, island hopping, jungle treks. Too sore for activity. Spa + rest is the agenda. <b>Tanjung Aru Beach walk:</b> Optional if energy permits (flat, scenic, 3 km, 45 mins). No pressure; recovery takes priority.</p>
   </section>
 
   <section id="budget">
     <h2><span class="no">7.</span>Budget Breakdown (Per Person)</h2>
-    <p class="sec-sub">Mid-range tier. SGD 1,360–1,750 total. Group can optimize by sharing transport + booking early.</p>
+    <p class="sec-sub">Compressed 5-day sprint. Mid-range tier. SGD 950–1,250 total per person. Aggressive timeline reduces hotel nights but increases per-day intensity.</p>
     <table>
       <thead>
         <tr>
@@ -573,22 +531,22 @@
         <tr class="climb-row">
           <td><b>Flight SIN-KK (round-trip)</b></td>
           <td>SGD 200–280</td>
-          <td>Dec 24 AM / Jan 2 PM. AirAsia, Malindo, Malaysia Airlines. Budget carriers typical. 3 hrs each way.</td>
+          <td>May 14 AM / May 18 PM (3–4 PM preferred). AirAsia, Malindo, Malaysia Airlines. 3 hrs each way.</td>
         </tr>
         <tr>
           <td><b>Airport transfers</b></td>
           <td>SGD 40–60</td>
-          <td>Taxi/Grab KK airport ↔ hotel (~20 min). Book via Grab or hotel concierge.</td>
+          <td>Taxi/Grab KK airport ↔ hotel (~20 min). May 14 arrival + May 18 departure.</td>
         </tr>
         <tr class="climb-row">
           <td><b>Park HQ transfers</b></td>
-          <td>SGD 50–80</td>
-          <td>Hotel ↔ Kinabalu Park HQ (~90 min each way). Group can share mini-van (~SGD 200 ÷ 4).</td>
+          <td>SGD 60–100</td>
+          <td>Hotel ↔ Kinabalu Park HQ (~90 min each way). Group can share mini-van (~SGD 240 ÷ 4 = SGD 60).</td>
         </tr>
         <tr class="rest-row">
-          <td><b>Kota Kinabalu hotel (5 nights)</b></td>
-          <td>SGD 350–450</td>
-          <td>Mid-range 3-star: Dec 24–25 (pre) + Dec 30–Jan 1 (recovery). @ SGD 70–90/night. Promenade or Novotel.</td>
+          <td><b>Kota Kinabalu hotel (2 nights)</b></td>
+          <td>SGD 140–180</td>
+          <td>Mid-range 3-star: May 14 (arrival) + May 17 (recovery). @ SGD 70–90/night. Promenade or Novotel.</td>
         </tr>
         <tr class="rest-row">
           <td><b>Laban Rata (1 night, included)</b></td>
@@ -606,14 +564,9 @@
           <td>Highly recommended. Carries ~15 kg gear each. Book with guide at HQ.</td>
         </tr>
         <tr>
-          <td><b>Meals (pre-summit)</b></td>
-          <td>SGD 100–150</td>
-          <td>Breakfasts ~SGD 8–12, lunches ~SGD 12–18, dinners ~SGD 15–25. Park HQ meals included.</td>
-        </tr>
-        <tr class="rest-row">
-          <td><b>Meals (recovery block)</b></td>
-          <td>SGD 120–180</td>
-          <td>Post-summit nutrition priority (high protein). Seafood dinners ~SGD 20–30. Breakfasts ~SGD 8–12.</td>
+          <td><b>Meals (all days)</b></td>
+          <td>SGD 80–120</td>
+          <td>Breakfasts ~SGD 8–12, lunches ~SGD 12–18, dinners ~SGD 15–25. Park HQ meals (Sat-Sun) included in package. KK meals: May 14 dinner, May 17 meals, May 18 lunch.</td>
         </tr>
         <tr class="rest-row">
           <td><b>Spa / massage</b></td>
@@ -637,8 +590,8 @@
         </tr>
         <tr class="budget-total">
           <td><b>TOTAL PER PERSON</b></td>
-          <td><b>SGD 1,360–1,750</b></td>
-          <td>Mid-range tier. Group can save by booking flights + hotel early + sharing transport.</td>
+          <td><b>SGD 950–1,250</b></td>
+          <td>Compressed 5-day sprint. Trade longer recovery window for single annual leave month-bracket. Aggressive but efficient.</td>
         </tr>
       </tbody>
     </table>
@@ -647,7 +600,7 @@
   <section id="dna">
     <h2><span class="no">8.</span>🧭 Travel DNA Updates</h2>
     <p class="sec-sub">Confirm these three locked preferences so they apply to all future trip planning.</p>
-
+    
     <div class="dna">
       <h4>✓ Lock Rule 1: Leave Efficiency is Structural</h4>
       <div class="dna-item">Every trip artifact must display annual leave consumed vs. trip duration, with efficiency ratio calculated (10 days away ÷ 6 leaves = 1.67x). December crushes alternatives like Chinese New Year (1.4x). This framework applies to all future trip planning—holidays are chosen first, then dates optimized for maximum efficiency. <b>Confirm this locks in?</b></div>
@@ -667,7 +620,7 @@
 </div>
 
 <footer>
-  <p><strong>sg_kinabalu_summit_plan.html</strong> | Compiled Sep 2026 | Mount Kinabalu Quest (Dec 24, 2027 – Jan 2, 2028)</p>
+  <p><strong>sg_kinabalu_summit_plan.html</strong> | Updated Oct 2026 | Mount Kinabalu Quest (May 14-18, 2027)</p>
   <p>Estimates marked [Likely] or [Guessing] require verification before departure. Cross-reference official sources (Mount Kinabalu Sabah Parks, Malaysia tourism, airlines). See pre-flight checklist for action items.</p>
 </footer>
 
