@@ -660,7 +660,7 @@ const stops = [
 (function(){
   if (typeof L === 'undefined') {
     document.getElementById('realmap').innerHTML =
-      '<div style="padding:30px;color:#B3D4DB;font-family:monospace;font-size:12px;">Real map needs an internet connection — tiles could not load. Use the strip map above.</div>';
+      '<div style="padding:30px;color:#9FC1C4;font-family:monospace;font-size:12px;">Real map needs an internet connection — tiles could not load. Use the strip map above.</div>';
     return;
   }
   const map = L.map('realmap', {scrollWheelZoom:false});
@@ -683,7 +683,7 @@ const stops = [
     [11, "Gyokusendo Cave", 26.1403423, 127.7494344, "Day 8 · limestone cavern", "ChIJa3ifUYVp5TQR3QZD1tyLml4", 8]
   ];
 
-  const CORAL='#FF8C5A', REEF='#4DB8A8';
+  const CORAL='#E8734A', REEF='#3FA796';
   const ll = i => pts[i].slice(2,4);
   const legs = [
     {label:"Day 1 · Arrival",          path:[ll(1),ll(0)],               dayNum:1, color:CORAL},
@@ -705,8 +705,8 @@ const stops = [
   pts.forEach(p => {
     const icon = L.divIcon({
       className: '',
-      html: `<div style="width:26px;height:26px;border-radius:50%;background:${p[5]===3?'#4DB8A8':'#FF8C5A'};
-             border:2px solid #E8F5F7;color:#E8F5F7;font:700 12px/22px monospace;text-align:center;">${p[0]}</div>`,
+      html: `<div style="width:26px;height:26px;border-radius:50%;background:${p[5]===3?'#3FA796':'#E8734A'};
+             border:2px solid #EAF6F4;color:#EAF6F4;font:700 12px/22px monospace;text-align:center;">${p[0]}</div>`,
       iconSize: [26,26], iconAnchor:[13,13]
     });
     const gm = p[4]
@@ -719,8 +719,8 @@ const stops = [
 
   const btnBox = document.getElementById('daybtns');
   const legLink = document.getElementById('leglink');
-  const btnStyle = 'font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;cursor:pointer;padding:6px 12px;border-radius:3px;border:1px solid #2A5566;background:#123244;color:#B3D4DB;';
-  const activeStyle = 'border-color:#FF8C5A;color:#FF8C5A;';
+  const btnStyle = 'font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.5px;cursor:pointer;padding:6px 12px;border-radius:3px;border:1px solid #1F4A5C;background:#123244;color:#9FC1C4;';
+  const activeStyle = 'border-color:#E8734A;color:#E8734A;';
 
   function makeBtn(text){ const b=document.createElement('button'); b.textContent=text; b.setAttribute('style',btnStyle); return b; }
 
@@ -733,7 +733,7 @@ const stops = [
   function showLeg(g, btn){
     legs.forEach(x => x.line.setStyle({opacity: x===g?1:0.18, weight: x===g?6:3}));
     map.fitBounds(L.latLngBounds(g.path).pad(0.25));
-    legLink.innerHTML = '<a href="'+g.dir+'" target="_blank" style="color:#FF8C5A;font-weight:700;text-decoration:none;">&#9658; Open '+g.label+' in Google Maps &nearr;</a>';
+    legLink.innerHTML = '<a href="'+g.dir+'" target="_blank" style="color:#E8734A;font-weight:700;text-decoration:none;">&#9658; Open '+g.label+' in Google Maps &nearr;</a>';
     setActive(btn);
   }
   let btns=[];
