@@ -663,10 +663,11 @@ const stops = [
       '<div style="padding:30px;color:#9FC1C4;font-family:monospace;font-size:12px;">Real map needs an internet connection — tiles could not load. Use the strip map above.</div>';
     return;
   }
-  const map = L.map('realmap', {scrollWheelZoom:false});
+  const map = L.map('realmap', {scrollWheelZoom:false}).setView([26.2, 127.7], 9);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
-    attribution: '&copy; OpenStreetMap contributors'
+    attribution: '&copy; OpenStreetMap contributors',
+    errorTileUrl: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256"><rect fill="%23184257" width="256" height="256"/><text x="128" y="128" text-anchor="middle" dy=".3em" font-family="monospace" font-size="12" fill="%23B3D4DB">tile unavailable</text></svg>'
   }).addTo(map);
 
   const pts = [
